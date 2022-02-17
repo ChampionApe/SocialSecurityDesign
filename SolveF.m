@@ -8,17 +8,13 @@ methods(Static)
         par = struct();
         par.A = 5;
         par.alpha = 0.47; % capital-income share
-        par.omega = 1.3; % political weight of retirees
+        par.omega = 1.2; % political weight of retirees
         par.xi = 0.35; % elasticity of labor supply
-        par.X = 1.8; % measure of informal productivity. Requires X >1.
+        par.X = 2.5; % measure of informal productivity. Requires X >1.
         par.beta = 0.34; % impatience parameter
         par.Gridpoints = 250; %number of gridpoints in 'solve'.
-        par.gridapprox = 250; 
         par.Nsim = 100; % number of different h0 to simulate time-path.
         par.h0_sim = 80; % which index in the grid of h0 should we use to simulate.
-        par.max_iter = 5;
-        par.tol = 1e-5; % We set the tolerance relatively large, as there is no 'common grid' to check the solution on.
-        par.sol_solver = 1e-6;
         %par.TerminalAdhocAdjust=1;
         par.TerminalAdhocAdjust=(1+par.beta); % Set this to 1 to get the generic model. We might want to adjust upwards, to avoid a corner solution in terminal period.
         if setting == 'S'
@@ -130,6 +126,20 @@ methods(Static)
         sim.tau = sim_all.tau(par.h0_sim,:)';
         sim.srate = SolveF.compute_srate(par,sim,par.epsilon);
     end
+    function sim = sim_u_GivenTaxes(par,tau)
+        sim = struct();
+        sim.tau = tau;
+        sim.h = SolveF.h_universal(par,tau);
+        sim.srate = SolveF.compute_srate(par,sim,0);
+    end
+    function sim = sim_c_GivenTaxes(par,tau)
+        sim = struct();
+        sim.tau = tau;
+        sim.h = NaN(size(tau));
+        sim.h(1:end-1) = base.h_equi(par,tau(1:end-1),tau(2:end), par.epsilon,par.theta,zeros(size(tau(1:end-1)))+0.5);
+        sim.h(end) = base.h_equi(par,tau(end),1,0,0,0.5); % terminal policy
+        sim.srate = SolveF.compute_srate(par,sim,par.epsilon);
+    end
     
     % 1.6: Approximate steady state policy with contributive pensions:
     function policy = ss_policy_c(par,nu)
@@ -186,9 +196,9 @@ methods(Static)
         t.LSI = 0.5;
         t.r = 4.3; % 30-year cumulated interest rate.
         t.srate = 0.206;
-        t.informal_to_formal = 0.481/(1-0.481);
         t.pensiontax = 0.271;
-        t.h = 0.7473; % This is the target for 1980, in stst also for 2010.
+        t.h = 1-0.32; % 32% informality
+       %t.h = 0.7473; % This is the target for 1980, in stst also for 2010.
         t.nu = 1.2120; % 1.2120 corresponding to level in 2010 when data starts in 1950.
         t.nu_row = 3; % which row in par.nu is the target in.
         t.nu_col = 1; % which column in par.nu is the target in.

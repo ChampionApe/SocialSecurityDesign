@@ -28,7 +28,7 @@ methods(Static)
          grid on;
          
          if print==1
-              base_fun.printfig(fig);
+              base.printfig(fig);
          end
          
     end
@@ -61,7 +61,7 @@ methods(Static)
          grid on;
          
          if print==1
-              base_fun.printfig(fig);
+              base.printfig(fig);
          end
          
     end
@@ -83,7 +83,7 @@ methods(Static)
         box('on');
         grid on;
          if print==1
-              base_fun.printfig(fig);
+              base.printfig(fig);
          end
     end
 
@@ -109,7 +109,7 @@ methods(Static)
         box('on');
         grid on;
          if print==1
-              base_fun.printfig(fig);
+              base.printfig(fig);
          end
     end
 
@@ -142,7 +142,7 @@ methods(Static)
         box('on');
         grid on;
          if print==1
-              base_fun.printfig(fig);
+              base.printfig(fig);
          end
     end
 
@@ -175,7 +175,7 @@ methods(Static)
         box('on');
         grid on;
          if print==1
-              base_fun.printfig(fig);
+              base.printfig(fig);
          end
     end
     
