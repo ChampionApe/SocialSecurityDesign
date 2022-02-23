@@ -95,11 +95,11 @@ methods(Static)
         psettings = figs.def_psettings(psettings);
         
         c = plot(dates(1,psettings.start:psettings.end),sim_c.tau(psettings.start:psettings.end),...
-                    'Linewidth',2,'DisplayName','$\delta^c$');
+                    'Linewidth',2,'DisplayName','$\tau^c$');
         set(c, 'MarkerEdgeColor', psettings.Mcolor(1,:), 'MarkerFaceColor', psettings.Mcolor(1,:),...
                     'Color', psettings.color(1,:)); 
         u = plot(dates(1,psettings.start:psettings.end),sim_u.tau(psettings.start:psettings.end),...
-                    'Linewidth',2,'DisplayName','$\delta^u$');
+                    'Linewidth',2,'DisplayName','$\tau^u$');
          set(u, 'MarkerEdgeColor',psettings.Mcolor(2,:),'MarkerFaceColor',psettings.Mcolor(2,:),...
                     'Color',psettings.color(2,:));
         set(gca,'FontSize',psettings.FontSize);
@@ -178,6 +178,33 @@ methods(Static)
               base.printfig(fig);
          end
     end
+    
+    function [] = SurfPlot(psettings,epsgrid,thetagrid,variable,name,print,prefix)
+       fig = figure('Name',sprintf('%s_grids_%s', prefix,name));
+       hold('on')
+       psettings = figs.def_psettings(psettings);
+       [X,Y] = meshgrid(thetagrid,epsgrid);
+       surf(X,Y,variable,...
+           'EdgeColor', 'none', 'FaceAlpha', 0.75); 
+       xlabel('$\theta$','FontSize', psettings.LabelFontSize);
+       ylabel('$\epsilon$','FontSize', psettings.LabelFontSize);
+       if strcmp(name, 'tax')
+           view([-111.918 34.477]);
+           zlabel('$\tau$', 'FontSize', psettings.LabelFontSize);
+       elseif strcmp(name,'srate')
+           view([-56.3439 20.4059]);
+           zlabel('$\delta$', 'Fontsize', psettings.LabelFontSize);
+       elseif strcmp(name,'h')
+           view([-109.0435 37.6750]);
+           zlabel('$h$', 'Fontsize', psettings.LabelFontSize);
+       end
+       box('on');
+       grid on;
+       if print==1
+           base.printfig(fig);
+       end
+    end
+    
     
     function psettings = def_psettings(psettings)
         if ~isfield(psettings,'start')

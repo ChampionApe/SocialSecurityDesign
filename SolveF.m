@@ -6,11 +6,11 @@ methods(Static)
     % data etc.
     function par = setup(setting)
         par = struct();
-        par.A = 5;
+        par.A = 8;
         par.alpha = 0.47; % capital-income share
-        par.omega = 1.2; % political weight of retirees
+        par.omega = 1; % political weight of retirees
         par.xi = 0.35; % elasticity of labor supply
-        par.X = 2.5; % measure of informal productivity. Requires X >1.
+        par.X = 5; % measure of informal productivity. Requires X >1.
         par.beta = 0.34; % impatience parameter
         par.Gridpoints = 250; %number of gridpoints in 'solve'.
         par.Nsim = 100; % number of different h0 to simulate time-path.
@@ -19,7 +19,7 @@ methods(Static)
         par.TerminalAdhocAdjust=(1+par.beta); % Set this to 1 to get the generic model. We might want to adjust upwards, to avoid a corner solution in terminal period.
         if setting == 'S'
             % Turn this on for some simple comparative statics of the model (for
-            % some of the figures):
+            % some of the figures)rge:
             par.T=4;
             par.nu= 1.2*ones(par.T,1); % Turn on to illustrate figures.
         elseif setting == 'E'
@@ -197,7 +197,7 @@ methods(Static)
         t.r = 4.3; % 30-year cumulated interest rate.
         t.srate = 0.206;
         t.pensiontax = 0.271;
-        t.h = 1-0.32; % 32% informality
+        t.h = 0.5; % 1-informality rate
        %t.h = 0.7473; % This is the target for 1980, in stst also for 2010.
         t.nu = 1.2120; % 1.2120 corresponding to level in 2010 when data starts in 1950.
         t.nu_row = 3; % which row in par.nu is the target in.
