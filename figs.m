@@ -185,7 +185,8 @@ methods(Static)
        psettings = figs.def_psettings(psettings);
        [X,Y] = meshgrid(thetagrid,epsgrid);
        surf(X,Y,variable,...
-           'EdgeColor', 'none', 'FaceAlpha', 0.75); 
+            'LineStyle', ':', 'FaceAlpha', 0.75);
+       colormap bone;
        xlabel('$\theta$','FontSize', psettings.LabelFontSize);
        ylabel('$\epsilon$','FontSize', psettings.LabelFontSize);
        if strcmp(name, 'tax')

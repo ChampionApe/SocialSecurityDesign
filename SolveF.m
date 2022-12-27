@@ -8,10 +8,10 @@ methods(Static)
         par = struct();
         par.A = 8;
         par.alpha = 0.47; % capital-income share
-        par.omega = 1; % political weight of retirees
+        par.omega = 0.8; % political weight of retirees
         par.xi = 0.35; % elasticity of labor supply
         par.X = 5; % measure of informal productivity. Requires X >1.
-        par.beta = 0.34; % impatience parameter
+        par.beta = 0.326; % impatience parameter
         par.Gridpoints = 250; %number of gridpoints in 'solve'.
         par.Nsim = 100; % number of different h0 to simulate time-path.
         par.h0_sim = 80; % which index in the grid of h0 should we use to simulate.
@@ -197,8 +197,7 @@ methods(Static)
         t.r = 4.3; % 30-year cumulated interest rate.
         t.srate = 0.206;
         t.pensiontax = 0.271;
-        t.h = 0.5; % 1-informality rate
-       %t.h = 0.7473; % This is the target for 1980, in stst also for 2010.
+        t.h = 0.5777; % 1-informality rate
         t.nu = 1.2120; % 1.2120 corresponding to level in 2010 when data starts in 1950.
         t.nu_row = 3; % which row in par.nu is the target in.
         t.nu_col = 1; % which column in par.nu is the target in.
