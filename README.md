@@ -4,4 +4,5 @@ Code repository for the paper "Social Security Design and its Political Support"
 ## Changing the calibration of the Argentina case:
 
 The code for the Argentina case runs as follows:
-1. The file ```Inputdata.xlsx``` contains data on $\nu_t$
+1. The file ```Inputdata.xlsx``` contains data on $\nu_t$ in the worksheet "PopulationData". 
+2. The file ```EGM.mlx``` runs the main simulations. 
