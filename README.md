@@ -14,6 +14,7 @@ The code for the Argentina case runs as follows:
 
 3. The file ```PolarCases.mxl``` runs simulations *given* parameter values from ```EGM.mlx```. The main output from this program is the ```input``` struct that contains differences between various polar policy regimes. 
 4. The file ```InfiniteHorizon.mxl``` runs simulations *given* parameter values from ```EGM.mlx```. This file compares three ways of solving the model: 
-  A. The time-dependent solution with finite horizon,
-  B. the time-dependent solution with infinite horizon,
-  C. the steady state approximation. *NB: This takes a lot of time to run. The calibration proces is numerically pretty unstable as well. Thus, for changed targets in the calibration, it may not find a solution. We should work in a gradient-free solver here + add an initial gridsearch to make sure that a solution can be found.*
+
+A. The time-dependent solution with finite horizon,
+B. the time-dependent solution with infinite horizon,
+C. the steady state approximation. *NB: This takes a lot of time to run. The calibration proces is numerically pretty unstable as well. Thus, for changed targets in the calibration, it may not find a solution. We should work in a gradient-free solver here + add an initial gridsearch to make sure that a solution can be found.*
