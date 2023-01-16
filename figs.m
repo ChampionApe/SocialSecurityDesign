@@ -97,9 +97,10 @@ methods(Static)
         c = plot(dates(1,psettings.start:psettings.end),sim_c.tau(psettings.start:psettings.end),...
                     'Linewidth',2,'DisplayName','$\tau^c$');
         set(c, 'MarkerEdgeColor', psettings.Mcolor(1,:), 'MarkerFaceColor', psettings.Mcolor(1,:),...
-                    'Color', psettings.color(1,:)); 
+                    'Color', psettings.color(1,:));
+        
         u = plot(dates(1,psettings.start:psettings.end),sim_u.tau(psettings.start:psettings.end),...
-                    'Linewidth',2,'DisplayName','$\tau^u$');
+                    'Linewidth',2,'DisplayName','$\tau^u$','Linestyle','--');
          set(u, 'MarkerEdgeColor',psettings.Mcolor(2,:),'MarkerFaceColor',psettings.Mcolor(2,:),...
                     'Color',psettings.color(2,:));
         set(gca,'FontSize',psettings.FontSize);
@@ -112,7 +113,7 @@ methods(Static)
               base.printfig(fig);
          end
     end
-
+    
     function [] = comparesavings(dates,psettings,sim_c,sim_u,sim_counterfactual,print,prefix)
         
         fig=figure('Name', sprintf('%s_srate', prefix));
@@ -126,12 +127,12 @@ methods(Static)
                     'Color', psettings.color(1,:));
 
         cu = plot(dates(1,psettings.start:psettings.end),sim_counterfactual.srate(psettings.start:psettings.end),...
-                    'Linewidth',2,'DisplayName','$\delta_t^{u}(\tau_t^{c})$','Linestyle','--');
+                    'Linewidth',2,'DisplayName','$\delta_t^{u}(\tau_t^{c})$','Linestyle','-.');
          set(cu, 'MarkerEdgeColor',psettings.Mcolor(3,:),'MarkerFaceColor',psettings.Mcolor(3,:),...
                     'Color',psettings.color(3,:));                
                 
         u = plot(dates(1,psettings.start:psettings.end),sim_u.srate(psettings.start:psettings.end),...
-                    'Linewidth',2,'DisplayName','$\delta_t^{u}$');
+                    'Linewidth',2,'DisplayName','$\delta_t^{u}$','Linestyle','--');
          set(u, 'MarkerEdgeColor',psettings.Mcolor(2,:),'MarkerFaceColor',psettings.Mcolor(2,:),...
                     'Color',psettings.color(2,:));
                 
@@ -159,12 +160,12 @@ methods(Static)
                     'Color', psettings.color(1,:));
                 
         cu = plot(dates(1,psettings.start:psettings.end),sim_counterfactual.h(psettings.start:psettings.end),...
-                    'Linewidth',2,'DisplayName','$h_t^{u}(\tau_t^{c})$','Linestyle','--');
+                    'Linewidth',2,'DisplayName','$h_t^{u}(\tau_t^{c})$','Linestyle','-.');
          set(cu, 'MarkerEdgeColor',psettings.Mcolor(3,:),'MarkerFaceColor',psettings.Mcolor(3,:),...
                     'Color',psettings.color(3,:));
                 
         u = plot(dates(1,psettings.start:psettings.end),sim_u.h(psettings.start:psettings.end),...
-                    'Linewidth',2,'DisplayName','$h_t^{u}$');
+                    'Linewidth',2,'DisplayName','$h_t^{u}$','Linestyle','--');
          set(u, 'MarkerEdgeColor',psettings.Mcolor(2,:),'MarkerFaceColor',psettings.Mcolor(2,:),...
                     'Color',psettings.color(2,:));
                 
@@ -205,7 +206,156 @@ methods(Static)
            base.printfig(fig);
        end
     end
+
+    function [] = comparetaxes_US(dates,psettings,sim_c,sim_u,print,prefix)
+        
+        fig=figure('Name', sprintf('%s_tax', prefix));
+        hold('on')
+        % Add default settings to psettings:
+        psettings = figs.def_psettings(psettings);
+        
+        c = plot(dates(1,psettings.start:psettings.end),sim_c.tau(psettings.start:psettings.end),...
+                    'Linewidth',2,'DisplayName','$\tau$');
+        set(c, 'MarkerEdgeColor', psettings.Mcolor(1,:), 'MarkerFaceColor', psettings.Mcolor(1,:),...
+                    'Color', psettings.color(1,:)); 
+        u = plot(dates(1,psettings.start:psettings.end),sim_u.tau(psettings.start:psettings.end),...
+                    'Linewidth',2,'DisplayName','$\tau^{covid}$','Linestyle','--');
+         set(u, 'MarkerEdgeColor',psettings.Mcolor(2,:),'MarkerFaceColor',psettings.Mcolor(2,:),...
+                    'Color',psettings.color(2,:));
+        set(gca,'FontSize',psettings.FontSize);
+        xlabel('Years','FontSize', psettings.LabelFontSize)
+        ylabel('$\tau_t$','FontSize', psettings.LabelFontSize)
+        legend('Location','northwest','FontSize',psettings.LabelFontSize);
+        box('on');
+        grid on;
+         if print==1
+              base.printfig(fig);
+         end
+    end
     
+    function [] = comparesavings_US(dates,psettings,sim_c,sim_u,sim_counterfactual,print,prefix)
+        
+        fig=figure('Name', sprintf('%s_srate', prefix));
+        hold('on')
+        % Add default settings to psettings:
+        psettings = figs.def_psettings(psettings);
+        
+        c = plot(dates(1,psettings.start:psettings.end),sim_c.srate(psettings.start:psettings.end),...
+                    'Linewidth',2,'DisplayName','$\delta_t$');
+        set(c, 'MarkerEdgeColor', psettings.Mcolor(1,:), 'MarkerFaceColor', psettings.Mcolor(1,:),...
+                    'Color', psettings.color(1,:));
+
+        cu = plot(dates(1,psettings.start:psettings.end),sim_counterfactual.srate(psettings.start:psettings.end),...
+                    'Linewidth',2,'DisplayName','$\delta_t(\tau_t^{covid})$','Linestyle','-.');
+         set(cu, 'MarkerEdgeColor',psettings.Mcolor(3,:),'MarkerFaceColor',psettings.Mcolor(3,:),...
+                    'Color',psettings.color(3,:));                
+                
+        u = plot(dates(1,psettings.start:psettings.end),sim_u.srate(psettings.start:psettings.end),...
+                    'Linewidth',2,'DisplayName','$\delta_t^{covid}$','Linestyle','--');
+         set(u, 'MarkerEdgeColor',psettings.Mcolor(2,:),'MarkerFaceColor',psettings.Mcolor(2,:),...
+                    'Color',psettings.color(2,:));
+                
+        set(gca,'FontSize',psettings.FontSize);
+        xlabel('Years','FontSize', psettings.LabelFontSize)
+        ylabel('$\delta_t$','FontSize', psettings.LabelFontSize)
+        legend('Position',[0.65 0.7 0.18 0.18],'FontSize',psettings.LabelFontSize);
+        box('on');
+        grid on;
+         if print==1
+              base.printfig(fig);
+         end
+    end
+
+    function [] = comparelabor_US(dates,psettings,sim_c,sim_u,sim_counterfactual,print,prefix)
+        
+        fig=figure('Name', sprintf('%s_h', prefix));
+        hold('on')
+        % Add default settings to psettings:
+        psettings = figs.def_psettings(psettings);
+        
+        c = plot(dates(1,psettings.start:psettings.end),sim_c.h(psettings.start:psettings.end),...
+                    'Linewidth',2,'DisplayName','$h_t$');
+        set(c, 'MarkerEdgeColor', psettings.Mcolor(1,:), 'MarkerFaceColor', psettings.Mcolor(1,:),...
+                    'Color', psettings.color(1,:));
+                
+        cu = plot(dates(1,psettings.start:psettings.end),sim_counterfactual.h(psettings.start:psettings.end),...
+                    'Linewidth',2,'DisplayName','$h_t(\tau_t^{covid})$','Linestyle','-.');
+         set(cu, 'MarkerEdgeColor',psettings.Mcolor(3,:),'MarkerFaceColor',psettings.Mcolor(3,:),...
+                    'Color',psettings.color(3,:));
+                
+        u = plot(dates(1,psettings.start:psettings.end),sim_u.h(psettings.start:psettings.end),...
+                    'Linewidth',2,'DisplayName','$h_t^{covid}$','Linestyle','--');
+         set(u, 'MarkerEdgeColor',psettings.Mcolor(2,:),'MarkerFaceColor',psettings.Mcolor(2,:),...
+                    'Color',psettings.color(2,:));
+                
+        set(gca,'FontSize',psettings.FontSize);
+        xlabel('Years','FontSize', psettings.LabelFontSize)
+        ylabel('$h_t$','FontSize', psettings.LabelFontSize)
+        legend('Position',[0.65 0.7 0.18 0.18],'FontSize',psettings.LabelFontSize);
+        box('on');
+        grid on;
+         if print==1
+              base.printfig(fig);
+         end
+    end
+
+    function [] = policyConvergence(dates, taxFunctions,print,prefix)
+        
+    end
+    
+    function [] = comparetaxes_ssapprox(dates,psettings,sim_c,sim_u,print,prefix)
+        
+        fig=figure('Name', sprintf('%s_tax', prefix));
+        hold('on')
+        % Add default settings to psettings:
+        psettings = figs.def_psettings(psettings);
+        
+        c = plot(dates(1,psettings.start:psettings.end),sim_c.tau(psettings.start:psettings.end),...
+                    'Linewidth',2,'DisplayName','$\tau$');
+        set(c, 'MarkerEdgeColor', psettings.Mcolor(1,:), 'MarkerFaceColor', psettings.Mcolor(1,:),...
+                    'Color', psettings.color(1,:));
+        
+        u = plot(dates(1,psettings.start:psettings.end),sim_u.tau(psettings.start:psettings.end),...
+                    'Linewidth',2,'DisplayName','$\tau^{ss}$','Linestyle','--');
+         set(u, 'MarkerEdgeColor',psettings.Mcolor(2,:),'MarkerFaceColor',psettings.Mcolor(2,:),...
+                    'Color',psettings.color(2,:));
+        set(gca,'FontSize',psettings.FontSize);
+        xlabel('Years','FontSize', psettings.LabelFontSize)
+        ylabel('$\tau_t$','FontSize', psettings.LabelFontSize)
+        legend('Location','northwest','FontSize',psettings.LabelFontSize);
+        box('on');
+        grid on;
+         if print==1
+              base.printfig(fig);
+         end
+    end
+   
+    function [] = comparetaxes_IH_FH(dates,psettings,sim_c,sim_u,print,prefix)
+        
+        fig=figure('Name', sprintf('%s_tax', prefix));
+        hold('on')
+        % Add default settings to psettings:
+        psettings = figs.def_psettings(psettings);
+        
+        c = plot(dates(1,psettings.start:psettings.end),sim_c.tau(psettings.start:psettings.end),...
+                    'Linewidth',2,'DisplayName','$\tau^{FH}$');
+        set(c, 'MarkerEdgeColor', psettings.Mcolor(1,:), 'MarkerFaceColor', psettings.Mcolor(1,:),...
+                    'Color', psettings.color(1,:));
+        
+        u = plot(dates(1,psettings.start:psettings.end),sim_u.tau(psettings.start:psettings.end),...
+                    'Linewidth',2,'DisplayName','$\tau^{IH}$','Linestyle','--');
+         set(u, 'MarkerEdgeColor',psettings.Mcolor(2,:),'MarkerFaceColor',psettings.Mcolor(2,:),...
+                    'Color',psettings.color(2,:));
+        set(gca,'FontSize',psettings.FontSize);
+        xlabel('Years','FontSize', psettings.LabelFontSize)
+        ylabel('$\tau_t$','FontSize', psettings.LabelFontSize)
+        legend('Location','northwest','FontSize',psettings.LabelFontSize);
+        box('on');
+        grid on;
+         if print==1
+              base.printfig(fig);
+         end
+    end
     
     function psettings = def_psettings(psettings)
         if ~isfield(psettings,'start')

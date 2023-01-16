@@ -119,9 +119,8 @@ methods(Static)
         tau = NaN(length(h_grid),1);
         
         parfor j=1:length(h_grid)
-            ObjectiveF = @(tau) -(par.omega*(h_grid(j)*log(gamma1_minusone(tau,h_grid(j)))+(1-h_grid(j))*log(gamma0_minusone(tau,h_grid(j))))+...
-                nu*(log(1-delta(tau))+par.beta*(log(delta(tau))+hpolicy(tau)*log(gamma1(tau))+(1-hpolicy(tau))*log(gamma0(tau)))+(1+par.beta)*labinc(tau))); %#ok<PFBNS>
-            
+            ObjectiveF = @(tau) -(par.omega.*(h_grid(j).*log(gamma1_minusone(tau,h_grid(j)))+(1-h_grid(j)).*log(gamma0_minusone(tau,h_grid(j))))+...
+                nu.*(log(1-delta(tau))+par.beta.*(log(delta(tau))+hpolicy(tau).*log(gamma1(tau))+(1-hpolicy(tau)).*log(gamma0(tau)))+(1+par.beta).*labinc(tau))); %#ok<PFBNS>            
             tau(j) = fminbnd(ObjectiveF,-eps,1+eps);
         end
         

@@ -4,11 +4,31 @@ methods(Static)
     
     % 1.1: Create main struct with parameter values, exogenous population
     % data etc.
+    function par = setup_US(setting)
+        par = SolveF.setup(setting);
+        par.X = 7;
+        par.omega = 0.25;
+        if setting == 'E' 
+            % Read data on population growth rates:
+            [Rawdata, Names] = xlsread('Inputdata', '30year_US');
+            PopulationIndex = strcmp(Names,'nu_t');
+            YearIndex = strcmp(Names, 'Date');
+            par.nu= rmmissing(Rawdata(:,PopulationIndex));
+            par.T=length(par.nu);
+            par.years = rmmissing(Rawdata(:,YearIndex));
+            par.Ndata = size(par.nu,2);
+            par.dates = xlsread('Inputdata', 'PopulationDataUS', 'A2:A37')';
+            % Vectorized version:
+            par.nu_v = par.nu';
+            par.nu_v = par.nu_v(:);
+            par.T_v = length(par.nu_v);
+        end
+    end
     function par = setup(setting)
         par = struct();
         par.A = 8;
         par.alpha = 0.47; % capital-income share
-        par.omega = 0.8; % political weight of retirees
+        par.omega = 0.5; % political weight of retirees
         par.xi = 0.35; % elasticity of labor supply
         par.X = 5; % measure of informal productivity. Requires X >1.
         par.beta = 0.326; % impatience parameter
@@ -28,7 +48,7 @@ methods(Static)
             PopulationIndex = strcmp(Names,'nu_t');
             YearIndex = strcmp(Names, 'Date');
             par.nu= rmmissing(Rawdata(:,PopulationIndex));
-            par.T=length(par.nu); 
+            par.T=length(par.nu);
             par.years = rmmissing(Rawdata(:,YearIndex));
             par.Ndata = size(par.nu,2);
             par.dates = xlsread('Inputdata', 'PopulationData', 'A2:A37')';
@@ -97,6 +117,26 @@ methods(Static)
         sim.h = SolveF.h_universal(par,sim.tau);
         sim.srate = SolveF.compute_srate(par,sim,0);
     end
+    function sim = sim_from_ss_policy(par,policy,policy_tax)
+        sim = struct();
+        h0 = linspace(par.h_lower, par.h_upper, par.Nsim)';
+        sim.h = NaN(size(h0,1), par.T*par.Ndata);
+        sim.tau = NaN(size(sim.h));
+        for i=1:par.Ndata
+            sim.tau(:,i) = policy(repmat(par.nu(1,i),length(h0),1), h0);
+        end
+        for t=2:par.T
+            for i=1:par.Ndata
+                sim.tau(:,(t-1)*par.Ndata+i) = policy_tax(repmat(par.nu(t,i),length(h0),1), sim.tau(:,(t-2)*par.Ndata+i));
+                sim.h(:,(t-2)*par.Ndata+i) = base.h_equi(par,sim.tau(:,(t-2)*par.Ndata+i),...
+                                                             sim.tau(:,(t-1)*par.Ndata+i), par.epsilon, par.theta, h0);
+                if t==par.T
+                    sim.h(:,(t-1)*par.Ndata+i) = base.h_equi(par,sim.tau(:,(t-1)*par.Ndata+i),...
+                                                             sim.tau(:,(t-1)*par.Ndata+i), par.epsilon, par.theta, h0);
+                end
+            end
+        end
+    end
     function sim = sim_c(par,sol)
         sim = struct(); 
         h0 = linspace(par.h_lower,par.h_upper,par.Nsim)';
@@ -126,6 +166,13 @@ methods(Static)
         sim.tau = sim_all.tau(par.h0_sim,:)';
         sim.srate = SolveF.compute_srate(par,sim,par.epsilon);
     end
+    function sim = sim_from_ss_policy_unique(par,policy,policy_tax)
+        sim_all = SolveF.sim_from_ss_policy(par,policy,policy_tax);
+        sim = struct();
+        sim.h = sim_all.h(par.h0_sim,:)';
+        sim.tau = sim_all.tau(par.h0_sim,:)';
+        sim.srate = SolveF.compute_srate(par,sim,par.epsilon);
+    end
     function sim = sim_u_GivenTaxes(par,tau)
         sim = struct();
         sim.tau = tau;
@@ -143,7 +190,7 @@ methods(Static)
     
     % 1.6: Approximate steady state policy with contributive pensions:
     function policy = ss_policy_c(par,nu)
-        par.T = 6; % how many periods approximate ss?s
+        par.T = 6; % how many periods approximate ss?
         par.Ndata = 1; 
         par.nu = nu*ones(par.T,1); % copy of nu data at steady state level
         policy = SolveF.identify_policy(par);
@@ -195,10 +242,11 @@ methods(Static)
         t = struct();
         t.LSI = 0.5;
         t.r = 4.3; % 30-year cumulated interest rate.
-        t.srate = 0.206;
+        t.srate = 0.207;
         t.pensiontax = 0.271;
-        t.h = 0.5777; % 1-informality rate
-        t.nu = 1.2120; % 1.2120 corresponding to level in 2010 when data starts in 1950.
+        t.h = 0.68;
+%        t.h = 0.5777; % 1-informality rate
+        t.nu = 1.2169; % 1.2120 corresponding to level in 2010 when data starts in 1950.
         t.nu_row = 3; % which row in par.nu is the target in.
         t.nu_col = 1; % which column in par.nu is the target in.
         t.xi = 0.35;
@@ -244,16 +292,79 @@ methods(Static)
         [sol_temp,par] = SolveF.identify_policy(par);
         sim_temp = SolveF.sim_c_unique(par,sol_temp);
         % relevant variables:
-        [h1980, tax2010] = deal(sim_temp.h(target.nu_row-1), sim_temp.tau(target.nu_row));
-        gamma0 = base.gamma0f(par,h1980,tax2010,par.epsilon);
-        gamma1 = base.gamma1f(par,h1980,tax2010,par.epsilon);
-        delta2010 = base.deltaf(par,h1980,gamma0,gamma1);
+        [h1980, h2010, tax2010] = deal(sim_temp.h(target.nu_row-1), sim_temp.h(target.nu_row), sim_temp.tau(target.nu_row));
+        gamma0 = base.gamma0f(par,h2010,tax2010,par.epsilon);
+        gamma1 = base.gamma1f(par,h2010,tax2010,par.epsilon);
+        delta2010 = base.deltaf(par,h2010,gamma0,gamma1);
         zeros(1) = h1980-target.h;
         zeros(2) = tax2010-target.pensiontax;
         zeros(3) = delta2010-target.srate;
     end
 
+    % 2.4: Dynamic calibration, finite horizon EGM, contributive, matching h_t not h_{t-1}:
+    function [par, par_before] = cal_dyn_c_US(par,target)
+        par_before = par;
+        par.alpha = 1-target.LSI;
+        par.A = target.r/par.alpha;
+        % Simulation calibration:
+        par_temp = par;
+        [par_temp.nu,par_temp.Ndata] = deal(par.nu(:,target.nu_col), 1);
+        
+        % Function evaluating to zeros when targets are met:
+        vec_func = @(x) SolveF.dyn_aux_US(par_temp,target,x);
+        [xsol,~,exitflag] = fsolve(vec_func, [par.beta, par.X, par.omega]);
+        assert(exitflag>0, 'Calibration failed');
+        % Update parameters:
+        [par.beta, par.X, par.omega] = deal(xsol(1), xsol(2), xsol(3));
+    end
     
+    % Auxiliary function used for dynamic calibration US:
+    function zeros = dyn_aux_US(par,target,x)
+        zeros = NaN(3,1); % solve for three parameters
+        [par.beta, par.X, par.omega] = deal(x(1),x(2),x(3));
+        %simulate model:
+        [sol_temp,par] = SolveF.identify_policy(par);
+        sim_temp = SolveF.sim_c_unique(par,sol_temp);
+        % relevant variables:
+        [h1990, h2020, tax2020] = deal(sim_temp.h(target.nu_row-1), sim_temp.h(target.nu_row), sim_temp.tau(target.nu_row));
+        gamma0 = base.gamma0f(par,h1990,tax2020,par.epsilon);
+        gamma1 = base.gamma1f(par,h1990,tax2020,par.epsilon);
+        delta2020 = base.deltaf(par,h1990,gamma0,gamma1);
+        zeros(1) = h2020-target.h;
+        zeros(2) = tax2020-target.pensiontax;
+        zeros(3) = delta2020-target.srate;
+    end
+    
+    % 2.4: Identify the change in X that entails a new target on labor
+    % supply in initial period.
+    function [par, par_before] = laborShock(par,target,h0)
+        par_before = par;
+        % Part of the time series that we calibrate to:
+        par_temp = par;
+        [par_temp.nu,par_temp.Ndata] = deal(par.nu(:,target.nu_col), 1);
+        
+        % Function evaluating to zeros when targets are met:
+        vec_func = @(x) SolveF.laborShock_aux(par_temp,h0,target,x);
+        [xsol,~,exitflag] = fsolve(vec_func, par.X);
+        assert(exitflag>0, 'Calibration failed');
+        % Update parameters:
+        par.X = xsol;
+        [~, par.h0_sim] = min(abs(linspace(par.h_lower,par.h_upper,par.Nsim)'-h0));
+    end
+    
+    % Auxiliary function used for dynamic calibration:
+    function zeros = laborShock_aux(par,h0,target,x)
+        par.X = x;
+        %simulate model:
+        [sol_temp,par] = SolveF.identify_policy(par);
+        % Make sure that simulation starts at the initial level of labor:
+        [~, par.h0_sim] = min(abs(linspace(par.h_lower,par.h_upper,par.Nsim)'-h0));
+        
+        % Simulate path:
+        sim_temp = SolveF.sim_c_unique(par,sol_temp);
+        % Return difference from target:
+        zeros = sim_temp.h(target.nu_row)-target.h;
+    end
     
     
 end
