@@ -1,0 +1,20 @@
+\begin{table}
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+ & \Delta\epsilon = 1, \theta = 1 & \Delta\epsilon = 1, \theta = 0 & \Delta\theta = 1, \epsilon = 1 & \Delta\theta = 1, \epsilon = 0 \\
+\hline
+$\Delta\tau$ & 5.580 & 6.100 & -0.520 & 0.000 \\
+\hline
+$\Delta$\delta$ & -0.910 & -0.980 & 0.080 & 0.000 \\
+\hline
+$\Delta h$ & -3.844 & -4.361 & -2.075 & -2.601 \\
+\hline
+$\Delta \delta$ ($\tau$ given) & -0.100 & -0.100 & 0.010 & 0.000 \\
+\hline
+$\Delta h$ ($\tau$ given) & -3.043 & -2.596 & -3.007 & -2.601 \\
+\hline
+\end{tabular}
+\caption{MyTableCaption}
+\label{table:MyTableLabel}
+\end{table}

@@ -158,8 +158,11 @@ methods(Static)
            grids.test = linspace(0.01, 0.99, np.n_test);
            % Solve for a policy
            taufunc = @(omega) target.pensiontax - IH.ssCalibration_aux(par, np, grids, hfunc, omega, target);
-           %par.omega = fsolve(taufunc, 1.1205);
-           par.omega = fsolve(taufunc, 0.80442);
+           %par.omega = fsolve(taufunc, 1.1205); % with target.pensiontax =
+           %0.271 and h = 0.68
+           %par.omega = fsolve(taufunc, 0.89685); % with target.pensiontax =
+           %0.271 and h = 0.626
+           par.omega = fsolve(taufunc, 0.804418);
         end
         
         % 2.5: Auxiliary function for 2.4
