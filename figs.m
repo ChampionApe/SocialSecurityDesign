@@ -303,29 +303,22 @@ methods(Static)
         
     end
     
-    function [] = comparetaxes_ssapprox(dates,psettings,sim_c,sim_u,print,prefix)
+    function [] = comparetaxes_Convergence(dates,psettings,sims,grids,print,prefix)
         
-        fig=figure('Name', sprintf('%s_tax', prefix));
+        fig=figure('Name', sprintf('%s_taxConvergence', prefix));
         hold('on')
-        % Add default settings to psettings:
-        psettings = figs.def_psettings(psettings);
-        
-        c = plot(dates(1,psettings.start:psettings.end),sim_c.tau(psettings.start:psettings.end),...
-                    'Linewidth',2,'DisplayName','$\tau$');
-        set(c, 'MarkerEdgeColor', psettings.Mcolor(1,:), 'MarkerFaceColor', psettings.Mcolor(1,:),...
-                    'Color', psettings.color(1,:));
-        
-        u = plot(dates(1,psettings.start:psettings.end),sim_u.tau(psettings.start:psettings.end),...
-                    'Linewidth',2,'DisplayName','$\tau^{ss}$','Linestyle','--');
-         set(u, 'MarkerEdgeColor',psettings.Mcolor(2,:),'MarkerFaceColor',psettings.Mcolor(2,:),...
-                    'Color',psettings.color(2,:));
+        set(gca, 'ColorOrder', psettings.color);
+        for i=1:length(grids.eps)
+            plot(dates(1,psettings.start:psettings.end), sims(psettings.start:psettings.end,i),...
+                'Linewidth', 2, 'LineStyle', psettings.lineStyles(i), 'DisplayName', sprintf('$\\epsilon=$ %0.2g', grids.eps(i)));
+        end
         set(gca,'FontSize',psettings.FontSize);
         xlabel('Years','FontSize', psettings.LabelFontSize)
         ylabel('$\tau_t$','FontSize', psettings.LabelFontSize)
         legend('Location','northwest','FontSize',psettings.LabelFontSize);
         box('on');
         grid on;
-         if print==1
+        if print==1
               base.printfig(fig);
          end
     end
@@ -357,6 +350,40 @@ methods(Static)
          end
     end
     
+    function [] = SSpolicies(psettings, solTau, solTau_m, threshold, grids, print, prefix)
+        
+        fig=figure('Name', sprintf('%s_SS_policy', prefix));
+        hold('on')
+        % Add default settings to psettings:
+        psettings = figs.def_psettings(psettings);
+
+        z = plot(solTau_m{threshold-1}, solTau{threshold-1},...
+            'Linewidth', 2, 'Linestyle','-.','DisplayName', sprintf('$\\nu=$ %.2f', grids.nu(threshold-1)));
+        set(z, 'MarkerEdgeColor',psettings.Mcolor(3,:), 'MarkerFaceColor', psettings.Mcolor(3,:),...
+            'Color', psettings.color(3,:));
+        
+        x = plot(solTau_m{threshold}, solTau{threshold},...
+            'Linewidth', 2, 'DisplayName', sprintf('$\\nu=$ %.2f', grids.nu(threshold)));
+        set(x, 'MarkerEdgeColor',psettings.Mcolor(1,:), 'MarkerFaceColor', psettings.Mcolor(1,:),...
+            'Color', psettings.color(1,:));
+
+        y = plot(solTau_m{threshold+1}, solTau{threshold+1},...
+            'Linewidth', 2, 'Linestyle','--','DisplayName', sprintf('$\\nu=$ %.2f', grids.nu(threshold+1)));
+        set(y, 'MarkerEdgeColor',psettings.Mcolor(2,:), 'MarkerFaceColor', psettings.Mcolor(2,:),...
+            'Color', psettings.color(2,:));
+        
+        set(gca,'FontSize',psettings.FontSize);
+        xlabel('$\tau_{t-1}$','FontSize', psettings.LabelFontSize)
+        ylabel('$\tau_t$','FontSize', psettings.LabelFontSize)
+        legend('Location','southwest','FontSize',psettings.LabelFontSize);
+        box('on');
+        grid on;
+         if print==1
+              base.printfig(fig);
+         end
+
+    end
+    
     function psettings = def_psettings(psettings)
         if ~isfield(psettings,'start')
             psettings.start = 7;
@@ -371,8 +398,13 @@ methods(Static)
             psettings.LabelFontSize= 20;
         end
         if ~isfield(psettings,'color')
-            psettings.color = [[112/255, 128/255,144/255];[47/255,79/255,79/255];[0,0,128/255]];
+            psettings.color = [[0.12156862745098039, 0.4666666666666667, 0.7058823529411765];...
+                                [1.0, 0.4980392156862745, 0.054901960784313725];...
+                                [0.17254901960784313, 0.6274509803921569, 0.17254901960784313];...
+                                [0.8392156862745098, 0.15294117647058825, 0.1568627450980392];...
+                                [0.5803921568627451, 0.403921568627451, 0.7411764705882353]];
             psettings.Mcolor=[[0,0,28/255];[0,0,28/255];[0,0,28/255]];
+            psettings.lineStyles = ["-"; "--"; ":"; "-.", ;"-"];
         end
     end
     
