@@ -1,0 +1,11 @@
+[project]
+name = "gridsearch"
+version = "0.0.1"
+dependencies = ["numpy"]
+
+[tool.setuptools]
+packages = ["gridsearch"]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"

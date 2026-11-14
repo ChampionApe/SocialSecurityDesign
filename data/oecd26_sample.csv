@@ -1,0 +1,30 @@
+iso3,country,informal,informal_year,informal_status,informalMax,sample26,note
+AUS,Australia,,,,25,True,no ILO informality series; kept
+AUT,Austria,1.927,2020,,25,True,informal employment 1.9% (2020) <= 25%
+BEL,Belgium,2.464,2020,,25,True,informal employment 2.5% (2020) <= 25%
+CAN,Canada,,,,25,True,no ILO informality series; kept
+CZE,Czech Republic,16.503,2020,,25,True,informal employment 16.5% (2020) <= 25%
+DNK,Denmark,7.072,2019,,25,True,informal employment 7.1% (2019) <= 25%
+FIN,Finland,6.028,2020,,25,True,informal employment 6.0% (2020) <= 25%
+FRA,France,3.556,2020,,25,True,informal employment 3.6% (2020) <= 25%
+DEU,Germany,4.125,2020,,25,True,informal employment 4.1% (2020) <= 25%
+GRC,Greece,5.533,2020,,25,True,informal employment 5.5% (2020) <= 25%
+HUN,Hungary,0.857,2020,,25,True,informal employment 0.9% (2020) <= 25%
+ISL,Iceland,1.985,2020,,25,True,informal employment 2.0% (2020) <= 25%
+IRL,Ireland,1.174,2020,,25,True,informal employment 1.2% (2020) <= 25%
+ITA,Italy,5.452,2020,,25,True,informal employment 5.5% (2020) <= 25%
+JPN,Japan,,,,25,True,no ILO informality series; kept
+KOR,Korea,29.122,2019,,25,False,informal employment 29.1% (2019) > 25%
+LUX,Luxembourg,2.177,2020,,25,True,informal employment 2.2% (2020) <= 25%
+MEX,Mexico,56.169,2020,B,25,False,"informal employment 56.2% (2020, status B) > 25%"
+NLD,Netherlands,13.997,2020,,25,True,informal employment 14.0% (2020) <= 25%
+NZL,New Zealand,,,,25,True,no ILO informality series; kept
+NOR,Norway,4.009,2020,,25,True,informal employment 4.0% (2020) <= 25%
+POL,Poland,10.481,2020,,25,True,informal employment 10.5% (2020) <= 25%
+PRT,Portugal,4.201,2020,,25,True,informal employment 4.2% (2020) <= 25%
+ESP,Spain,3.693,2020,,25,True,informal employment 3.7% (2020) <= 25%
+SWE,Sweden,2.738,2020,,25,True,informal employment 2.7% (2020) <= 25%
+CHE,Switzerland,0.625,2020,,25,True,informal employment 0.6% (2020) <= 25%
+TUR,Turkey,31.419,2020,,25,False,informal employment 31.4% (2020) > 25%
+GBR,United Kingdom,19.81,2018,,25,True,informal employment 19.8% (2018) <= 25%
+USA,United States,,,,25,True,no ILO informality series; kept

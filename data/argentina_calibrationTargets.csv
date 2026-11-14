@@ -1,0 +1,3 @@
+target,value,window,note,units,source,retrieved
+capitalOutputRatio,3.2313,2010,THE TARGET (year): identifies beta via eq:calibration:KY,annual K/Y,"Penn World Table 11.0 (rnna/rgdpna, constant national prices) via FRED: RGDPNAARA666NRUG, RGDPNAUSA666NRUG, RKNANPARA666NRUG, RKNANPUSA666NRUG",2026-08-24
+capitalOutputRatio_window,3.6606,1980-2010,"reference only: the window reading, read by nothing",annual K/Y,"Penn World Table 11.0 (rnna/rgdpna, constant national prices) via FRED: RGDPNAARA666NRUG, RGDPNAUSA666NRUG, RKNANPARA666NRUG, RKNANPUSA666NRUG",2026-08-24

@@ -1,0 +1,454 @@
+label,full_label,part,kind,number,page,title
+alg:CRRA:grid,alg:infana:num:CRRA:grid,informalAnalytical,alg,3,23,
+alg:LOG:fast,alg:infana:num:LOG:fast,informalAnalytical,alg,1,20,
+alg:LOG:gridsearch,alg:infana:num:LOG:gridsearch,informalAnalytical,alg,2,20,
+alg:CRRA:grid,alg:infsav:num:CRRA:grid,informalSavings,alg,2,52,
+alg:LOG:gridsearch,alg:infsav:num:LOG:gridsearch,informalSavings,alg,1,48,
+alg:calibration,alg:infsav:num:calibration,informalSavings,alg,3,57,
+alg:CRRA:grid,alg:us:num:CRRA:grid,US,alg,3,89,
+alg:LOG:fast,alg:us:num:LOG:fast,US,alg,1,86,
+alg:LOG:gridsearch,alg:us:num:LOG:gridsearch,US,alg,2,86,
+alg:esc:crra2D,alg:us:num:esc:crra2D,US,alg,5,93,
+alg:esc:leaded,alg:us:num:esc:leaded,US,alg,4,92,
+eq:data:Crule,eq:data:Crule,,equation,7,104,
+eq:data:SB,eq:data:SB,,equation,6,103,
+eq:data:benefit,eq:data:benefit,,equation,1,100,
+eq:data:slope,eq:data:slope,,equation,3,101,
+eq:data:tau,eq:data:tau,,equation,2,101,
+eq:data:theta,eq:data:theta,,equation,4,102,
+eq:data:thetaPaper,eq:data:thetaPaper,,equation,5,102,
+eq:EE,eq:infana:model:EE,informalAnalytical,equation,10,6,
+eq:EE:c0,eq:infana:model:EE:c0,informalAnalytical,equation,13,8,
+eq:EE:ci,eq:infana:model:EE:ci,informalAnalytical,equation,12,8,
+eq:EE:h,eq:infana:model:EE:h,informalAnalytical,equation,10e,8,
+eq:EE:hi,eq:infana:model:EE:hi,informalAnalytical,equation,10a,7,
+eq:EE:s,eq:infana:model:EE:s,informalAnalytical,equation,10f,8,
+eq:EE:s(h),eq:infana:model:EE:s(h),informalAnalytical,equation,10c,7,
+eq:EE:si,eq:infana:model:EE:si,informalAnalytical,equation,10b,7,
+eq:EE:si_s,eq:infana:model:EE:si_s,informalAnalytical,equation,10d,7,
+eq:EE:sigma_ci,eq:infana:model:EE:sigma_ci,informalAnalytical,equation,11,8,
+eq:PEE,eq:infana:model:PEE,informalAnalytical,equation,15,10,
+eq:PEELOG,eq:infana:model:PEELOG,informalAnalytical,equation,14,9,
+eq:TerminalEE,eq:infana:model:TerminalEE,informalAnalytical,equation,16,11,
+eq:aggregateStates,eq:infana:model:aggregateStates,informalAnalytical,equation,1,4,
+eq:calibration:X0,eq:infana:model:calibration:X0,informalAnalytical,equation,24,14,
+eq:calibration:Xi,eq:infana:model:calibration:Xi,informalAnalytical,equation,22,13,
+eq:calibration:eta0,eq:infana:model:calibration:eta0,informalAnalytical,equation,23,14,
+eq:calibration:etai,eq:infana:model:calibration:etai,informalAnalytical,equation,21,13,
+eq:calibration:yNorm,eq:infana:model:calibration:yNorm,informalAnalytical,equation,20,13,
+eq:calibration:z,eq:infana:model:calibration:z,informalAnalytical,equation,19,13,
+eq:factorPrices,eq:infana:model:factorPrices,informalAnalytical,equation,2,4,
+eq:formalBudget,eq:infana:model:formalBudget,informalAnalytical,equation,5,5,
+eq:formalOpt,eq:infana:model:formalOpt,informalAnalytical,equation,8,6,
+eq:governmentBudget,eq:infana:model:governmentBudget,informalAnalytical,equation,7,5,
+eq:governmentBudget:bbar,eq:infana:model:governmentBudget:bbar,informalAnalytical,equation,7c,6,
+eq:informalBudget,eq:infana:model:informalBudget,informalAnalytical,equation,6,5,
+eq:informalOpt,eq:infana:model:informalOpt,informalAnalytical,equation,9,6,
+eq:terminalPEECRRA,eq:infana:model:terminalPEECRRA,informalAnalytical,equation,18,12,
+eq:terminalPEELOG,eq:infana:model:terminalPEELOG,informalAnalytical,equation,17,11,
+eq:util,eq:infana:model:util,informalAnalytical,equation,4,5,
+eq:w0,eq:infana:model:w0,informalAnalytical,equation,3,5,
+eq:LOG:fast,eq:infana:num:LOG:fast,informalAnalytical,equation,35,19,
+eq:PEEcrraTerms,eq:infana:num:PEEcrraTerms,informalAnalytical,equation,39,22,
+eq:auxiliary,eq:infana:num:auxiliary,informalAnalytical,equation,26,15,
+eq:auxiliary:B,eq:infana:num:auxiliary:B,informalAnalytical,equation,26g,15,
+eq:auxiliary:Gammas,eq:infana:num:auxiliary:Gammas,informalAnalytical,equation,26a,15,
+eq:auxiliary:R,eq:infana:num:auxiliary:R,informalAnalytical,equation,26h,15,
+eq:auxiliary:Thetah,eq:infana:num:auxiliary:Thetah,informalAnalytical,equation,26b,15,
+eq:auxiliary:ThetahT,eq:infana:num:auxiliary:ThetahT,informalAnalytical,equation,26c,15,
+eq:auxiliary:Thetas,eq:infana:num:auxiliary:Thetas,informalAnalytical,equation,26d,15,
+eq:auxiliary:h,eq:infana:num:auxiliary:h,informalAnalytical,equation,26f,15,
+eq:auxiliary:s,eq:infana:num:auxiliary:s,informalAnalytical,equation,26e,15,
+eq:auxiliary:sFromH,eq:infana:num:auxiliary:sFromH,informalAnalytical,equation,26i,15,
+eq:calibration,eq:infana:num:calibration,informalAnalytical,equation,41,24,
+eq:calibration:KY,eq:infana:num:calibration:KY,informalAnalytical,equation,41a,24,
+eq:calibration:sr,eq:infana:num:calibration:sr,informalAnalytical,equation,42,24,
+eq:calibration:tau,eq:infana:num:calibration:tau,informalAnalytical,equation,41b,24,
+eq:candidates,eq:infana:num:candidates,informalAnalytical,equation,32,18,
+eq:consistentFOC,eq:infana:num:consistentFOC,informalAnalytical,equation,31,18,
+eq:equilibriumTest,eq:infana:num:equilibriumTest,informalAnalytical,equation,34,18,
+eq:extendedGrid,eq:infana:num:extendedGrid,informalAnalytical,equation,30,17,
+eq:hatc1i,eq:infana:num:hatc1i,informalAnalytical,equation,40,22,
+eq:objectiveProfile,eq:infana:num:objectiveProfile,informalAnalytical,equation,33,18,
+eq:recursive,eq:infana:num:recursive,informalAnalytical,equation,36,20,
+eq:root,eq:infana:num:root,informalAnalytical,equation,29,17,
+eq:stateApprox,eq:infana:num:stateApprox,informalAnalytical,equation,37,21,
+eq:stateApprox:B,eq:infana:num:stateApprox:B,informalAnalytical,equation,37a,21,
+eq:stateApprox:Gammas,eq:infana:num:stateApprox:Gammas,informalAnalytical,equation,37b,21,
+eq:stateApprox:Thetah,eq:infana:num:stateApprox:Thetah,informalAnalytical,equation,37c,21,
+eq:stateApprox:Thetas,eq:infana:num:stateApprox:Thetas,informalAnalytical,equation,37d,21,
+eq:stateResidual,eq:infana:num:stateResidual,informalAnalytical,equation,38,22,
+eq:steadystate_CRRA,eq:infana:num:steadystate_CRRA,informalAnalytical,equation,28,16,
+eq:steadystate_CRRA:Bi,eq:infana:num:steadystate_CRRA:Bi,informalAnalytical,equation,28b,16,
+eq:steadystate_CRRA:Gammas,eq:infana:num:steadystate_CRRA:Gammas,informalAnalytical,equation,28a,16,
+eq:steadystate_LOG,eq:infana:num:steadystate_LOG,informalAnalytical,equation,27,16,
+eq:steadystate_LOG:Gammas,eq:infana:num:steadystate_LOG:Gammas,informalAnalytical,equation,27a,16,
+eq:steadystate_LOG:s,eq:infana:num:steadystate_LOG:s,informalAnalytical,equation,27b,16,
+eq:EE,eq:infsav:model:EE,informalSavings,equation,10,29,
+eq:EE:c0,eq:infsav:model:EE:c0,informalSavings,equation,13,32,
+eq:EE:ci,eq:infsav:model:EE:ci,informalSavings,equation,12,31,
+eq:EE:h,eq:infsav:model:EE:h,informalSavings,equation,10e,30,
+eq:EE:hi,eq:infsav:model:EE:hi,informalSavings,equation,10a,29,
+eq:EE:s,eq:infsav:model:EE:s,informalSavings,equation,10f,31,
+eq:EE:s(h),eq:infsav:model:EE:s(h),informalSavings,equation,10c,30,
+eq:EE:s0_s,eq:infsav:model:EE:s0_s,informalSavings,equation,10g,31,
+eq:EE:si,eq:infsav:model:EE:si,informalSavings,equation,10b,30,
+eq:EE:si_s,eq:infsav:model:EE:si_s,informalSavings,equation,10d,30,
+eq:EE:sigma_ci,eq:infsav:model:EE:sigma_ci,informalSavings,equation,11,31,
+eq:PEE,eq:infsav:model:PEE,informalSavings,equation,15,33,
+eq:PEELOG,eq:infsav:model:PEELOG,informalSavings,equation,14,32,
+eq:TerminalEE,eq:infsav:model:TerminalEE,informalSavings,equation,16,34,
+eq:aggregateStates,eq:infsav:model:aggregateStates,informalSavings,equation,1,26,
+eq:calibration:M,eq:infsav:model:calibration:M,informalSavings,equation,21,37,
+eq:calibration:X0,eq:infsav:model:calibration:X0,informalSavings,equation,25,38,
+eq:calibration:Xi,eq:infsav:model:calibration:Xi,informalSavings,equation,23,37,
+eq:calibration:Xsolve,eq:infsav:model:calibration:Xsolve,informalSavings,equation,30,39,
+eq:calibration:Y0,eq:infsav:model:calibration:Y0,informalSavings,equation,27,39,
+eq:calibration:eta0,eq:infsav:model:calibration:eta0,informalSavings,equation,24,38,
+eq:calibration:etaCommonX,eq:infsav:model:calibration:etaCommonX,informalSavings,equation,29,39,
+eq:calibration:etai,eq:infsav:model:calibration:etai,informalSavings,equation,22,37,
+eq:calibration:srGDP,eq:infsav:model:calibration:srGDP,informalSavings,equation,28,39,
+eq:calibration:yNorm,eq:infsav:model:calibration:yNorm,informalSavings,equation,20,37,
+eq:calibration:z,eq:infsav:model:calibration:z,informalSavings,equation,19,36,
+eq:factorPrices,eq:infsav:model:factorPrices,informalSavings,equation,2,27,
+eq:factorPrices0,eq:infsav:model:factorPrices0,informalSavings,equation,3,27,
+eq:formalBudget,eq:infsav:model:formalBudget,informalSavings,equation,5,27,
+eq:formalOpt,eq:infsav:model:formalOpt,informalSavings,equation,8,29,
+eq:governmentBudget,eq:infsav:model:governmentBudget,informalSavings,equation,7,28,
+eq:governmentBudget:bbar,eq:infsav:model:governmentBudget:bbar,informalSavings,equation,7c,29,
+eq:informalBudget,eq:infsav:model:informalBudget,informalSavings,equation,6,28,
+eq:informalOpt,eq:infsav:model:informalOpt,informalSavings,equation,9,29,
+eq:terminalPEECRRA,eq:infsav:model:terminalPEECRRA,informalSavings,equation,18,35,
+eq:terminalPEELOG,eq:infsav:model:terminalPEELOG,informalSavings,equation,17,34,
+eq:util,eq:infsav:model:util,informalSavings,equation,4,27,
+eq:PEEcrraTerms,eq:infsav:num:PEEcrraTerms,informalSavings,equation,49,51,
+eq:auxiliary,eq:infsav:num:auxiliary,informalSavings,equation,31,40,
+eq:auxiliary:Ainf,eq:infsav:num:auxiliary:Ainf,informalSavings,equation,31m,41,
+eq:auxiliary:B,eq:infsav:num:auxiliary:B,informalSavings,equation,31g,40,
+eq:auxiliary:B0,eq:infsav:num:auxiliary:B0,informalSavings,equation,31j,41,
+eq:auxiliary:Gammas,eq:infsav:num:auxiliary:Gammas,informalSavings,equation,31a,40,
+eq:auxiliary:R,eq:infsav:num:auxiliary:R,informalSavings,equation,31h,40,
+eq:auxiliary:R0,eq:infsav:num:auxiliary:R0,informalSavings,equation,31i,40,
+eq:auxiliary:Thetah,eq:infsav:num:auxiliary:Thetah,informalSavings,equation,31b,40,
+eq:auxiliary:ThetahT,eq:infsav:num:auxiliary:ThetahT,informalSavings,equation,31c,40,
+eq:auxiliary:Thetas,eq:infsav:num:auxiliary:Thetas,informalSavings,equation,31d,40,
+eq:auxiliary:h,eq:infsav:num:auxiliary:h,informalSavings,equation,31f,40,
+eq:auxiliary:s,eq:infsav:num:auxiliary:s,informalSavings,equation,31e,40,
+eq:auxiliary:s0_s,eq:infsav:num:auxiliary:s0_s,informalSavings,equation,31n,41,
+eq:auxiliary:sFromH,eq:infsav:num:auxiliary:sFromH,informalSavings,equation,31k,41,
+eq:auxiliary:si_s,eq:infsav:num:auxiliary:si_s,informalSavings,equation,31l,41,
+eq:calibration,eq:infsav:num:calibration,informalSavings,equation,54,55,
+eq:calibration:KY,eq:infsav:num:calibration:KY,informalSavings,equation,54a,55,
+eq:calibration:sr,eq:infsav:num:calibration:sr,informalSavings,equation,55,55,
+eq:calibration:tau,eq:infsav:num:calibration:tau,informalSavings,equation,54b,55,
+eq:candidates,eq:infsav:num:candidates,informalSavings,equation,35,43,
+eq:consistentFOC,eq:infsav:num:consistentFOC,informalSavings,equation,34,43,
+eq:dv20,eq:infsav:num:dv20,informalSavings,equation,39,45,
+eq:equilibriumTest,eq:infsav:num:equilibriumTest,informalSavings,equation,37,44,
+eq:focbounded,eq:infsav:num:focbounded,informalSavings,equation,38,45,
+eq:forwardSim,eq:infsav:num:forwardSim,informalSavings,equation,53,54,
+eq:hatc1,eq:infsav:num:hatc1,informalSavings,equation,50,51,
+eq:initialFixedPoint,eq:infsav:num:initialFixedPoint,informalSavings,equation,52,53,
+eq:initialState,eq:infsav:num:initialState,informalSavings,equation,51,53,
+eq:initialState:iota,eq:infsav:num:initialState:iota,informalSavings,equation,51a,53,
+eq:initialState:s,eq:infsav:num:initialState:s,informalSavings,equation,51b,53,
+eq:iotaOfTauS,eq:infsav:num:iotaOfTauS,informalSavings,equation,47,50,
+eq:logsep,eq:infsav:num:logsep,informalSavings,equation,40,46,
+eq:objectiveProfile,eq:infsav:num:objectiveProfile,informalSavings,equation,36,43,
+eq:reachable,eq:infsav:num:reachable,informalSavings,equation,48,51,
+eq:shockEps:match,eq:infsav:num:shockEps:match,informalSavings,equation,56,58,
+eq:shockState,eq:infsav:num:shockState,informalSavings,equation,57,58,
+eq:stateApprox,eq:infsav:num:stateApprox,informalSavings,equation,45,49,
+eq:stateApprox:B,eq:infsav:num:stateApprox:B,informalSavings,equation,45a,49,
+eq:stateApprox:Gammas,eq:infsav:num:stateApprox:Gammas,informalSavings,equation,45b,49,
+eq:stateApprox:Thetas,eq:infsav:num:stateApprox:Thetas,informalSavings,equation,45c,49,
+eq:stateApproxLOG,eq:infsav:num:stateApproxLOG,informalSavings,equation,42,46,
+eq:stateApproxLOG:Gammas,eq:infsav:num:stateApproxLOG:Gammas,informalSavings,equation,42a,46,
+eq:stateApproxLOG:Thetah,eq:infsav:num:stateApproxLOG:Thetah,informalSavings,equation,42b,47,
+eq:stateApproxLOG:Thetas,eq:infsav:num:stateApproxLOG:Thetas,informalSavings,equation,42c,47,
+eq:stateResidual,eq:infsav:num:stateResidual,informalSavings,equation,46,50,
+eq:stateResidual:iota,eq:infsav:num:stateResidual:iota,informalSavings,equation,46b,50,
+eq:stateResidual:s,eq:infsav:num:stateResidual:s,informalSavings,equation,46a,50,
+eq:stateResidualLOG,eq:infsav:num:stateResidualLOG,informalSavings,equation,43,47,
+eq:steadystate_CRRA,eq:infsav:num:steadystate_CRRA,informalSavings,equation,33,42,
+eq:steadystate_CRRA:Bi,eq:infsav:num:steadystate_CRRA:Bi,informalSavings,equation,33b,42,
+eq:steadystate_CRRA:Gammas,eq:infsav:num:steadystate_CRRA:Gammas,informalSavings,equation,33a,42,
+eq:steadystate_LOG,eq:infsav:num:steadystate_LOG,informalSavings,equation,32,42,
+eq:steadystate_LOG:Gammas,eq:infsav:num:steadystate_LOG:Gammas,informalSavings,equation,32a,42,
+eq:steadystate_LOG:s,eq:infsav:num:steadystate_LOG:s,informalSavings,equation,32b,42,
+eq:v1LOG,eq:infsav:num:v1LOG,informalSavings,equation,44,47,
+eq:zdecomposition,eq:infsav:num:zdecomposition,informalSavings,equation,41,46,
+eq:EE,eq:us:model:EE,US,equation,7,64,
+eq:EE:ci,eq:us:model:EE:ci,US,equation,13,67,
+eq:EE:h,eq:us:model:EE:h,US,equation,7e,65,
+eq:EE:hi,eq:us:model:EE:hi,US,equation,7a,64,
+eq:EE:s,eq:us:model:EE:s,US,equation,7f,65,
+eq:EE:s(h),eq:us:model:EE:s(h),US,equation,7c,65,
+eq:EE:si,eq:us:model:EE:si,US,equation,7b,64,
+eq:EE:si_s,eq:us:model:EE:si_s,US,equation,7d,65,
+eq:EE:sigma_ci,eq:us:model:EE:sigma_ci,US,equation,12,67,
+eq:PEE,eq:us:model:PEE,US,equation,16,69,
+eq:PEELOG,eq:us:model:PEELOG,US,equation,14,68,
+eq:PEELOG:dThetah,eq:us:model:PEELOG:dThetah,US,equation,14c,68,
+eq:PEELOG:decoupling,eq:us:model:PEELOG:decoupling,US,equation,15,68,
+eq:PEELOG:v1i,eq:us:model:PEELOG:v1i,US,equation,14a,68,
+eq:PEELOG:v2i,eq:us:model:PEELOG:v2i,US,equation,14b,68,
+eq:TerminalEE,eq:us:model:TerminalEE,US,equation,17,70,
+eq:aggregateStates,eq:us:model:aggregateStates,US,equation,1,62,
+eq:avgHours,eq:us:model:avgHours,US,equation,11,66,
+eq:budget,eq:us:model:budget,US,equation,4,63,
+eq:calibration:RR,eq:us:model:calibration:RR,US,equation,20,72,
+eq:calibration:Xi,eq:us:model:calibration:Xi,US,equation,28,73,
+eq:calibration:Xsolve,eq:us:model:calibration:Xsolve,US,equation,30,74,
+eq:calibration:etaCommonX,eq:us:model:calibration:etaCommonX,US,equation,24,72,
+eq:calibration:etai,eq:us:model:calibration:etai,US,equation,27,73,
+eq:calibration:system,eq:us:model:calibration:system,US,equation,29,73,
+eq:calibration:theta,eq:us:model:calibration:theta,US,equation,21,72,
+eq:calibration:thetaSimple,eq:us:model:calibration:thetaSimple,US,equation,22,72,
+eq:calibration:yxCommonX,eq:us:model:calibration:yxCommonX,US,equation,25,72,
+eq:calibration:zeta,eq:us:model:calibration:zeta,US,equation,23,72,
+eq:calibration:zxCommonX,eq:us:model:calibration:zxCommonX,US,equation,26,73,
+eq:esc:AB,eq:us:model:esc:AB,US,equation,34,76,
+eq:esc:RR,eq:us:model:esc:RR,US,equation,37,78,
+eq:esc:Vtilde,eq:us:model:esc:Vtilde,US,equation,33,76,
+eq:esc:auxiliary,eq:us:model:esc:auxiliary,US,equation,35,77,
+eq:esc:auxiliary:Gammas,eq:us:model:esc:auxiliary:Gammas,US,equation,35a,77,
+eq:esc:auxiliary:Thetah,eq:us:model:esc:auxiliary:Thetah,US,equation,35b,77,
+eq:esc:auxiliary:si,eq:us:model:esc:auxiliary:si,US,equation,35c,78,
+eq:esc:benefits,eq:us:model:esc:benefits,US,equation,31,75,
+eq:esc:dlnc2i,eq:us:model:esc:dlnc2i,US,equation,36,78,
+eq:esc:implicitTax,eq:us:model:esc:implicitTax,US,equation,32,75,
+eq:esc:leadFOC,eq:us:model:esc:leadFOC,US,equation,39,79,
+eq:esc:separability,eq:us:model:esc:separability,US,equation,40,80,
+eq:esc:seqFOC,eq:us:model:esc:seqFOC,US,equation,38,79,
+eq:factorPrices,eq:us:model:factorPrices,US,equation,2,62,
+eq:formalOpt,eq:us:model:formalOpt,US,equation,6,63,
+eq:governmentBudget,eq:us:model:governmentBudget,US,equation,5,63,
+eq:governmentBudget:bbar,eq:us:model:governmentBudget:bbar,US,equation,5b,63,
+eq:governmentBudget:discounted,eq:us:model:governmentBudget:discounted,US,equation,5c,63,
+eq:hoursUnit,eq:us:model:hoursUnit,US,equation,10,66,
+eq:scaleInvariance,eq:us:model:scaleInvariance,US,equation,8,66,
+eq:terminalPEECRRA,eq:us:model:terminalPEECRRA,US,equation,19,71,
+eq:terminalPEELOG,eq:us:model:terminalPEELOG,US,equation,18,70,
+eq:util,eq:us:model:util,US,equation,3,62,
+eq:yDefs,eq:us:model:yDefs,US,equation,9,66,
+eq:LOG:foc,eq:us:num:LOG:foc,US,equation,50,85,
+eq:PEEcrraTerms,eq:us:num:PEEcrraTerms,US,equation,53,88,
+eq:auxiliary,eq:us:num:auxiliary,US,equation,41,81,
+eq:auxiliary:B,eq:us:num:auxiliary:B,US,equation,41g,81,
+eq:auxiliary:Gammas,eq:us:num:auxiliary:Gammas,US,equation,41a,81,
+eq:auxiliary:R,eq:us:num:auxiliary:R,US,equation,41h,81,
+eq:auxiliary:Thetah,eq:us:num:auxiliary:Thetah,US,equation,41b,81,
+eq:auxiliary:ThetahT,eq:us:num:auxiliary:ThetahT,US,equation,41c,81,
+eq:auxiliary:Thetas,eq:us:num:auxiliary:Thetas,US,equation,41d,81,
+eq:auxiliary:h,eq:us:num:auxiliary:h,US,equation,41f,81,
+eq:auxiliary:s,eq:us:num:auxiliary:s,US,equation,41e,81,
+eq:auxiliary:sFromH,eq:us:num:auxiliary:sFromH,US,equation,41i,81,
+eq:auxiliary:si_s,eq:us:num:auxiliary:si_s,US,equation,41j,81,
+eq:calibration,eq:us:num:calibration,US,equation,55,90,
+eq:calibration:R,eq:us:num:calibration:R,US,equation,55a,90,
+eq:calibration:tau,eq:us:num:calibration:tau,US,equation,55b,90,
+eq:candidates,eq:us:num:candidates,US,equation,47,84,
+eq:consistentFOC,eq:us:num:consistentFOC,US,equation,46,84,
+eq:equilibriumTest,eq:us:num:equilibriumTest,US,equation,49,84,
+eq:esc:aDef,eq:us:num:esc:aDef,US,equation,57,93,
+eq:esc:aResidual,eq:us:num:esc:aResidual,US,equation,59,94,
+eq:esc:calibration,eq:us:num:esc:calibration,US,equation,60,95,
+eq:esc:leadedObjective,eq:us:num:esc:leadedObjective,US,equation,56,92,
+eq:esc:stateEq,eq:us:num:esc:stateEq,US,equation,58,93,
+eq:esc:stateEq:consistency,eq:us:num:esc:stateEq:consistency,US,equation,58c,93,
+eq:esc:stateEq:design,eq:us:num:esc:stateEq:design,US,equation,58b,93,
+eq:esc:stateEq:tax,eq:us:num:esc:stateEq:tax,US,equation,58a,93,
+eq:hatc1i,eq:us:num:hatc1i,US,equation,54,88,
+eq:objectiveProfile,eq:us:num:objectiveProfile,US,equation,48,84,
+eq:root,eq:us:num:root,US,equation,45,83,
+eq:stateApprox,eq:us:num:stateApprox,US,equation,51,87,
+eq:stateApprox:B,eq:us:num:stateApprox:B,US,equation,51a,87,
+eq:stateApprox:Gammas,eq:us:num:stateApprox:Gammas,US,equation,51b,87,
+eq:stateApprox:Thetah,eq:us:num:stateApprox:Thetah,US,equation,51c,87,
+eq:stateApprox:Thetas,eq:us:num:stateApprox:Thetas,US,equation,51d,88,
+eq:stateResidual,eq:us:num:stateResidual,US,equation,52,88,
+eq:steadystate_CRRA,eq:us:num:steadystate_CRRA,US,equation,43,82,
+eq:steadystate_CRRA:Bi,eq:us:num:steadystate_CRRA:Bi,US,equation,43b,82,
+eq:steadystate_CRRA:Gammas,eq:us:num:steadystate_CRRA:Gammas,US,equation,43a,82,
+eq:steadystate_CRRA:bounds,eq:us:num:steadystate_CRRA:bounds,US,equation,44,82,
+eq:steadystate_LOG,eq:us:num:steadystate_LOG,US,equation,42,82,
+eq:steadystate_LOG:Gammas,eq:us:num:steadystate_LOG:Gammas,US,equation,42a,82,
+eq:steadystate_LOG:s,eq:us:num:steadystate_LOG:s,US,equation,42b,82,
+fig:data:tauVariants,fig:data:tauVariants,,figure,4.2,105,
+fig:data:thetaPaperA,fig:data:thetaPaperA,,figure,4.3,106,
+fig:data:thetaVariants,fig:data:thetaVariants,,figure,4.1,104,
+prop:esc:separability,prop:esc:separability,,corollary,1,80,
+prop:esc:substitution,prop:esc:substitution,,proposition,1,77,
+refsection:1,refsection:1,,section*,2.6.5,100,Checks
+sec:data:figures,sec:data:figures,,section,4,104,Descriptive figures
+sec:data:inputs,sec:data:inputs,,section,1,100,Inputs and sources
+sec:data:tiers,sec:data:tiers,,section,2,100,Pension tiers and the model
+sec:data:variants,sec:data:variants,,section,3,103,The variants
+sec:infana:model,sec:infana:model,informalAnalytical,section,1,4,Informal Analytical Model
+sec:EE,sec:infana:model:EE,informalAnalytical,subsection,1.2,6,The Economic Equilibrium
+sec:PEE,sec:infana:model:PEE,informalAnalytical,subsection,1.4,10,The politico-economic equilibrium with CRRA preferences
+sec:PEELOG,sec:infana:model:PEELOG,informalAnalytical,subsection,1.3,9,The politico-economic equilibrium with LOG preferences
+sec:calibration,sec:infana:model:calibration,informalAnalytical,subsection,1.6,12,Calibration
+sec:finitehorizon,sec:infana:model:finitehorizon,informalAnalytical,subsection,1.5,11,Finite Horizon Terminal state
+sec:model,sec:infana:model:model,informalAnalytical,subsection,1.1,4,The model
+sec:infana:num,sec:infana:num,informalAnalytical,section,2,15,Numerical Solution
+sec:EE,sec:infana:num:EE,informalAnalytical,subsection,2.1,16,The economic equilibrium
+sec:PEE,sec:infana:num:PEE,informalAnalytical,subsection,2.4,21,The politico-economic equilibrium with CRRA
+sec:PEELOG,sec:infana:num:PEELOG,informalAnalytical,subsection,2.3,19,The politico-economic equilibrium with log
+sec:RobustRoot,sec:infana:num:RobustRoot,informalAnalytical,subsection,2.2,17,Robust policy search with bounds
+sec:calibration,sec:infana:num:calibration,informalAnalytical,subsection,2.5,24,Calibration
+sec:infsav:model,sec:infsav:model,informalSavings,section,1,26,Informal Savings Model
+sec:EE,sec:infsav:model:EE,informalSavings,subsection,1.2,29,The Competitive Equilibrium
+sec:PEE,sec:infsav:model:PEE,informalSavings,subsection,1.4,33,The politico-economic equilibrium with CRRA preferences
+sec:PEELOG,sec:infsav:model:PEELOG,informalSavings,subsection,1.3,32,The politico-economic equilibrium with LOG preferences
+sec:calibration,sec:infsav:model:calibration,informalSavings,subsection,1.6,35,Calibration
+sec:finitehorizon,sec:infsav:model:finitehorizon,informalSavings,subsection,1.5,34,The terminal period
+sec:model,sec:infsav:model:model,informalSavings,subsection,1.1,26,The model
+sec:infsav:num,sec:infsav:num,informalSavings,section,2,40,Numerical Solution
+sec:EE,sec:infsav:num:EE,informalSavings,subsection,2.1,41,The economic equilibrium
+sec:PEE,sec:infsav:num:PEE,informalSavings,subsection,2.4,49,The politico-economic equilibrium with CRRA
+sec:PEELOG,sec:infsav:num:PEELOG,informalSavings,subsection,2.3,44,The politico-economic equilibrium with log
+sec:PEEpath,sec:infsav:num:PEEpath,informalSavings,subsection,2.5,53,Recovering the equilibrium path
+sec:RobustRoot,sec:infsav:num:RobustRoot,informalSavings,subsection,2.2,42,Robust policy search with bounds
+sec:calibration,sec:infsav:num:calibration,informalSavings,subsection,2.6,55,Calibration
+sec:shock,sec:infsav:num:shock,informalSavings,subsection,2.7,58,Unanticipated reform experiments
+sec:us:model,sec:us:model,US,section,1,61,US Model
+sec:EE,sec:us:model:EE,US,subsection,1.2,64,The Competitive Equilibrium
+sec:ESC,sec:us:model:ESC,US,subsection,1.7,75,Endogenous system characteristics
+sec:ESC:separability,sec:us:model:ESC:separability,US,subsubsection,1.7.2,80,The log case
+sec:ESC:timing,sec:us:model:ESC:timing,US,subsubsection,1.7.1,78,Timings
+sec:PEE,sec:us:model:PEE,US,subsection,1.4,69,The politico-economic equilibrium with CRRA preferences
+sec:PEELOG,sec:us:model:PEELOG,US,subsection,1.3,67,The politico-economic equilibrium with LOG preferences
+sec:calibration,sec:us:model:calibration,US,subsection,1.6,71,Calibration
+sec:calibration:etaX,sec:us:model:calibration:etaX,US,subsubsection,1.6.2,72,Productivity and the disutility of labour
+sec:calibration:oecd,sec:us:model:calibration:oecd,US,subsubsection,1.6.4,74,The OECD cross-section
+sec:calibration:targets,sec:us:model:calibration:targets,US,subsubsection,1.6.3,73,Targets and free parameters
+sec:calibration:theta,sec:us:model:calibration:theta,US,subsubsection,1.6.1,71,Pension characteristics
+sec:finitehorizon,sec:us:model:finitehorizon,US,subsection,1.5,70,Finite Horizon Terminal state
+sec:model,sec:us:model:model,US,subsection,1.1,62,The model
+sec:notation,sec:us:model:notation,US,section,1,61,US Model
+sec:us:num,sec:us:num,US,section,2,80,Numerical Solution
+sec:EE,sec:us:num:EE,US,subsection,2.1,81,The economic equilibrium
+sec:ESC,sec:us:num:ESC,US,subsection,2.6,91,Endogenous system characteristics
+sec:ESC:calibration,sec:us:num:ESC:calibration,US,subsubsection,2.6.3,95,Calibrating the cost
+sec:ESC:checks,sec:us:num:ESC:checks,US,subsubsection,2.6.5,97,Checks
+sec:ESC:counterfactuals,sec:us:num:ESC:counterfactuals,US,subsubsection,2.6.4,96,The counterfactuals
+sec:ESC:crra,sec:us:num:ESC:crra,US,subsubsection,2.6.2,92,CRRA preferences
+sec:ESC:leaded,sec:us:num:ESC:leaded,US,subsubsection,2.6.1,92,The leaded choice
+sec:PEE,sec:us:num:PEE,US,subsection,2.4,87,The politico-economic equilibrium with CRRA
+sec:PEELOG,sec:us:num:PEELOG,US,subsection,2.3,85,The politico-economic equilibrium with log
+sec:RobustRoot,sec:us:num:RobustRoot,US,subsection,2.2,83,Robust policy search with bounds
+sec:calibration,sec:us:num:calibration,US,subsection,2.5,90,Calibration
+tab:data:inputs,tab:data:inputs,,table,1,100,
+tab:data:tiers,tab:data:tiers,,table,2,101,
+tab:data:topups,tab:data:topups,,table,3,102,
+tab:data:variants,tab:data:variants,,table,4,103,
+app:EE,app:EE,paper,section,A,1,Economic equilibrium
+app:EE:CRRA,app:EE:CRRA,paper,subsection,A.1,1,With CRRA-GHH preferences
+app:EE:LOG,app:EE:LOG,paper,subsection,A.2,4,With log-GHH preferences
+app:EPH,app:EPH,paper,section,E,30,Calibration – Argentina
+app:EPH:vectorX,app:EPH:vectorX,paper,Xi,E.5,34,
+app:PEE,app:PEE,paper,section,B,6,Politico-economic equilibrium
+app:PEE:CRRA,app:PEE:CRRA,paper,subsection,B.3,14,With CRRA-GHH preferences and informal savings
+app:PEE:LOG,app:PEE:LOG,paper,subsection,B.1,6,Proof of proposition prop:LOG:PEE
+app:PEE:LOG_s0,app:PEE:LOG_s0,paper,subsection,B.2,13,With log-GHH preferences and informal savings
+app:T,app:T,paper,section,D,26,Terminal states and numerical checks
+app:US,app:US,paper,section,F,34,Calibration – the U.S. and France
+app:esc,app:esc,paper,section,C,16,Endogenous pension design
+app:esc:corner,app:esc:corner,paper,subsection,C.1,16,Costless redistribution
+app:esc:cost,app:esc:cost,paper,subsection,C.2,18,The deadweight cost of redistribution
+app:esc:equilibrium,app:esc:equilibrium,paper,subsection,C.3,24,The equilibrium with the cost
+app:esc:log,app:esc:log,paper,subsection,C.4,25,The design choice under log preferences
+app:oecd26,app:oecd26,paper,section,G,36,The OECD cross-section
+app:oecd26:anchor,app:oecd26:anchor,paper,subsection,G.2,38,The U.S. at these data
+app:oecd26:data,app:oecd26:data,paper,subsection,G.1,36,Sample and data
+app:oecd26:layer2,app:oecd26:layer2,paper,subsection,G.3,39,Each country's political weight
+app:oecd26:readings,app:oecd26:readings,paper,subsection,G.4,39,Other population data and other measures of the design
+def:PEE,def:PEE,paper,definition,1,10,
+eq:EE:h0,eq:EE:h0,paper,equation,A.1,1,
+eq:EE:si,eq:EE:si,paper,equation,A.4,2,
+eq:LOG:E10,eq:LOG:E10,paper,equation,B.3,7,
+eq:LOG:E1i,eq:LOG:E1i,paper,equation,B.4,7,
+eq:LOG:E20,eq:LOG:E20,paper,equation,B.1,7,
+eq:LOG:E2i,eq:LOG:E2i,paper,equation,B.2,7,
+eq:LOG:E2sigma,eq:LOG:E2sigma,paper,equation,B.5,8,
+eq:LOG:PolObj,eq:LOG:PolObj,paper,equation,14,13,
+eq:LOG:epsCondition,eq:LOG:epsCondition,paper,equation,B.9,11,
+eq:LOG:formalSol_i,eq:LOG:formalSol_i,paper,equation,11,11,
+eq:LOG:nuCondition,eq:LOG:nuCondition,paper,equation,B.7,9,
+eq:LOG:nuEffect,eq:LOG:nuEffect,paper,equation,B.6,9,
+eq:LOG:repAgentTax,eq:LOG:repAgentTax,paper,equation,B.10,12,
+eq:LOG:thetaEffect,eq:LOG:thetaEffect,paper,equation,B.8,10,
+eq:calibration_eta,eq:calibration_eta,paper,equation,E.1,33,
+eq:esc:E2,eq:esc:E2,paper,equation,C.9,24,
+eq:esc:budget,eq:esc:budget,paper,equation,17,27,
+eq:esc:expansion,eq:esc:expansion,paper,equation,C.4,20,
+eq:esc:ftheta,eq:esc:ftheta,paper,equation,C.10,24,
+eq:esc:harberger,eq:esc:harberger,paper,equation,C.5,20,
+eq:esc:implicitTax,eq:esc:implicitTax,paper,equation,16,27,
+eq:esc:leadFOC,eq:esc:leadFOC,paper,equation,C.1,17,
+eq:esc:lossShare,eq:esc:lossShare,paper,equation,C.6,20,
+eq:esc:lossShareKappa,eq:esc:lossShareKappa,paper,equation,C.7,21,
+eq:esc:pi,eq:esc:pi,paper,equation,C.8,22,
+eq:esc:separability,eq:esc:separability,paper,equation,C.11,25,
+eq:esc:separabilityTerms,eq:esc:separabilityTerms,paper,equation,C.12,26,
+eq:esc:seqFOC,eq:esc:seqFOC,paper,equation,15,25,
+eq:esc:transfer,eq:esc:transfer,paper,equation,C.2,18,
+eq:esc:wedge,eq:esc:wedge,paper,equation,C.3,19,
+eq:factorPrices,eq:factorPrices,paper,equation,3,7,
+eq:h,eq:h,paper,equation,A.6,2,
+eq:hi_h,eq:hi_h,paper,equation,A.3,2,
+eq:householdChoices,eq:householdChoices,paper,equation,7,8,
+eq:model:BC,eq:model:BC,paper,equation,5,7,
+eq:model:aggStates,eq:model:aggStates,paper,equation,1,6,
+eq:model:formalFOCs,eq:model:formalFOCs,paper,equation,6,8,
+eq:model:governmentBudget,eq:model:governmentBudget,paper,equation,8,8,
+eq:model:informalEuler,eq:model:informalEuler,paper,equation,6d,8,
+eq:model:lawOfMotion_General,eq:model:lawOfMotion_General,paper,equation,9,10,
+eq:production,eq:production,paper,equation,2,7,
+eq:s,eq:s,paper,equation,A.5,2,
+eq:s0_s,eq:s0_s,paper,equation,A.9,3,
+eq:si_s,eq:si_s,paper,equation,A.8,3,
+fig:ARG:EffectOfCRRA,fig:ARG:EffectOfCRRA,paper,figure,5.2,20,
+fig:Arg,fig:Arg,paper,figure,5.1,17,
+fig:OECD26:layer1,fig:OECD26:layer1,paper,figure,7.2,33,
+fig:OECD26:spending,fig:OECD26:spending,paper,figure,6.2,24,
+fig:OECD26:thetaFit,fig:OECD26:thetaFit,paper,figure,7.3,35,
+fig:OECD26:thetaFitMeasure,fig:OECD26:thetaFitMeasure,paper,figure,G.2,42,
+fig:OECD26:thetaFitPopulation,fig:OECD26:thetaFitPopulation,paper,figure,G.1,41,
+fig:US:OECDdata,fig:US:OECDdata,paper,figure,1.1,3,
+fig:US:overview,fig:US:overview,paper,figure,6.1,22,
+fig:US_ESC:overview,fig:US_ESC:overview,paper,figure,7.1,31,
+prop:LOG:EE,prop:LOG:EE,paper,proposition,1,11,
+prop:LOG:PEE,prop:LOG:PEE,paper,proposition,2,13,
+prop:PEE:unique,prop:PEE:unique,paper,corollary,1,8,
+prop:esc:corner,prop:esc:corner,paper,proposition,3,25,
+prop:esc:separability,prop:esc:separability,paper,corollary,2,25,
+sec:LOG,sec:LOG,paper,section,3,11,Logarithmic-GHH Preferences
+sec:argentina,sec:argentina,paper,section,5,16,Pension System Reform in Argentina
+sec:conclu,sec:conclu,paper,section,8,35,Conclusions
+sec:esc,sec:esc,paper,section,7,25,Endogenous Pension Design
+sec:esc:calibration,sec:esc:calibration,paper,subsection,7.2,29,Calibration and the determinants of the design
+sec:esc:cost,sec:esc:cost,paper,subsection,7.1,25,The deadweight cost of redistribution
+sec:esc:crossSection,sec:esc:crossSection,paper,subsection,7.3,32,Pension design on the OECD cross-section
+sec:esc:results,sec:esc:results,paper,subsection,7.2,29,Calibration and the determinants of the design
+sec:introduction,sec:introduction,paper,section,1,1,Introduction
+sec:model,sec:model,paper,section,2,6,The Model
+sec:model:Demo,sec:model:Demo,paper,subsection,2.1,6,"Demographics, Inequality, and Institutions"
+sec:model:equilibrium,sec:model:equilibrium,paper,subsection,2.6,9,Equilibrium
+sec:model:socialSecurity,sec:model:socialSecurity,paper,subsection,2.4,8,Social Security System
+sec:numerical,sec:numerical,paper,section,4,14,Numerical Methods
+sec:oecd,sec:oecd,paper,section,6,20,Social Security in Rich OECD Countries
+sec:quant:OECD,sec:quant:OECD,paper,section,6,20,Social Security in Rich OECD Countries
+table:Arg:Calib,table:Arg:Calib,paper,table,1,18,
+table:Argentina:Universal,table:Argentina:Universal,paper,table,2,18,
+table:OECD26:omega,table:OECD26:omega,paper,table,10,40,
+table:OECD26:slopes,table:OECD26:slopes,paper,table,5,33,
+table:OECD26:variants,table:OECD26:variants,paper,table,11,43,
+table:T:Horizon,table:T:Horizon,paper,table,6,29,
+table:T:Residuals,table:T:Residuals,paper,table,7,30,
+table:US:CalibUSFR,table:US:CalibUSFR,paper,table,3,22,
+table:US_ESC:calibration,table:US_ESC:calibration,paper,table,4,30,
+table:a_US:CalibFR,table:a_US:CalibFR,paper,table,9,36,
+table:a_US:CalibUS,table:a_US:CalibUS,paper,table,8,35,

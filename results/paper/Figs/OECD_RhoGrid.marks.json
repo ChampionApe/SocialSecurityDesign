@@ -1,0 +1,395 @@
+{
+ "figure": "OECD_RhoGrid",
+ "marks": [
+  {
+   "id": "OECD_RhoGrid--beta--usa--rho0.5",
+   "label": "ρ = 0.5",
+   "series": "U.S.",
+   "panel": "Discount factor β",
+   "value": 1.047935346726447,
+   "text": "1.048",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--beta--usa--rho1.0",
+   "label": "ρ = 1.0",
+   "series": "U.S.",
+   "panel": "Discount factor β",
+   "value": 0.6514784090237656,
+   "text": "0.651",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--beta--usa--rho2.0",
+   "label": "ρ = 2.0",
+   "series": "U.S.",
+   "panel": "Discount factor β",
+   "value": 0.515702928941472,
+   "text": "0.516",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--omega--usa--rho0.5",
+   "label": "ρ = 0.5",
+   "series": "U.S.",
+   "panel": "Political weight of the old ω",
+   "value": 1.5181269765875889,
+   "text": "1.518",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--omega--usa--rho1.0",
+   "label": "ρ = 1.0",
+   "series": "U.S.",
+   "panel": "Political weight of the old ω",
+   "value": 1.174582152568363,
+   "text": "1.175",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--omega--usa--rho2.0",
+   "label": "ρ = 2.0",
+   "series": "U.S.",
+   "panel": "Political weight of the old ω",
+   "value": 1.0928006026738324,
+   "text": "1.093",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--omega--gbr--rho0.5",
+   "label": "ρ = 0.5",
+   "series": "UK",
+   "panel": "Political weight of the old ω",
+   "value": 1.2416579746736198,
+   "text": "1.242",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--omega--gbr--rho1.0",
+   "label": "ρ = 1.0",
+   "series": "UK",
+   "panel": "Political weight of the old ω",
+   "value": 1.0416207830422035,
+   "text": "1.042",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--omega--gbr--rho2.0",
+   "label": "ρ = 2.0",
+   "series": "UK",
+   "panel": "Political weight of the old ω",
+   "value": 1.009046368041714,
+   "text": "1.009",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--omega--fra--rho0.5",
+   "label": "ρ = 0.5",
+   "series": "France",
+   "panel": "Political weight of the old ω",
+   "value": 2.05520239435976,
+   "text": "2.055",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--omega--fra--rho1.0",
+   "label": "ρ = 1.0",
+   "series": "France",
+   "panel": "Political weight of the old ω",
+   "value": 1.3922987272017686,
+   "text": "1.392",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--omega--fra--rho2.0",
+   "label": "ρ = 2.0",
+   "series": "France",
+   "panel": "Political weight of the old ω",
+   "value": 1.178583180712428,
+   "text": "1.179",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--X--usa--rho0.5",
+   "label": "ρ = 0.5",
+   "series": "U.S.",
+   "panel": "Taste for leisure X",
+   "value": 4.08725895927996,
+   "text": "4.09",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--X--usa--rho1.0",
+   "label": "ρ = 1.0",
+   "series": "U.S.",
+   "panel": "Taste for leisure X",
+   "value": 4.07472734544692,
+   "text": "4.07",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--X--usa--rho2.0",
+   "label": "ρ = 2.0",
+   "series": "U.S.",
+   "panel": "Taste for leisure X",
+   "value": 4.058516637494601,
+   "text": "4.06",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--X--gbr--rho0.5",
+   "label": "ρ = 0.5",
+   "series": "UK",
+   "panel": "Taste for leisure X",
+   "value": 7.947715473146744,
+   "text": "7.95",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--X--gbr--rho1.0",
+   "label": "ρ = 1.0",
+   "series": "UK",
+   "panel": "Taste for leisure X",
+   "value": 7.66859145449842,
+   "text": "7.67",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--X--gbr--rho2.0",
+   "label": "ρ = 2.0",
+   "series": "UK",
+   "panel": "Taste for leisure X",
+   "value": 7.468774198054343,
+   "text": "7.47",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--X--fra--rho0.5",
+   "label": "ρ = 0.5",
+   "series": "France",
+   "panel": "Taste for leisure X",
+   "value": 6.512586525984848,
+   "text": "6.51",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--X--fra--rho1.0",
+   "label": "ρ = 1.0",
+   "series": "France",
+   "panel": "Taste for leisure X",
+   "value": 6.484075060636789,
+   "text": "6.48",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--X--fra--rho2.0",
+   "label": "ρ = 2.0",
+   "series": "France",
+   "panel": "Taste for leisure X",
+   "value": 6.455523930650541,
+   "text": "6.46",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--R--usa--rho0.5",
+   "label": "ρ = 0.5",
+   "series": "U.S.",
+   "panel": "Interest factor R, 30 years",
+   "value": 2.443000000001707,
+   "text": "2.443",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--R--usa--rho1.0",
+   "label": "ρ = 1.0",
+   "series": "U.S.",
+   "panel": "Interest factor R, 30 years",
+   "value": 2.443000000005011,
+   "text": "2.443",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--R--usa--rho2.0",
+   "label": "ρ = 2.0",
+   "series": "U.S.",
+   "panel": "Interest factor R, 30 years",
+   "value": 2.442999999985469,
+   "text": "2.443",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--R--gbr--rho0.5",
+   "label": "ρ = 0.5",
+   "series": "UK",
+   "panel": "Interest factor R, 30 years",
+   "value": 2.0642381820376934,
+   "text": "2.064",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--R--gbr--rho1.0",
+   "label": "ρ = 1.0",
+   "series": "UK",
+   "panel": "Interest factor R, 30 years",
+   "value": 2.196016050361501,
+   "text": "2.196",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--R--gbr--rho2.0",
+   "label": "ρ = 2.0",
+   "series": "UK",
+   "panel": "Interest factor R, 30 years",
+   "value": 2.297874571329031,
+   "text": "2.298",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--R--fra--rho0.5",
+   "label": "ρ = 0.5",
+   "series": "France",
+   "panel": "Interest factor R, 30 years",
+   "value": 2.4206678597516094,
+   "text": "2.421",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--R--fra--rho1.0",
+   "label": "ρ = 1.0",
+   "series": "France",
+   "panel": "Interest factor R, 30 years",
+   "value": 2.427186885290842,
+   "text": "2.427",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--R--fra--rho2.0",
+   "label": "ρ = 2.0",
+   "series": "France",
+   "panel": "Interest factor R, 30 years",
+   "value": 2.4333638474282417,
+   "text": "2.433",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--sr--usa--rho0.5",
+   "label": "ρ = 0.5",
+   "series": "U.S.",
+   "panel": "Savings rate 2020, % of GDP",
+   "value": 15.86212683991454,
+   "text": "15.86%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--sr--usa--rho1.0",
+   "label": "ρ = 1.0",
+   "series": "U.S.",
+   "panel": "Savings rate 2020, % of GDP",
+   "value": 15.329326721969819,
+   "text": "15.33%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--sr--usa--rho2.0",
+   "label": "ρ = 2.0",
+   "series": "U.S.",
+   "panel": "Savings rate 2020, % of GDP",
+   "value": 14.826314720052999,
+   "text": "14.83%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--sr--gbr--rho0.5",
+   "label": "ρ = 0.5",
+   "series": "UK",
+   "panel": "Savings rate 2020, % of GDP",
+   "value": 17.09963218305711,
+   "text": "17.10%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--sr--gbr--rho1.0",
+   "label": "ρ = 1.0",
+   "series": "UK",
+   "panel": "Savings rate 2020, % of GDP",
+   "value": 15.96296588474321,
+   "text": "15.96%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--sr--gbr--rho2.0",
+   "label": "ρ = 2.0",
+   "series": "UK",
+   "panel": "Savings rate 2020, % of GDP",
+   "value": 15.09507396051889,
+   "text": "15.10%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--sr--fra--rho0.5",
+   "label": "ρ = 0.5",
+   "series": "France",
+   "panel": "Savings rate 2020, % of GDP",
+   "value": 12.60496706578636,
+   "text": "12.60%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--sr--fra--rho1.0",
+   "label": "ρ = 1.0",
+   "series": "France",
+   "panel": "Savings rate 2020, % of GDP",
+   "value": 12.38823788013528,
+   "text": "12.39%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "OECD_RhoGrid--sr--fra--rho2.0",
+   "label": "ρ = 2.0",
+   "series": "France",
+   "panel": "Savings rate 2020, % of GDP",
+   "value": 12.20885814424823,
+   "text": "12.21%",
+   "table": null,
+   "row": null
+  }
+ ]
+}

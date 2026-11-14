@@ -1,0 +1,1285 @@
+{
+ "figure": "ARG_CRRA_LOG",
+ "marks": [
+  {
+   "id": "ARG_CRRA_LOG--tau--short--rho0.5",
+   "label": "ρ = 0.5",
+   "series": "short run (year 2010)",
+   "panel": "Tax rate τ",
+   "value": -0.41985227438599976,
+   "text": "−0.4 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--tau--short--rho0.6",
+   "label": "ρ = 0.6",
+   "series": "short run (year 2010)",
+   "panel": "Tax rate τ",
+   "value": 0.52811768098482,
+   "text": "+0.5 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--tau--short--rho0.7",
+   "label": "ρ = 0.7",
+   "series": "short run (year 2010)",
+   "panel": "Tax rate τ",
+   "value": 1.1196416347708515,
+   "text": "+1.1 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--tau--short--rho0.8",
+   "label": "ρ = 0.8",
+   "series": "short run (year 2010)",
+   "panel": "Tax rate τ",
+   "value": 1.5271529551501795,
+   "text": "+1.5 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--tau--short--rho0.9",
+   "label": "ρ = 0.9",
+   "series": "short run (year 2010)",
+   "panel": "Tax rate τ",
+   "value": 1.783844060018458,
+   "text": "+1.8 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--tau--short--rho1.0",
+   "label": "ρ = 1.0",
+   "series": "short run (year 2010)",
+   "panel": "Tax rate τ",
+   "value": 1.9500175186445006,
+   "text": "+2.0 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--tau--short--rho1.1",
+   "label": "ρ = 1.1",
+   "series": "short run (year 2010)",
+   "panel": "Tax rate τ",
+   "value": 2.056480627931641,
+   "text": "+2.1 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--tau--short--rho1.2",
+   "label": "ρ = 1.2",
+   "series": "short run (year 2010)",
+   "panel": "Tax rate τ",
+   "value": 2.11964811891622,
+   "text": "+2.1 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--tau--short--rho1.3",
+   "label": "ρ = 1.3",
+   "series": "short run (year 2010)",
+   "panel": "Tax rate τ",
+   "value": 2.149132842716302,
+   "text": "+2.1 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--tau--short--rho1.4",
+   "label": "ρ = 1.4",
+   "series": "short run (year 2010)",
+   "panel": "Tax rate τ",
+   "value": 2.1607543076109708,
+   "text": "+2.2 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--tau--short--rho1.5",
+   "label": "ρ = 1.5",
+   "series": "short run (year 2010)",
+   "panel": "Tax rate τ",
+   "value": 2.1547069977252695,
+   "text": "+2.2 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--tau--short--rho1.6",
+   "label": "ρ = 1.6",
+   "series": "short run (year 2010)",
+   "panel": "Tax rate τ",
+   "value": 2.1403320102967194,
+   "text": "+2.1 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--tau--short--rho1.7",
+   "label": "ρ = 1.7",
+   "series": "short run (year 2010)",
+   "panel": "Tax rate τ",
+   "value": 2.1179049129542786,
+   "text": "+2.1 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--tau--short--rho1.8",
+   "label": "ρ = 1.8",
+   "series": "short run (year 2010)",
+   "panel": "Tax rate τ",
+   "value": 2.090592375436949,
+   "text": "+2.1 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--tau--short--rho1.9",
+   "label": "ρ = 1.9",
+   "series": "short run (year 2010)",
+   "panel": "Tax rate τ",
+   "value": 2.0448293205933594,
+   "text": "+2.0 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--tau--short--rho2.0",
+   "label": "ρ = 2.0",
+   "series": "short run (year 2010)",
+   "panel": "Tax rate τ",
+   "value": 2.0327672833317503,
+   "text": "+2.0 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--tau--long--rho0.5",
+   "label": "ρ = 0.5",
+   "series": "long run (year 2040)",
+   "panel": "Tax rate τ",
+   "value": 1.7531573182146514,
+   "text": "+1.8 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--tau--long--rho0.6",
+   "label": "ρ = 0.6",
+   "series": "long run (year 2040)",
+   "panel": "Tax rate τ",
+   "value": 2.4842393366809326,
+   "text": "+2.5 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--tau--long--rho0.7",
+   "label": "ρ = 0.7",
+   "series": "long run (year 2040)",
+   "panel": "Tax rate τ",
+   "value": 2.9396907382458815,
+   "text": "+2.9 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--tau--long--rho0.8",
+   "label": "ρ = 0.8",
+   "series": "long run (year 2040)",
+   "panel": "Tax rate τ",
+   "value": 3.21488289082007,
+   "text": "+3.2 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--tau--long--rho0.9",
+   "label": "ρ = 0.9",
+   "series": "long run (year 2040)",
+   "panel": "Tax rate τ",
+   "value": 3.3758471666788497,
+   "text": "+3.4 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--tau--long--rho1.0",
+   "label": "ρ = 1.0",
+   "series": "long run (year 2040)",
+   "panel": "Tax rate τ",
+   "value": 3.469361718484809,
+   "text": "+3.5 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--tau--long--rho1.1",
+   "label": "ρ = 1.1",
+   "series": "long run (year 2040)",
+   "panel": "Tax rate τ",
+   "value": 3.516963112103161,
+   "text": "+3.5 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--tau--long--rho1.2",
+   "label": "ρ = 1.2",
+   "series": "long run (year 2040)",
+   "panel": "Tax rate τ",
+   "value": 3.531408346277229,
+   "text": "+3.5 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--tau--long--rho1.3",
+   "label": "ρ = 1.3",
+   "series": "long run (year 2040)",
+   "panel": "Tax rate τ",
+   "value": 3.5301829201691697,
+   "text": "+3.5 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--tau--long--rho1.4",
+   "label": "ρ = 1.4",
+   "series": "long run (year 2040)",
+   "panel": "Tax rate τ",
+   "value": 3.511426973139911,
+   "text": "+3.5 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--tau--long--rho1.5",
+   "label": "ρ = 1.5",
+   "series": "long run (year 2040)",
+   "panel": "Tax rate τ",
+   "value": 3.4853048235090807,
+   "text": "+3.5 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--tau--long--rho1.6",
+   "label": "ρ = 1.6",
+   "series": "long run (year 2040)",
+   "panel": "Tax rate τ",
+   "value": 3.452712260499008,
+   "text": "+3.5 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--tau--long--rho1.7",
+   "label": "ρ = 1.7",
+   "series": "long run (year 2040)",
+   "panel": "Tax rate τ",
+   "value": 3.4156469648797123,
+   "text": "+3.4 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--tau--long--rho1.8",
+   "label": "ρ = 1.8",
+   "series": "long run (year 2040)",
+   "panel": "Tax rate τ",
+   "value": 3.3761326593188006,
+   "text": "+3.4 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--tau--long--rho1.9",
+   "label": "ρ = 1.9",
+   "series": "long run (year 2040)",
+   "panel": "Tax rate τ",
+   "value": 3.344034665582049,
+   "text": "+3.3 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--tau--long--rho2.0",
+   "label": "ρ = 2.0",
+   "series": "long run (year 2040)",
+   "panel": "Tax rate τ",
+   "value": 3.2895641867921324,
+   "text": "+3.3 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--sr--short--rho0.5",
+   "label": "ρ = 0.5",
+   "series": "short run (year 2010)",
+   "panel": "Savings rate",
+   "value": 0.21084661367919977,
+   "text": "+0.2 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--sr--short--rho0.6",
+   "label": "ρ = 0.6",
+   "series": "short run (year 2010)",
+   "panel": "Savings rate",
+   "value": -0.05688603256855662,
+   "text": "−0.1 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--sr--short--rho0.7",
+   "label": "ρ = 0.7",
+   "series": "short run (year 2010)",
+   "panel": "Savings rate",
+   "value": -0.20769646512732998,
+   "text": "−0.2 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--sr--short--rho0.8",
+   "label": "ρ = 0.8",
+   "series": "short run (year 2010)",
+   "panel": "Savings rate",
+   "value": -0.295984598330587,
+   "text": "−0.3 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--sr--short--rho0.9",
+   "label": "ρ = 0.9",
+   "series": "short run (year 2010)",
+   "panel": "Savings rate",
+   "value": -0.3418811265514049,
+   "text": "−0.3 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--sr--short--rho1.0",
+   "label": "ρ = 1.0",
+   "series": "short run (year 2010)",
+   "panel": "Savings rate",
+   "value": -0.3642111361878475,
+   "text": "−0.4 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--sr--short--rho1.1",
+   "label": "ρ = 1.1",
+   "series": "short run (year 2010)",
+   "panel": "Savings rate",
+   "value": -0.372187190448095,
+   "text": "−0.4 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--sr--short--rho1.2",
+   "label": "ρ = 1.2",
+   "series": "short run (year 2010)",
+   "panel": "Savings rate",
+   "value": -0.3707599254404781,
+   "text": "−0.4 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--sr--short--rho1.3",
+   "label": "ρ = 1.3",
+   "series": "short run (year 2010)",
+   "panel": "Savings rate",
+   "value": -0.36384151726313874,
+   "text": "−0.4 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--sr--short--rho1.4",
+   "label": "ρ = 1.4",
+   "series": "short run (year 2010)",
+   "panel": "Savings rate",
+   "value": -0.353678011926975,
+   "text": "−0.4 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--sr--short--rho1.5",
+   "label": "ρ = 1.5",
+   "series": "short run (year 2010)",
+   "panel": "Savings rate",
+   "value": -0.3415345264114772,
+   "text": "−0.3 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--sr--short--rho1.6",
+   "label": "ρ = 1.6",
+   "series": "short run (year 2010)",
+   "panel": "Savings rate",
+   "value": -0.3287428036614304,
+   "text": "−0.3 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--sr--short--rho1.7",
+   "label": "ρ = 1.7",
+   "series": "short run (year 2010)",
+   "panel": "Savings rate",
+   "value": -0.31548412352050137,
+   "text": "−0.3 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--sr--short--rho1.8",
+   "label": "ρ = 1.8",
+   "series": "short run (year 2010)",
+   "panel": "Savings rate",
+   "value": -0.30247148993206296,
+   "text": "−0.3 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--sr--short--rho1.9",
+   "label": "ρ = 1.9",
+   "series": "short run (year 2010)",
+   "panel": "Savings rate",
+   "value": -0.2889523115081616,
+   "text": "−0.3 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--sr--short--rho2.0",
+   "label": "ρ = 2.0",
+   "series": "short run (year 2010)",
+   "panel": "Savings rate",
+   "value": -0.27752694258666166,
+   "text": "−0.3 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--sr--long--rho0.5",
+   "label": "ρ = 0.5",
+   "series": "long run (year 2040)",
+   "panel": "Savings rate",
+   "value": -0.0583541019968048,
+   "text": "−0.1 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--sr--long--rho0.6",
+   "label": "ρ = 0.6",
+   "series": "long run (year 2040)",
+   "panel": "Savings rate",
+   "value": -0.2699298405175396,
+   "text": "−0.3 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--sr--long--rho0.7",
+   "label": "ρ = 0.7",
+   "series": "long run (year 2040)",
+   "panel": "Savings rate",
+   "value": -0.3760101447986511,
+   "text": "−0.4 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--sr--long--rho0.8",
+   "label": "ρ = 0.8",
+   "series": "long run (year 2040)",
+   "panel": "Savings rate",
+   "value": -0.420751956990717,
+   "text": "−0.4 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--sr--long--rho0.9",
+   "label": "ρ = 0.9",
+   "series": "long run (year 2040)",
+   "panel": "Savings rate",
+   "value": -0.43571778102534514,
+   "text": "−0.4 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--sr--long--rho1.0",
+   "label": "ρ = 1.0",
+   "series": "long run (year 2040)",
+   "panel": "Savings rate",
+   "value": -0.4308755738650999,
+   "text": "−0.4 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--sr--long--rho1.1",
+   "label": "ρ = 1.1",
+   "series": "long run (year 2040)",
+   "panel": "Savings rate",
+   "value": -0.41861403864794644,
+   "text": "−0.4 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--sr--long--rho1.2",
+   "label": "ρ = 1.2",
+   "series": "long run (year 2040)",
+   "panel": "Savings rate",
+   "value": -0.40003665210198713,
+   "text": "−0.4 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--sr--long--rho1.3",
+   "label": "ρ = 1.3",
+   "series": "long run (year 2040)",
+   "panel": "Savings rate",
+   "value": -0.3810192433680498,
+   "text": "−0.4 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--sr--long--rho1.4",
+   "label": "ρ = 1.4",
+   "series": "long run (year 2040)",
+   "panel": "Savings rate",
+   "value": -0.3598915978063513,
+   "text": "−0.4 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--sr--long--rho1.5",
+   "label": "ρ = 1.5",
+   "series": "long run (year 2040)",
+   "panel": "Savings rate",
+   "value": -0.34021076393043886,
+   "text": "−0.3 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--sr--long--rho1.6",
+   "label": "ρ = 1.6",
+   "series": "long run (year 2040)",
+   "panel": "Savings rate",
+   "value": -0.3205869092110375,
+   "text": "−0.3 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--sr--long--rho1.7",
+   "label": "ρ = 1.7",
+   "series": "long run (year 2040)",
+   "panel": "Savings rate",
+   "value": -0.3023586823222221,
+   "text": "−0.3 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--sr--long--rho1.8",
+   "label": "ρ = 1.8",
+   "series": "long run (year 2040)",
+   "panel": "Savings rate",
+   "value": -0.28487383821772655,
+   "text": "−0.3 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--sr--long--rho1.9",
+   "label": "ρ = 1.9",
+   "series": "long run (year 2040)",
+   "panel": "Savings rate",
+   "value": -0.2696785264558105,
+   "text": "−0.3 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--sr--long--rho2.0",
+   "label": "ρ = 2.0",
+   "series": "long run (year 2040)",
+   "panel": "Savings rate",
+   "value": -0.2529763301753446,
+   "text": "−0.3 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--ww--short--rho0.5",
+   "label": "ρ = 0.5",
+   "series": "short run (year 2010)",
+   "panel": "Average workweek",
+   "value": 0.03748113420061043,
+   "text": "+0.04 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--ww--short--rho0.6",
+   "label": "ρ = 0.6",
+   "series": "short run (year 2010)",
+   "panel": "Average workweek",
+   "value": -0.07250016670688272,
+   "text": "−0.1 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--ww--short--rho0.7",
+   "label": "ρ = 0.7",
+   "series": "short run (year 2010)",
+   "panel": "Average workweek",
+   "value": -0.14140279453625637,
+   "text": "−0.1 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--ww--short--rho0.8",
+   "label": "ρ = 0.8",
+   "series": "short run (year 2010)",
+   "panel": "Average workweek",
+   "value": -0.18980295187180932,
+   "text": "−0.2 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--ww--short--rho0.9",
+   "label": "ρ = 0.9",
+   "series": "short run (year 2010)",
+   "panel": "Average workweek",
+   "value": -0.2205250745681204,
+   "text": "−0.2 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--ww--short--rho1.0",
+   "label": "ρ = 1.0",
+   "series": "short run (year 2010)",
+   "panel": "Average workweek",
+   "value": -0.24055336580716288,
+   "text": "−0.2 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--ww--short--rho1.1",
+   "label": "ρ = 1.1",
+   "series": "short run (year 2010)",
+   "panel": "Average workweek",
+   "value": -0.2535601217479543,
+   "text": "−0.3 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--ww--short--rho1.2",
+   "label": "ρ = 1.2",
+   "series": "short run (year 2010)",
+   "panel": "Average workweek",
+   "value": -0.26150580094713277,
+   "text": "−0.3 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--ww--short--rho1.3",
+   "label": "ρ = 1.3",
+   "series": "short run (year 2010)",
+   "panel": "Average workweek",
+   "value": -0.265257139279143,
+   "text": "−0.3 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--ww--short--rho1.4",
+   "label": "ρ = 1.4",
+   "series": "short run (year 2010)",
+   "panel": "Average workweek",
+   "value": -0.2670446722232999,
+   "text": "−0.3 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--ww--short--rho1.5",
+   "label": "ρ = 1.5",
+   "series": "short run (year 2010)",
+   "panel": "Average workweek",
+   "value": -0.26664543042449124,
+   "text": "−0.3 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--ww--short--rho1.6",
+   "label": "ρ = 1.6",
+   "series": "short run (year 2010)",
+   "panel": "Average workweek",
+   "value": -0.2652906391234599,
+   "text": "−0.3 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--ww--short--rho1.7",
+   "label": "ρ = 1.7",
+   "series": "short run (year 2010)",
+   "panel": "Average workweek",
+   "value": -0.2629949969284822,
+   "text": "−0.3 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--ww--short--rho1.8",
+   "label": "ρ = 1.8",
+   "series": "short run (year 2010)",
+   "panel": "Average workweek",
+   "value": -0.26008618357446933,
+   "text": "−0.3 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--ww--short--rho1.9",
+   "label": "ρ = 1.9",
+   "series": "short run (year 2010)",
+   "panel": "Average workweek",
+   "value": -0.2545799844587183,
+   "text": "−0.3 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--ww--short--rho2.0",
+   "label": "ρ = 2.0",
+   "series": "short run (year 2010)",
+   "panel": "Average workweek",
+   "value": -0.25415035481106646,
+   "text": "−0.3 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--ww--long--rho0.5",
+   "label": "ρ = 0.5",
+   "series": "long run (year 2040)",
+   "panel": "Average workweek",
+   "value": -0.2518045956834075,
+   "text": "−0.3 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--ww--long--rho0.6",
+   "label": "ρ = 0.6",
+   "series": "long run (year 2040)",
+   "panel": "Average workweek",
+   "value": -0.42818626724737247,
+   "text": "−0.4 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--ww--long--rho0.7",
+   "label": "ρ = 0.7",
+   "series": "long run (year 2040)",
+   "panel": "Average workweek",
+   "value": -0.5334447454983204,
+   "text": "−0.5 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--ww--long--rho0.8",
+   "label": "ρ = 0.8",
+   "series": "long run (year 2040)",
+   "panel": "Average workweek",
+   "value": -0.5961332329515316,
+   "text": "−0.6 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--ww--long--rho0.9",
+   "label": "ρ = 0.9",
+   "series": "long run (year 2040)",
+   "panel": "Average workweek",
+   "value": -0.6295745014012119,
+   "text": "−0.6 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--ww--long--rho1.0",
+   "label": "ρ = 1.0",
+   "series": "long run (year 2040)",
+   "panel": "Average workweek",
+   "value": -0.6474946386113839,
+   "text": "−0.6 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--ww--long--rho1.1",
+   "label": "ρ = 1.1",
+   "series": "long run (year 2040)",
+   "panel": "Average workweek",
+   "value": -0.654272483058752,
+   "text": "−0.7 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--ww--long--rho1.2",
+   "label": "ρ = 1.2",
+   "series": "long run (year 2040)",
+   "panel": "Average workweek",
+   "value": -0.6540423415705993,
+   "text": "−0.7 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--ww--long--rho1.3",
+   "label": "ρ = 1.3",
+   "series": "long run (year 2040)",
+   "panel": "Average workweek",
+   "value": -0.6497762305793462,
+   "text": "−0.6 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--ww--long--rho1.4",
+   "label": "ρ = 1.4",
+   "series": "long run (year 2040)",
+   "panel": "Average workweek",
+   "value": -0.6425267059116051,
+   "text": "−0.6 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--ww--long--rho1.5",
+   "label": "ρ = 1.5",
+   "series": "long run (year 2040)",
+   "panel": "Average workweek",
+   "value": -0.6335065849268494,
+   "text": "−0.6 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--ww--long--rho1.6",
+   "label": "ρ = 1.6",
+   "series": "long run (year 2040)",
+   "panel": "Average workweek",
+   "value": -0.6237031364826077,
+   "text": "−0.6 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--ww--long--rho1.7",
+   "label": "ρ = 1.7",
+   "series": "long run (year 2040)",
+   "panel": "Average workweek",
+   "value": -0.6131223413990501,
+   "text": "−0.6 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--ww--long--rho1.8",
+   "label": "ρ = 1.8",
+   "series": "long run (year 2040)",
+   "panel": "Average workweek",
+   "value": -0.6024863777334382,
+   "text": "−0.6 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--ww--long--rho1.9",
+   "label": "ρ = 1.9",
+   "series": "long run (year 2040)",
+   "panel": "Average workweek",
+   "value": -0.5926472549616824,
+   "text": "−0.6 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--ww--long--rho2.0",
+   "label": "ρ = 2.0",
+   "series": "long run (year 2040)",
+   "panel": "Average workweek",
+   "value": -0.5808825256737236,
+   "text": "−0.6 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--iota--short--rho0.5",
+   "label": "ρ = 0.5",
+   "series": "short run (year 2010)",
+   "panel": "Informal savings ratio ι",
+   "value": -5.778398131035839,
+   "text": "−5.8 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--iota--short--rho0.6",
+   "label": "ρ = 0.6",
+   "series": "short run (year 2010)",
+   "panel": "Informal savings ratio ι",
+   "value": -5.794708327422427,
+   "text": "−5.8 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--iota--short--rho0.7",
+   "label": "ρ = 0.7",
+   "series": "short run (year 2010)",
+   "panel": "Informal savings ratio ι",
+   "value": -5.808903752929279,
+   "text": "−5.8 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--iota--short--rho0.8",
+   "label": "ρ = 0.8",
+   "series": "short run (year 2010)",
+   "panel": "Informal savings ratio ι",
+   "value": -5.820100129348182,
+   "text": "−5.8 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--iota--short--rho0.9",
+   "label": "ρ = 0.9",
+   "series": "short run (year 2010)",
+   "panel": "Informal savings ratio ι",
+   "value": -5.840084285800506,
+   "text": "−5.8 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--iota--short--rho1.0",
+   "label": "ρ = 1.0",
+   "series": "short run (year 2010)",
+   "panel": "Informal savings ratio ι",
+   "value": -5.863532296961582,
+   "text": "−5.9 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--iota--short--rho1.1",
+   "label": "ρ = 1.1",
+   "series": "short run (year 2010)",
+   "panel": "Informal savings ratio ι",
+   "value": -5.887059664933458,
+   "text": "−5.9 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--iota--short--rho1.2",
+   "label": "ρ = 1.2",
+   "series": "short run (year 2010)",
+   "panel": "Informal savings ratio ι",
+   "value": -5.910753210310599,
+   "text": "−5.9 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--iota--short--rho1.3",
+   "label": "ρ = 1.3",
+   "series": "short run (year 2010)",
+   "panel": "Informal savings ratio ι",
+   "value": -5.935740467119643,
+   "text": "−5.9 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--iota--short--rho1.4",
+   "label": "ρ = 1.4",
+   "series": "short run (year 2010)",
+   "panel": "Informal savings ratio ι",
+   "value": -5.958101272640947,
+   "text": "−6.0 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--iota--short--rho1.5",
+   "label": "ρ = 1.5",
+   "series": "short run (year 2010)",
+   "panel": "Informal savings ratio ι",
+   "value": -5.980650992055681,
+   "text": "−6.0 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--iota--short--rho1.6",
+   "label": "ρ = 1.6",
+   "series": "short run (year 2010)",
+   "panel": "Informal savings ratio ι",
+   "value": -6.000206169312361,
+   "text": "−6.0 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--iota--short--rho1.7",
+   "label": "ρ = 1.7",
+   "series": "short run (year 2010)",
+   "panel": "Informal savings ratio ι",
+   "value": -6.019079387846427,
+   "text": "−6.0 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--iota--short--rho1.8",
+   "label": "ρ = 1.8",
+   "series": "short run (year 2010)",
+   "panel": "Informal savings ratio ι",
+   "value": -6.03344597001334,
+   "text": "−6.0 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--iota--short--rho1.9",
+   "label": "ρ = 1.9",
+   "series": "short run (year 2010)",
+   "panel": "Informal savings ratio ι",
+   "value": -6.057046492994206,
+   "text": "−6.1 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--iota--short--rho2.0",
+   "label": "ρ = 2.0",
+   "series": "short run (year 2010)",
+   "panel": "Informal savings ratio ι",
+   "value": -6.059129753276521,
+   "text": "−6.1 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--iota--long--rho0.5",
+   "label": "ρ = 0.5",
+   "series": "long run (year 2040)",
+   "panel": "Informal savings ratio ι",
+   "value": -5.5210900932056495,
+   "text": "−5.5 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--iota--long--rho0.6",
+   "label": "ρ = 0.6",
+   "series": "long run (year 2040)",
+   "panel": "Informal savings ratio ι",
+   "value": -5.652572226162,
+   "text": "−5.7 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--iota--long--rho0.7",
+   "label": "ρ = 0.7",
+   "series": "long run (year 2040)",
+   "panel": "Informal savings ratio ι",
+   "value": -5.747131405725748,
+   "text": "−5.7 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--iota--long--rho0.8",
+   "label": "ρ = 0.8",
+   "series": "long run (year 2040)",
+   "panel": "Informal savings ratio ι",
+   "value": -5.847490843299669,
+   "text": "−5.8 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--iota--long--rho0.9",
+   "label": "ρ = 0.9",
+   "series": "long run (year 2040)",
+   "panel": "Informal savings ratio ι",
+   "value": -5.946548436021293,
+   "text": "−5.9 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--iota--long--rho1.0",
+   "label": "ρ = 1.0",
+   "series": "long run (year 2040)",
+   "panel": "Informal savings ratio ι",
+   "value": -6.0322151041881265,
+   "text": "−6.0 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--iota--long--rho1.1",
+   "label": "ρ = 1.1",
+   "series": "long run (year 2040)",
+   "panel": "Informal savings ratio ι",
+   "value": -6.114820320720071,
+   "text": "−6.1 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--iota--long--rho1.2",
+   "label": "ρ = 1.2",
+   "series": "long run (year 2040)",
+   "panel": "Informal savings ratio ι",
+   "value": -6.188864296610591,
+   "text": "−6.2 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--iota--long--rho1.3",
+   "label": "ρ = 1.3",
+   "series": "long run (year 2040)",
+   "panel": "Informal savings ratio ι",
+   "value": -6.253952146500163,
+   "text": "−6.3 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--iota--long--rho1.4",
+   "label": "ρ = 1.4",
+   "series": "long run (year 2040)",
+   "panel": "Informal savings ratio ι",
+   "value": -6.313506180860568,
+   "text": "−6.3 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--iota--long--rho1.5",
+   "label": "ρ = 1.5",
+   "series": "long run (year 2040)",
+   "panel": "Informal savings ratio ι",
+   "value": -6.367144956901871,
+   "text": "−6.4 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--iota--long--rho1.6",
+   "label": "ρ = 1.6",
+   "series": "long run (year 2040)",
+   "panel": "Informal savings ratio ι",
+   "value": -6.414367429289919,
+   "text": "−6.4 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--iota--long--rho1.7",
+   "label": "ρ = 1.7",
+   "series": "long run (year 2040)",
+   "panel": "Informal savings ratio ι",
+   "value": -6.458000722443657,
+   "text": "−6.5 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--iota--long--rho1.8",
+   "label": "ρ = 1.8",
+   "series": "long run (year 2040)",
+   "panel": "Informal savings ratio ι",
+   "value": -6.494065693746098,
+   "text": "−6.5 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--iota--long--rho1.9",
+   "label": "ρ = 1.9",
+   "series": "long run (year 2040)",
+   "panel": "Informal savings ratio ι",
+   "value": -6.522731063386122,
+   "text": "−6.5 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_CRRA_LOG--iota--long--rho2.0",
+   "label": "ρ = 2.0",
+   "series": "long run (year 2040)",
+   "panel": "Informal savings ratio ι",
+   "value": -6.561777815080438,
+   "text": "−6.6 p.p.",
+   "table": null,
+   "row": null
+  }
+ ]
+}

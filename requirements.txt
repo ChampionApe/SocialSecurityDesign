@@ -1,0 +1,19 @@
+# Python 3.14 (3.14.6 used). Then: pip install -e python (this repository's gridsearch package).
+contourpy==1.3.3
+cycler==0.12.1
+et_xmlfile==2.0.0
+fonttools==4.63.0
+kiwisolver==1.5.0
+matplotlib==3.11.1
+numpy==2.5.1
+openpyxl==3.1.5
+packaging==26.3
+pandas==3.0.3
+pillow==12.3.0
+pyDbs==0.1.8
+pyparsing==3.3.2
+python-dateutil==2.9.0.post0
+scipy==1.18.0
+six==1.17.0
+symMaps==0.0.4
+tzdata==2026.3

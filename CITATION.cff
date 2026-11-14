@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use this code or data, please cite the paper and this replication package."
+title: "Social Security Design and Its Political Support: replication package"
+type: software
+authors:
+  - family-names: Berg
+    given-names: Rasmus K. S.
+    affiliation: University of Copenhagen
+repository-code: "https://github.com/ChampionApe/SocialSecurityDesign"
+url: "https://championape.github.io/SocialSecurityDesign"
+license: MIT
+preferred-citation:
+  type: unpublished
+  title: "Social Security Design and Its Political Support"
+  authors:
+    - family-names: Berg
+      given-names: Rasmus K. S.
+      affiliation: University of Copenhagen
+    - family-names: Gonzalez-Eiras
+      given-names: Martín
+      affiliation: University of Bologna
+  year: 2026

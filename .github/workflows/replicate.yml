@@ -1,0 +1,50 @@
+# Each commit, on a clean Linux machine: install the pinned packages, check that every exhibit builds from the
+# committed results and rebuilds unchanged, and re-solve one experiment from the committed calibration.
+name: replicate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  replicate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+          cache: pip
+
+      - name: Install the pinned packages and gridsearch
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -e python
+
+      - name: Every output is buildable from the committed results
+        run: python python/paper/build.py --list
+
+      - name: Rebuild every exhibit; the tables, figure notes and datasets must not change
+        run: |
+          python python/paper/build.py --no-copy
+          git diff --stat --exit-code -- results/paper/Tables results/paper/Data 'results/paper/Figs/*_note.tex'
+
+      - name: Re-solve the 2020 tax at pinned designs (escTauTheta) and compare with the committed csv
+        run: |
+          rm results/esc/escTauTheta.csv
+          python python/paper/runShocksUS.py --only escTauTheta
+          python - <<'EOF'
+          import sys
+          sys.path.insert(0, 'python/paper')
+          import pandas as pd, compareResults as CR
+          p = 'results/esc/escTauTheta.csv'
+          r = CR.compare(CR.committed('HEAD', p), pd.read_csv(p), 1e-6, p)
+          print(r)
+          bad = r['how'] == 'unaligned' or r['diffs'] or r.get('onlyOld') or r.get('onlyNew')
+          sys.exit(1 if bad else 0)
+          EOF

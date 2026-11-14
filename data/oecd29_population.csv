@@ -1,0 +1,556 @@
+iso3,country,definition,period,nu,pop,pop_lag30,note
+AUS,Australia,wpp2024,1990,1.6658506,17126.298,10280.813,
+AUS,Australia,wpp2024,2020,1.5031731,25743.791,17126.298,
+AUS,Australia,wpp2024,2050,1.262711,32506.969,25743.791,
+AUS,Australia,wpp2024,2080,1.1905399,38700.844,32506.969,
+AUS,Australia,wpp2024,1960,1.6658506,,,copy of 1990 (workbook convention)
+AUS,Australia,wpp2024,2110,1.1905399,,,copy of 2080 (workbook convention)
+AUT,Austria,wpp2024,1990,1.0897297,7679.624,7047.274,
+AUT,Austria,wpp2024,2020,1.1616982,8921.405,7679.624,
+AUT,Austria,wpp2024,2050,0.97791009,8724.332,8921.405,
+AUT,Austria,wpp2024,2080,0.8947116,7805.761,8724.332,
+AUT,Austria,wpp2024,1960,1.0897297,,,copy of 1990 (workbook convention)
+AUT,Austria,wpp2024,2110,0.8947116,,,copy of 2080 (workbook convention)
+BEL,Belgium,wpp2024,1990,1.0943508,9960.968,9102.171,
+BEL,Belgium,wpp2024,2020,1.1585327,11540.107,9960.968,
+BEL,Belgium,wpp2024,2050,1.0286652,11870.906,11540.107,
+BEL,Belgium,wpp2024,2080,0.95705037,11361.055,11870.906,
+BEL,Belgium,wpp2024,1960,1.0943508,,,copy of 1990 (workbook convention)
+BEL,Belgium,wpp2024,2110,0.95705037,,,copy of 2080 (workbook convention)
+CAN,Canada,wpp2024,1990,1.5525878,27789.443,17898.79,
+CAN,Canada,wpp2024,2020,1.3736116,38171.902,27789.443,
+CAN,Canada,wpp2024,2050,1.1951692,45621.882,38171.902,
+CAN,Canada,wpp2024,2080,1.105813,50449.27,45621.882,
+CAN,Canada,wpp2024,1960,1.5525878,,,copy of 1990 (workbook convention)
+CAN,Canada,wpp2024,2110,1.105813,,,copy of 2080 (workbook convention)
+CZE,Czech Republic,wpp2024,1990,1.0796913,10301.988,9541.605,
+CZE,Czech Republic,wpp2024,2020,1.0240867,10550.129,10301.988,
+CZE,Czech Republic,wpp2024,2050,0.9313197,9825.543,10550.129,
+CZE,Czech Republic,wpp2024,2080,0.87809172,8627.728,9825.543,
+CZE,Czech Republic,wpp2024,1960,1.0796913,,,copy of 1990 (workbook convention)
+CZE,Czech Republic,wpp2024,2110,0.87809172,,,copy of 2080 (workbook convention)
+DNK,Denmark,wpp2024,1990,1.1226558,5141.025,4579.342,
+DNK,Denmark,wpp2024,2020,1.1343127,5831.53,5141.025,
+DNK,Denmark,wpp2024,2050,1.0502969,6124.838,5831.53,
+DNK,Denmark,wpp2024,2080,0.98105289,6008.79,6124.838,
+DNK,Denmark,wpp2024,1960,1.1226558,,,copy of 1990 (workbook convention)
+DNK,Denmark,wpp2024,2110,0.98105289,,,copy of 2080 (workbook convention)
+FIN,Finland,wpp2024,1990,1.1257332,4986.575,4429.624,
+FIN,Finland,wpp2024,2020,1.1088998,5529.612,4986.575,
+FIN,Finland,wpp2024,2050,0.96781564,5351.645,5529.612,
+FIN,Finland,wpp2024,2080,0.9180026,4912.824,5351.645,
+FIN,Finland,wpp2024,1960,1.1257332,,,copy of 1990 (workbook convention)
+FIN,Finland,wpp2024,2110,0.9180026,,,copy of 2080 (workbook convention)
+FRA,France,wpp2024,1990,1.2274936,56990.238,46428.134,
+FRA,France,wpp2024,2020,1.156431,65905.277,56990.238,
+FRA,France,wpp2024,2050,1.035117,68219.675,65905.277,
+FRA,France,wpp2024,2080,0.99714543,68024.937,68219.675,
+FRA,France,wpp2024,1960,1.2274936,,,copy of 1990 (workbook convention)
+FRA,France,wpp2024,2110,0.99714543,,,copy of 2080 (workbook convention)
+DEU,Germany,wpp2024,1990,1.0947145,79707.959,72811.64,
+DEU,Germany,wpp2024,2020,1.0491889,83628.708,79707.959,
+DEU,Germany,wpp2024,2050,0.93621694,78294.613,83628.708,
+DEU,Germany,wpp2024,2080,0.92104056,72112.514,78294.613,
+DEU,Germany,wpp2024,1960,1.0947145,,,copy of 1990 (workbook convention)
+DEU,Germany,wpp2024,2110,0.92104056,,,copy of 2080 (workbook convention)
+GRC,Greece,wpp2024,1990,1.2235073,10258.487,8384.492,
+GRC,Greece,wpp2024,2020,1.0429773,10699.369,10258.487,
+GRC,Greece,wpp2024,2050,0.82360642,8812.069,10699.369,
+GRC,Greece,wpp2024,2080,0.79895334,7040.432,8812.069,
+GRC,Greece,wpp2024,1960,1.2235073,,,copy of 1990 (workbook convention)
+GRC,Greece,wpp2024,2110,0.79895334,,,copy of 2080 (workbook convention)
+HUN,Hungary,wpp2024,1990,1.039857,10381.281,9983.374,
+HUN,Hungary,wpp2024,2020,0.93913815,9749.457,10381.281,
+HUN,Hungary,wpp2024,2050,0.89495723,8725.347,9749.457,
+HUN,Hungary,wpp2024,2080,0.89220222,7784.774,8725.347,
+HUN,Hungary,wpp2024,1960,1.039857,,,copy of 1990 (workbook convention)
+HUN,Hungary,wpp2024,2110,0.89220222,,,copy of 2080 (workbook convention)
+ISL,Iceland,wpp2024,1990,1.4515436,254.833,175.56,
+ISL,Iceland,wpp2024,2020,1.4386441,366.614,254.833,
+ISL,Iceland,wpp2024,2050,1.1810596,432.993,366.614,
+ISL,Iceland,wpp2024,2080,0.93038687,402.851,432.993,
+ISL,Iceland,wpp2024,1960,1.4515436,,,copy of 1990 (workbook convention)
+ISL,Iceland,wpp2024,2110,0.93038687,,,copy of 2080 (workbook convention)
+IRL,Ireland,wpp2024,1990,1.2427173,3514.018,2827.689,
+IRL,Ireland,wpp2024,2020,1.4179227,4982.606,3514.018,
+IRL,Ireland,wpp2024,2050,1.1981766,5970.042,4982.606,
+IRL,Ireland,wpp2024,2080,0.9437071,5633.971,5970.042,
+IRL,Ireland,wpp2024,1960,1.2427173,,,copy of 1990 (workbook convention)
+IRL,Ireland,wpp2024,2110,0.9437071,,,copy of 2080 (workbook convention)
+ITA,Italy,wpp2024,1990,1.1518119,57031.454,49514.555,
+ITA,Italy,wpp2024,2020,1.0505215,59912.769,57031.454,
+ITA,Italy,wpp2024,2050,0.86611085,51891.099,59912.769,
+ITA,Italy,wpp2024,2080,0.77519788,40225.87,51891.099,
+ITA,Italy,wpp2024,1960,1.1518119,,,copy of 1990 (workbook convention)
+ITA,Italy,wpp2024,2110,0.77519788,,,copy of 2080 (workbook convention)
+JPN,Japan,wpp2024,1990,1.2800838,123399.76,96399.754,
+JPN,Japan,wpp2024,2020,1.0235396,126304.54,123399.76,
+JPN,Japan,wpp2024,2050,0.83229918,105123.17,126304.54,
+JPN,Japan,wpp2024,2080,0.8060066,84729.966,105123.17,
+JPN,Japan,wpp2024,1960,1.2800838,,,copy of 1990 (workbook convention)
+JPN,Japan,wpp2024,2110,0.8060066,,,copy of 2080 (workbook convention)
+KOR,Korea,wpp2024,1990,1.687949,44081.427,26115.379,
+KOR,Korea,wpp2024,2020,1.1764248,51858.482,44081.427,
+KOR,Korea,wpp2024,2050,0.87050628,45143.134,51858.482,
+KOR,Korea,wpp2024,2080,0.65727621,29671.508,45143.134,
+KOR,Korea,wpp2024,1960,1.687949,,,copy of 1990 (workbook convention)
+KOR,Korea,wpp2024,2110,0.65727621,,,copy of 2080 (workbook convention)
+LUX,Luxembourg,wpp2024,1990,1.2160815,381.7,313.877,
+LUX,Luxembourg,wpp2024,2020,1.6520749,630.597,381.7,
+LUX,Luxembourg,wpp2024,2050,1.2551027,791.464,630.597,
+LUX,Luxembourg,wpp2024,2080,0.98854149,782.395,791.464,
+LUX,Luxembourg,wpp2024,1960,1.2160815,,,copy of 1990 (workbook convention)
+LUX,Luxembourg,wpp2024,2110,0.98854149,,,copy of 2080 (workbook convention)
+MEX,Mexico,wpp2024,1990,2.2551678,82820.17,36724.615,
+MEX,Mexico,wpp2024,2020,1.5310166,126799.05,82820.17,
+MEX,Mexico,wpp2024,2050,1.1746639,148946.27,126799.05,
+MEX,Mexico,wpp2024,2080,0.96543759,143798.33,148946.27,
+MEX,Mexico,wpp2024,1960,2.2551678,,,copy of 1990 (workbook convention)
+MEX,Mexico,wpp2024,2110,0.96543759,,,copy of 2080 (workbook convention)
+NLD,Netherlands,wpp2024,1990,1.3085222,15030.878,11486.911,
+NLD,Netherlands,wpp2024,2020,1.1733667,17636.731,15030.878,
+NLD,Netherlands,wpp2024,2050,1.0749427,18958.475,17636.731,
+NLD,Netherlands,wpp2024,2080,0.96270138,18251.35,18958.475,
+NLD,Netherlands,wpp2024,1960,1.3085222,,,copy of 1990 (workbook convention)
+NLD,Netherlands,wpp2024,2110,0.96270138,,,copy of 2080 (workbook convention)
+NZL,New Zealand,wpp2024,1990,1.4276134,3396.979,2379.481,
+NZL,New Zealand,wpp2024,2020,1.4924717,5069.895,3396.979,
+NZL,New Zealand,wpp2024,2050,1.1351888,5755.288,5069.895,
+NZL,New Zealand,wpp2024,2080,1.0189911,5864.587,5755.288,
+NZL,New Zealand,wpp2024,1960,1.4276134,,,copy of 1990 (workbook convention)
+NZL,New Zealand,wpp2024,2110,1.0189911,,,copy of 2080 (workbook convention)
+NOR,Norway,wpp2024,1990,1.1843889,4241.44,3581.121,
+NOR,Norway,wpp2024,2020,1.268266,5379.274,4241.44,
+NOR,Norway,wpp2024,2050,1.0967705,5899.829,5379.274,
+NOR,Norway,wpp2024,2080,0.9602558,5665.345,5899.829,
+NOR,Norway,wpp2024,1960,1.1843889,,,copy of 1990 (workbook convention)
+NOR,Norway,wpp2024,2110,0.9602558,,,copy of 2080 (workbook convention)
+POL,Poland,wpp2024,1990,1.286702,38055.455,29575.966,
+POL,Poland,wpp2024,2020,1.0030365,38171.012,38055.455,
+POL,Poland,wpp2024,2050,0.8596601,32814.096,38171.012,
+POL,Poland,wpp2024,2080,0.73254198,24037.703,32814.096,
+POL,Poland,wpp2024,1960,1.286702,,,copy of 1990 (workbook convention)
+POL,Poland,wpp2024,2110,0.73254198,,,copy of 2080 (workbook convention)
+PRT,Portugal,wpp2024,1990,1.1258062,9989.524,8873.218,
+PRT,Portugal,wpp2024,2020,1.0381395,10370.519,9989.524,
+PRT,Portugal,wpp2024,2050,0.94211977,9770.271,10370.519,
+PRT,Portugal,wpp2024,2080,0.90769478,8868.424,9770.271,
+PRT,Portugal,wpp2024,1960,1.1258062,,,copy of 1990 (workbook convention)
+PRT,Portugal,wpp2024,2110,0.90769478,,,copy of 2080 (workbook convention)
+ESP,Spain,wpp2024,1990,1.2854813,39084.979,30404.939,
+ESP,Spain,wpp2024,2020,1.2198929,47679.489,39084.979,
+ESP,Spain,wpp2024,2050,0.94230368,44928.558,47679.489,
+ESP,Spain,wpp2024,2080,0.81294697,36524.535,44928.558,
+ESP,Spain,wpp2024,1960,1.2854813,,,copy of 1990 (workbook convention)
+ESP,Spain,wpp2024,2110,0.81294697,,,copy of 2080 (workbook convention)
+SWE,Sweden,wpp2024,1990,1.1434908,8558.567,7484.596,
+SWE,Sweden,wpp2024,2020,1.2097453,10353.686,8558.567,
+SWE,Sweden,wpp2024,2050,1.0923289,11309.63,10353.686,
+SWE,Sweden,wpp2024,2080,1.0108038,11431.817,11309.63,
+SWE,Sweden,wpp2024,1960,1.1434908,,,copy of 1990 (workbook convention)
+SWE,Sweden,wpp2024,2110,1.0108038,,,copy of 2080 (workbook convention)
+CHE,Switzerland,wpp2024,1990,1.2600319,6713.173,5327.78,
+CHE,Switzerland,wpp2024,2020,1.2871085,8640.582,6713.173,
+CHE,Switzerland,wpp2024,2050,1.081245,9342.586,8640.582,
+CHE,Switzerland,wpp2024,2080,0.97512552,9110.194,9342.586,
+CHE,Switzerland,wpp2024,1960,1.2600319,,,copy of 1990 (workbook convention)
+CHE,Switzerland,wpp2024,2110,0.97512552,,,copy of 2080 (workbook convention)
+TUR,Turkey,wpp2024,1990,1.9772619,56015.628,28329.898,
+TUR,Turkey,wpp2024,2020,1.5369227,86091.692,56015.628,
+TUR,Turkey,wpp2024,2050,1.0600101,91258.061,86091.692,
+TUR,Turkey,wpp2024,2080,0.86080797,78555.666,91258.061,
+TUR,Turkey,wpp2024,1960,1.9772619,,,copy of 1990 (workbook convention)
+TUR,Turkey,wpp2024,2110,0.86080797,,,copy of 2080 (workbook convention)
+GBR,United Kingdom,wpp2024,1990,1.0919194,57367.862,52538.548,
+GBR,United Kingdom,wpp2024,2020,1.1740347,67351.861,57367.862,
+GBR,United Kingdom,wpp2024,2050,1.1210482,75504.681,67351.861,
+GBR,United Kingdom,wpp2024,2080,1.0059807,75956.251,75504.681,
+GBR,United Kingdom,wpp2024,1960,1.0919194,,,copy of 1990 (workbook convention)
+GBR,United Kingdom,wpp2024,2110,1.0059807,,,copy of 2080 (workbook convention)
+USA,United States,wpp2024,1990,1.4054861,253373.39,180274.55,
+USA,United States,wpp2024,2020,1.3396678,339436.16,253373.39,
+USA,United States,wpp2024,2050,1.1219986,380846.91,339436.16,
+USA,United States,wpp2024,2080,1.0688804,407079.82,380846.91,
+USA,United States,wpp2024,1960,1.4054861,,,copy of 1990 (workbook convention)
+USA,United States,wpp2024,2110,1.0688804,,,copy of 2080 (workbook convention)
+AUS,Australia,wpp2022,1990,1.6572945,17048.003,10286.647,
+AUS,Australia,wpp2022,2020,1.5057512,25670.051,17048.003,
+AUS,Australia,wpp2022,2050,1.2541042,32192.919,25670.051,
+AUS,Australia,wpp2022,2080,1.1261132,36252.872,32192.919,
+AUT,Austria,wpp2022,1990,1.0897142,7678.729,7046.553,
+AUT,Austria,wpp2022,2020,1.1600588,8907.777,7678.729,
+AUT,Austria,wpp2022,2050,1.0018425,8924.19,8907.777,
+AUT,Austria,wpp2022,2080,0.92440815,8249.594,8924.19,
+BEL,Belgium,wpp2022,1990,1.0934089,9959.56,9108.724,
+BEL,Belgium,wpp2022,2020,1.1608662,11561.717,9959.56,
+BEL,Belgium,wpp2022,2050,1.0457493,12090.657,11561.717,
+BEL,Belgium,wpp2022,2080,0.97359813,11771.441,12090.657,
+CAN,Canada,wpp2022,1990,1.544288,27657.204,17909.356,
+CAN,Canada,wpp2022,2020,1.3699398,37888.705,27657.204,
+CAN,Canada,wpp2022,2050,1.2112005,45890.819,37888.705,
+CAN,Canada,wpp2022,2080,1.1157469,51202.541,45890.819,
+CZE,Czech Republic,wpp2022,1990,1.0798617,10301.192,9539.362,
+CZE,Czech Republic,wpp2022,2020,1.0223043,10530.953,10301.192,
+CZE,Czech Republic,wpp2022,2050,1.0043845,10577.126,10530.953,
+CZE,Czech Republic,wpp2022,2080,1.0123933,10708.212,10577.126,
+DNK,Denmark,wpp2022,1990,1.1228567,5144.623,4581.727,
+DNK,Denmark,wpp2022,2020,1.1323747,5825.641,5144.623,
+DNK,Denmark,wpp2022,2050,1.1063347,6445.109,5825.641,
+DNK,Denmark,wpp2022,2080,1.0684566,6886.319,6445.109,
+FIN,Finland,wpp2022,1990,1.125587,4986.545,4430.173,
+FIN,Finland,wpp2022,2020,1.1088776,5529.468,4986.545,
+FIN,Finland,wpp2022,2050,0.9876026,5460.917,5529.468,
+FIN,Finland,wpp2022,2080,0.9566397,5224.13,5460.917,
+FRA,France,wpp2022,1990,1.2355108,56412.897,45659.575,
+FRA,France,wpp2022,2020,1.143002,64480.053,56412.897,
+FRA,France,wpp2022,2050,1.0208905,65827.072,64480.053,
+FRA,France,wpp2022,2080,0.95738405,63021.789,65827.072,
+DEU,Germany,wpp2022,1990,1.0863151,79370.196,73063.695,
+DEU,Germany,wpp2022,2020,1.0498776,83328.988,79370.196,
+DEU,Germany,wpp2022,2050,0.94723613,78932.228,83328.988,
+DEU,Germany,wpp2022,2080,0.91104556,71910.856,78932.228,
+GRC,Greece,wpp2022,1990,1.2126841,10302.255,8495.415,
+GRC,Greece,wpp2022,2020,1.0203817,10512.232,10302.255,
+GRC,Greece,wpp2022,2050,0.86993428,9144.951,10512.232,
+GRC,Greece,wpp2022,2080,0.79627469,7281.893,9144.951,
+HUN,Hungary,wpp2022,1990,1.0394064,10375.989,9982.61,
+HUN,Hungary,wpp2022,2020,0.93972469,9750.573,10375.989,
+HUN,Hungary,wpp2022,2050,0.90429516,8817.396,9750.573,
+HUN,Hungary,wpp2022,2080,0.8553658,7542.099,8817.396,
+ISL,Iceland,wpp2022,1990,1.4525535,255.019,175.566,
+ISL,Iceland,wpp2022,2020,1.4378105,366.669,255.019,
+ISL,Iceland,wpp2022,2050,1.1148556,408.783,366.669,
+ISL,Iceland,wpp2022,2080,0.9614074,393.007,408.783,
+IRL,Ireland,wpp2022,1990,1.2398758,3485.374,2811.067,
+IRL,Ireland,wpp2022,2020,1.4191071,4946.119,3485.374,
+IRL,Ireland,wpp2022,2050,1.1574097,5724.686,4946.119,
+IRL,Ireland,wpp2022,2080,1.0065006,5761.9,5724.686,
+ITA,Italy,wpp2022,1990,1.1461872,56756.561,49517.707,
+ITA,Italy,wpp2022,2020,1.0483472,59500.579,56756.561,
+ITA,Italy,wpp2022,2050,0.87815085,52250.484,59500.579,
+ITA,Italy,wpp2022,2080,0.79198824,41381.769,52250.484,
+JPN,Japan,wpp2022,1990,1.3093371,123686.32,94464.839,
+JPN,Japan,wpp2022,2020,1.0125999,125244.76,123686.32,
+JPN,Japan,wpp2022,2050,0.82865228,103784.36,125244.76,
+JPN,Japan,wpp2022,2080,0.79816074,82836.599,103784.36,
+KOR,Korea,wpp2022,1990,1.708918,44120.039,25817.529,
+KOR,Korea,wpp2022,2020,1.1750826,51844.69,44120.039,
+KOR,Korea,wpp2022,2050,0.88284594,45770.874,51844.69,
+KOR,Korea,wpp2022,2080,0.68620665,31408.278,45770.874,
+LUX,Luxembourg,wpp2022,1990,1.2135768,381.267,314.168,
+LUX,Luxembourg,wpp2022,2020,1.6534318,630.399,381.267,
+LUX,Luxembourg,wpp2022,2050,1.2403414,781.91,630.399,
+LUX,Luxembourg,wpp2022,2080,1.0794401,844.025,781.91,
+MEX,Mexico,wpp2022,1990,2.2532344,81720.428,36268.055,
+MEX,Mexico,wpp2022,2020,1.5418214,125998.3,81720.428,
+MEX,Mexico,wpp2022,2050,1.1410659,143772.36,125998.3,
+MEX,Mexico,wpp2022,2080,0.92408179,132857.42,143772.36,
+NLD,Netherlands,wpp2022,1990,1.3003042,14944.548,11493.117,
+NLD,Netherlands,wpp2022,2020,1.1666165,17434.557,14944.548,
+NLD,Netherlands,wpp2022,2050,1.0265259,17897.025,17434.557,
+NLD,Netherlands,wpp2022,2080,0.9614408,17206.93,17897.025,
+NZL,New Zealand,wpp2022,1990,1.4267616,3397.389,2381.189,
+NZL,New Zealand,wpp2022,2020,1.4897125,5061.133,3397.389,
+NZL,New Zealand,wpp2022,2050,1.1754289,5949.002,5061.133,
+NZL,New Zealand,wpp2022,2080,1.0324303,6141.93,5949.002,
+NOR,Norway,wpp2022,1990,1.1843117,4241.636,3581.52,
+NOR,Norway,wpp2022,2020,1.2683406,5379.839,4241.636,
+NOR,Norway,wpp2022,2050,1.1835966,6367.559,5379.839,
+NOR,Norway,wpp2022,2080,1.0909573,6946.735,6367.559,
+POL,Poland,wpp2022,1990,1.2898807,38064.255,29509.903,
+POL,Poland,wpp2022,2020,1.0095657,38428.366,38064.255,
+POL,Poland,wpp2022,2050,0.90902483,34932.339,38428.366,
+POL,Poland,wpp2022,2080,0.77965057,27235.018,34932.339,
+PRT,Portugal,wpp2022,1990,1.1266401,10007.346,8882.469,
+PRT,Portugal,wpp2022,2020,1.0290633,10298.192,10007.346,
+PRT,Portugal,wpp2022,2050,0.89931369,9261.305,10298.192,
+PRT,Portugal,wpp2022,2080,0.82286902,7620.841,9261.305,
+ESP,Spain,wpp2022,1990,1.2786169,38889.889,30415.591,
+ESP,Spain,wpp2022,2020,1.2178951,47363.807,38889.889,
+ESP,Spain,wpp2022,2050,0.93361509,44219.565,47363.807,
+ESP,Spain,wpp2022,2080,0.79147538,34998.697,44219.565,
+SWE,Sweden,wpp2022,1990,1.1408682,8548.406,7492.895,
+SWE,Sweden,wpp2022,2020,1.212971,10368.969,8548.406,
+SWE,Sweden,wpp2022,2050,1.1478512,11902.033,10368.969,
+SWE,Sweden,wpp2022,2080,1.0765587,12813.237,11902.033,
+CHE,Switzerland,wpp2022,1990,1.2596376,6711.693,5328.273,
+CHE,Switzerland,wpp2022,2020,1.2870989,8638.613,6711.693,
+CHE,Switzerland,wpp2022,2050,1.1290879,9753.753,8638.613,
+CHE,Switzerland,wpp2022,2080,1.0350834,10095.948,9753.753,
+TUR,Turkey,wpp2022,1990,1.9746349,54324.142,27510.98,
+TUR,Turkey,wpp2022,2020,1.5487668,84135.428,54324.142,
+TUR,Turkey,wpp2022,2050,1.1389882,95829.258,84135.428,
+TUR,Turkey,wpp2022,2080,0.94682549,90733.584,95829.258,
+GBR,United Kingdom,wpp2022,1990,1.0888305,57210.442,52543.017,
+GBR,United Kingdom,wpp2022,2020,1.1721544,67059.474,57210.442,
+GBR,United Kingdom,wpp2022,2050,1.068976,71684.966,67059.474,
+GBR,United Kingdom,wpp2022,2080,0.9976414,71515.89,71684.966,
+USA,United States,wpp2022,1990,1.408058,248083.73,176188.58,
+USA,United States,wpp2022,2020,1.3541477,335942,248083.73,
+USA,United States,wpp2022,2050,1.1174309,375391.96,335942,
+USA,United States,wpp2022,2080,1.0420267,391168.47,375391.96,
+AUS,Australia,wpp2019,1990,1.6559738,16960.6,10242.07,
+AUS,Australia,wpp2019,2020,1.5034775,25499.881,16960.6,
+AUS,Australia,wpp2019,2050,1.2868337,32814.106,25499.881,
+AUS,Australia,wpp2019,2080,1.185458,38899.744,32814.106,
+AUT,Austria,wpp2019,1990,1.0923776,7723.954,7070.773,
+AUT,Austria,wpp2019,2020,1.1660349,9006.4,7723.954,
+AUT,Austria,wpp2019,2050,1.0138011,9130.698,9006.4,
+AUT,Austria,wpp2019,2080,0.95605035,8729.407,9130.698,
+BEL,Belgium,wpp2019,1990,1.0915404,10006.545,9167.361,
+BEL,Belgium,wpp2019,2020,1.1582036,11589.616,10006.545,
+BEL,Belgium,wpp2019,2050,1.0544585,12220.769,11589.616,
+BEL,Belgium,wpp2019,2080,1.0073271,12310.312,12220.769,
+CAN,Canada,wpp2019,1990,1.5431557,27541.323,17847.404,
+CAN,Canada,wpp2019,2020,1.3703829,37742.157,27541.323,
+CAN,Canada,wpp2019,2050,1.2100382,45669.453,37742.157,
+CAN,Canada,wpp2019,2080,1.1462434,52348.31,45669.453,
+CZE,Czech Republic,wpp2019,1990,1.0782779,10340.877,9590.178,
+CZE,Czech Republic,wpp2019,2020,1.0355971,10708.982,10340.877,
+CZE,Czech Republic,wpp2019,2050,0.98474253,10545.59,10708.982,
+CZE,Czech Republic,wpp2019,2080,0.95859008,10108.898,10545.59,
+DNK,Denmark,wpp2019,1990,1.1222453,5141.117,4581.099,
+DNK,Denmark,wpp2019,2020,1.1266429,5792.203,5141.117,
+DNK,Denmark,wpp2019,2050,1.0782381,6245.374,5792.203,
+DNK,Denmark,wpp2019,2080,1.0615097,6629.525,6245.374,
+FIN,Finland,wpp2019,1990,1.1266468,4996.22,4434.593,
+FIN,Finland,wpp2019,2020,1.108982,5540.718,4996.22,
+FIN,Finland,wpp2019,2050,0.99015182,5486.152,5540.718,
+FIN,Finland,wpp2019,2080,0.97412485,5344.197,5486.152,
+FRA,France,wpp2019,1990,1.2407041,56666.861,45673.147,
+FRA,France,wpp2019,2020,1.1518816,65273.512,56666.861,
+FRA,France,wpp2019,2050,1.0354388,67586.729,65273.512,
+FRA,France,wpp2019,2080,0.9808827,66294.653,67586.729,
+DEU,Germany,wpp2019,1990,1.076821,79053.984,73414.229,
+DEU,Germany,wpp2019,2020,1.059832,83783.945,79053.984,
+DEU,Germany,wpp2019,2050,0.95607784,80103.973,83783.945,
+DEU,Germany,wpp2019,2080,0.94129739,75401.661,80103.973,
+GRC,Greece,wpp2019,1990,1.2359741,10225.99,8273.628,
+GRC,Greece,wpp2019,2020,1.0192711,10423.056,10225.99,
+GRC,Greece,wpp2019,2050,0.86627703,9029.254,10423.056,
+GRC,Greece,wpp2019,2080,0.80283964,7249.043,9029.254,
+HUN,Hungary,wpp2019,1990,1.0376109,10377.135,10000.989,
+HUN,Hungary,wpp2019,2020,0.9309265,9660.35,10377.135,
+HUN,Hungary,wpp2019,2050,0.87680384,8470.232,9660.35,
+HUN,Hungary,wpp2019,2080,0.86290163,7308.977,8470.232,
+ISL,Iceland,wpp2019,1990,1.4525469,255.044,175.584,
+ISL,Iceland,wpp2019,2020,1.3380044,341.25,255.044,
+ISL,Iceland,wpp2019,2050,1.103833,376.683,341.25,
+ISL,Iceland,wpp2019,2080,0.97862128,368.63,376.683,
+IRL,Ireland,wpp2019,1990,1.2577537,3510.881,2791.39,
+IRL,Ireland,wpp2019,2020,1.4064265,4937.796,3510.881,
+IRL,Ireland,wpp2019,2050,1.1498288,5677.62,4937.796,
+IRL,Ireland,wpp2019,2080,1.0035522,5697.788,5677.62,
+ITA,Italy,wpp2019,1990,1.1478531,57048.237,49699.947,
+ITA,Italy,wpp2019,2020,1.0598369,60461.828,57048.237,
+ITA,Italy,wpp2019,2050,0.89943814,54381.674,60461.828,
+ITA,Italy,wpp2019,2080,0.81081921,44093.706,54381.674,
+JPN,Japan,wpp2019,1990,1.3291389,124505.24,93673.612,
+JPN,Japan,wpp2019,2020,1.0158324,126476.46,124505.24,
+JPN,Japan,wpp2019,2050,0.83655112,105804.02,126476.46,
+JPN,Japan,wpp2019,2080,0.79320772,83924.568,105804.02,
+KOR,Korea,wpp2019,1990,1.694403,42918.416,25329.521,
+KOR,Korea,wpp2019,2020,1.194573,51269.183,42918.416,
+KOR,Korea,wpp2019,2050,0.91341272,46829.924,51269.183,
+KOR,Korea,wpp2019,2080,0.74598513,34934.427,46829.924,
+LUX,Luxembourg,wpp2019,1990,1.2135989,381.78,314.585,
+LUX,Luxembourg,wpp2019,2020,1.6396249,625.976,381.78,
+LUX,Luxembourg,wpp2019,2050,1.2619382,789.943,625.976,
+LUX,Luxembourg,wpp2019,2080,1.1408228,901.185,789.943,
+MEX,Mexico,wpp2019,1990,2.2223722,83943.135,37771.861,
+MEX,Mexico,wpp2019,2020,1.5359535,128932.75,83943.135,
+MEX,Mexico,wpp2019,2050,1.2033468,155150.81,128932.75,
+MEX,Mexico,wpp2019,2080,0.98680887,153104.2,155150.81,
+NLD,Netherlands,wpp2019,1990,1.3071608,14965.442,11448.815,
+NLD,Netherlands,wpp2019,2020,1.1449627,17134.873,14965.442,
+NLD,Netherlands,wpp2019,2050,1.0017798,17165.37,17134.873,
+NLD,Netherlands,wpp2019,2080,0.94835189,16278.811,17165.37,
+NZL,New Zealand,wpp2019,1990,1.4322585,3398.175,2372.599,
+NZL,New Zealand,wpp2019,2020,1.4190655,4822.233,3398.175,
+NZL,New Zealand,wpp2019,2050,1.1629038,5607.793,4822.233,
+NZL,New Zealand,wpp2019,2080,1.0570848,5927.913,5607.793,
+NOR,Norway,wpp2019,1990,1.1855622,4247.286,3582.508,
+NOR,Norway,wpp2019,2020,1.2764014,5421.242,4247.286,
+NOR,Norway,wpp2019,2050,1.2174955,6600.338,5421.242,
+NOR,Norway,wpp2019,2080,1.1289604,7451.52,6600.338,
+POL,Poland,wpp2019,1990,1.281824,37960.193,29614.201,
+POL,Poland,wpp2019,2020,0.99700771,37846.605,37960.193,
+POL,Poland,wpp2019,2050,0.87972417,33294.573,37846.605,
+POL,Poland,wpp2019,2080,0.79342826,26416.855,33294.573,
+PRT,Portugal,wpp2019,1990,1.1187974,9895.358,8844.638,
+PRT,Portugal,wpp2019,2020,1.0304536,10196.707,9895.358,
+PRT,Portugal,wpp2019,2050,0.89093263,9084.579,10196.707,
+PRT,Portugal,wpp2019,2080,0.83139043,7552.832,9084.579,
+ESP,Spain,wpp2019,1990,1.2894544,39202.524,30402.413,
+ESP,Spain,wpp2019,2020,1.1926473,46754.783,39202.524,
+ESP,Spain,wpp2019,2050,0.933325,43637.408,46754.783,
+ESP,Spain,wpp2019,2080,0.81857002,35720.274,43637.408,
+SWE,Sweden,wpp2019,1990,1.1449828,8567.375,7482.536,
+SWE,Sweden,wpp2019,2020,1.1788056,10099.27,8567.375,
+SWE,Sweden,wpp2019,2050,1.1277249,11389.198,10099.27,
+SWE,Sweden,wpp2019,2080,1.0870137,12380.214,11389.198,
+CHE,Switzerland,wpp2019,1990,1.2598509,6652.873,5280.683,
+CHE,Switzerland,wpp2019,2020,1.3008843,8654.618,6652.873,
+CHE,Switzerland,wpp2019,2050,1.1343904,9817.716,8654.618,
+CHE,Switzerland,wpp2019,2080,1.0621718,10428.101,9817.716,
+TUR,Turkey,wpp2019,1990,1.9627655,53921.758,27472.339,
+TUR,Turkey,wpp2019,2020,1.5641008,84339.067,53921.758,
+TUR,Turkey,wpp2019,2050,1.1517742,97139.565,84339.067,
+TUR,Turkey,wpp2019,2080,0.96661533,93896.593,97139.565,
+GBR,United Kingdom,wpp2019,1990,1.0909629,57134.377,52370.595,
+GBR,United Kingdom,wpp2019,2020,1.1881814,67886.004,57134.377,
+GBR,United Kingdom,wpp2019,2050,1.0912703,74081.983,67886.004,
+GBR,United Kingdom,wpp2019,2080,1.0331097,76534.815,74081.983,
+USA,United States,wpp2019,1990,1.3502546,252120.31,186720.57,
+USA,United States,wpp2019,2020,1.3128758,331002.65,252120.31,
+USA,United States,wpp2019,2050,1.1462721,379419.1,331002.65,
+USA,United States,wpp2019,2080,1.0942976,415197.4,379419.1,
+FRA,France,wpp2024_frRule,1990,1.0207852,56990.238,46428.134,"appendix F rule until 2026-10-26, gap 2.5 years; FRMain.xlsx population!D had 1.026299 (wpp2024_nraAdj since)"
+FRA,France,wpp2024_frRule,2020,0.96688386,65905.277,56990.238,"appendix F rule until 2026-10-26, gap 2.5 years; FRMain.xlsx population!D had 0.966884 (wpp2024_nraAdj since)"
+FRA,France,wpp2024_frRule,2050,0.90374386,68219.675,65905.277,"appendix F rule until 2026-10-26, gap 2.0 years; FRMain.xlsx population!D had 0.903744 (wpp2024_nraAdj since)"
+FRA,France,wpp2024_frRule,2080,0.87265794,68024.937,68219.675,"appendix F rule until 2026-10-26, gap 2.0 years; FRMain.xlsx population!D had 0.870591 (wpp2024_nraAdj since)"
+AUS,Australia,wpp2024_nraAdj,1990,1.6658506,17126.298,10280.813,"men's normal retirement age 0.0 years below the US's (PaG 2021, current)"
+AUS,Australia,wpp2024_nraAdj,2020,1.5031731,25743.791,17126.298,"men's normal retirement age 0.0 years below the US's (PaG 2021, current)"
+AUS,Australia,wpp2024_nraAdj,2050,1.262711,32506.969,25743.791,"men's normal retirement age 0.0 years below the US's (PaG 2021, future)"
+AUS,Australia,wpp2024_nraAdj,2080,1.1905399,38700.844,32506.969,"men's normal retirement age 0.0 years below the US's (PaG 2021, future)"
+AUT,Austria,wpp2024_nraAdj,1990,1.0164824,7679.624,7047.274,"men's normal retirement age 1.0 years below the US's (PaG 2021, current)"
+AUT,Austria,wpp2024_nraAdj,2020,1.0811107,8921.405,7679.624,"men's normal retirement age 1.0 years below the US's (PaG 2021, current)"
+AUT,Austria,wpp2024_nraAdj,2050,0.85685432,8724.332,8921.405,"men's normal retirement age 2.0 years below the US's (PaG 2021, future)"
+AUT,Austria,wpp2024_nraAdj,2080,0.78805848,7805.761,8724.332,"men's normal retirement age 2.0 years below the US's (PaG 2021, future)"
+BEL,Belgium,wpp2024_nraAdj,1990,1.0206411,9960.968,9102.171,"men's normal retirement age 1.0 years below the US's (PaG 2021, current)"
+BEL,Belgium,wpp2024_nraAdj,2020,1.0782744,11540.107,9960.968,"men's normal retirement age 1.0 years below the US's (PaG 2021, current)"
+BEL,Belgium,wpp2024_nraAdj,2050,1.0286652,11870.906,11540.107,"men's normal retirement age 0.0 years below the US's (PaG 2021, future)"
+BEL,Belgium,wpp2024_nraAdj,2080,0.95705037,11361.055,11870.906,"men's normal retirement age 0.0 years below the US's (PaG 2021, future)"
+CAN,Canada,wpp2024_nraAdj,1990,1.4269843,27789.443,17898.79,"men's normal retirement age 1.0 years below the US's (PaG 2021, current)"
+CAN,Canada,wpp2024_nraAdj,2020,1.2696892,38171.902,27789.443,"men's normal retirement age 1.0 years below the US's (PaG 2021, current)"
+CAN,Canada,wpp2024_nraAdj,2050,1.0331704,45621.882,38171.902,"men's normal retirement age 2.0 years below the US's (PaG 2021, future)"
+CAN,Canada,wpp2024_nraAdj,2080,0.96122946,50449.27,45621.882,"men's normal retirement age 2.0 years below the US's (PaG 2021, future)"
+CZE,Czech Republic,wpp2024_nraAdj,1990,0.91857691,10301.988,9541.605,"men's normal retirement age 2.33 years below the US's (PaG 2021, current)"
+CZE,Czech Republic,wpp2024_nraAdj,2020,0.87475986,10550.129,10301.988,"men's normal retirement age 2.33 years below the US's (PaG 2021, current)"
+CZE,Czech Republic,wpp2024_nraAdj,2050,0.81841781,9825.543,10550.129,"men's normal retirement age 2.0 years below the US's (PaG 2021, future)"
+CZE,Czech Republic,wpp2024_nraAdj,2080,0.77422932,8627.728,9825.543,"men's normal retirement age 2.0 years below the US's (PaG 2021, future)"
+DNK,Denmark,wpp2024_nraAdj,1990,1.0836685,5141.025,4579.342,"men's normal retirement age 0.5 years below the US's (PaG 2021, current)"
+DNK,Denmark,wpp2024_nraAdj,2020,1.0947117,5831.53,5141.025,"men's normal retirement age 0.5 years below the US's (PaG 2021, current)"
+DNK,Denmark,wpp2024_nraAdj,2050,1.6743003,6124.838,5831.53,"men's normal retirement age -7.0 years below the US's (PaG 2021, future)"
+DNK,Denmark,wpp2024_nraAdj,2080,1.583982,6008.79,6124.838,"men's normal retirement age -7.0 years below the US's (PaG 2021, future)"
+FIN,Finland,wpp2024_nraAdj,1990,1.0488512,4986.575,4429.624,"men's normal retirement age 1.0 years below the US's (PaG 2021, current)"
+FIN,Finland,wpp2024_nraAdj,2020,1.0337265,5529.612,4986.575,"men's normal retirement age 1.0 years below the US's (PaG 2021, current)"
+FIN,Finland,wpp2024_nraAdj,2050,1.0356714,5351.645,5529.612,"men's normal retirement age -1.0 years below the US's (PaG 2021, future)"
+FIN,Finland,wpp2024_nraAdj,2080,0.98414062,4912.824,5351.645,"men's normal retirement age -1.0 years below the US's (PaG 2021, future)"
+FRA,France,wpp2024_nraAdj,1990,1.0986873,56990.238,46428.134,"men's normal retirement age 1.5 years below the US's (PaG 2021, current)"
+FRA,France,wpp2024_nraAdj,2020,1.0385584,65905.277,56990.238,"men's normal retirement age 1.5 years below the US's (PaG 2021, current)"
+FRA,France,wpp2024_nraAdj,2050,0.9672396,68219.675,65905.277,"men's normal retirement age 1.0 years below the US's (PaG 2021, future)"
+FRA,France,wpp2024_nraAdj,2080,0.93289937,68024.937,68219.675,"men's normal retirement age 1.0 years below the US's (PaG 2021, future)"
+DEU,Germany,wpp2024_nraAdj,1990,1.0695416,79707.959,72811.64,"men's normal retirement age 0.33 years below the US's (PaG 2021, current)"
+DEU,Germany,wpp2024_nraAdj,2020,1.0255754,83628.708,79707.959,"men's normal retirement age 0.33 years below the US's (PaG 2021, current)"
+DEU,Germany,wpp2024_nraAdj,2050,0.93621694,78294.613,83628.708,"men's normal retirement age 0.0 years below the US's (PaG 2021, future)"
+DEU,Germany,wpp2024_nraAdj,2080,0.92104056,72112.514,78294.613,"men's normal retirement age 0.0 years below the US's (PaG 2021, future)"
+GRC,Greece,wpp2024_nraAdj,1990,0.91165136,10258.487,8384.492,"men's normal retirement age 4.0 years below the US's (PaG 2021, current)"
+GRC,Greece,wpp2024_nraAdj,2020,0.79355852,10699.369,10258.487,"men's normal retirement age 4.0 years below the US's (PaG 2021, current)"
+GRC,Greece,wpp2024_nraAdj,2050,0.77487968,8812.069,10699.369,"men's normal retirement age 1.0 years below the US's (PaG 2021, future)"
+GRC,Greece,wpp2024_nraAdj,2080,0.75228683,7040.432,8812.069,"men's normal retirement age 1.0 years below the US's (PaG 2021, future)"
+HUN,Hungary,wpp2024_nraAdj,1990,0.93904072,10381.281,9983.374,"men's normal retirement age 1.5 years below the US's (PaG 2021, current)"
+HUN,Hungary,wpp2024_nraAdj,2020,0.85216615,9749.457,10381.281,"men's normal retirement age 1.5 years below the US's (PaG 2021, current)"
+HUN,Hungary,wpp2024_nraAdj,2050,0.78826265,8725.347,9749.457,"men's normal retirement age 2.0 years below the US's (PaG 2021, future)"
+HUN,Hungary,wpp2024_nraAdj,2080,0.78597233,7784.774,8725.347,"men's normal retirement age 2.0 years below the US's (PaG 2021, future)"
+ISL,Iceland,wpp2024_nraAdj,1990,1.5360796,254.833,175.56,"men's normal retirement age -1.0 years below the US's (PaG 2021, current)"
+ISL,Iceland,wpp2024_nraAdj,2020,1.5227353,366.614,254.833,"men's normal retirement age -1.0 years below the US's (PaG 2021, current)"
+ISL,Iceland,wpp2024_nraAdj,2050,1.1810596,432.993,366.614,"men's normal retirement age 0.0 years below the US's (PaG 2021, future)"
+ISL,Iceland,wpp2024_nraAdj,2080,0.93038687,402.851,432.993,"men's normal retirement age 0.0 years below the US's (PaG 2021, future)"
+IRL,Ireland,wpp2024_nraAdj,1990,1.2427173,3514.018,2827.689,"men's normal retirement age 0.0 years below the US's (PaG 2021, current)"
+IRL,Ireland,wpp2024_nraAdj,2020,1.4179227,4982.606,3514.018,"men's normal retirement age 0.0 years below the US's (PaG 2021, current)"
+IRL,Ireland,wpp2024_nraAdj,2050,1.1137549,5970.042,4982.606,"men's normal retirement age 1.0 years below the US's (PaG 2021, future)"
+IRL,Ireland,wpp2024_nraAdj,2080,0.8844288,5633.971,5970.042,"men's normal retirement age 1.0 years below the US's (PaG 2021, future)"
+ITA,Italy,wpp2024_nraAdj,1990,0.86534214,57031.454,49514.555,"men's normal retirement age 4.0 years below the US's (PaG 2021, current)"
+ITA,Italy,wpp2024_nraAdj,2020,0.79859337,59912.769,57031.454,"men's normal retirement age 4.0 years below the US's (PaG 2021, current)"
+ITA,Italy,wpp2024_nraAdj,2050,1.1532048,51891.099,59912.769,"men's normal retirement age -4.0 years below the US's (PaG 2021, future)"
+ITA,Italy,wpp2024_nraAdj,2080,1.0483052,40225.87,51891.099,"men's normal retirement age -4.0 years below the US's (PaG 2021, future)"
+JPN,Japan,wpp2024_nraAdj,1990,1.1867753,123399.76,96399.754,"men's normal retirement age 1.0 years below the US's (PaG 2021, current)"
+JPN,Japan,wpp2024_nraAdj,2020,0.95677824,126304.54,123399.76,"men's normal retirement age 1.0 years below the US's (PaG 2021, current)"
+JPN,Japan,wpp2024_nraAdj,2050,0.73597576,105123.17,126304.54,"men's normal retirement age 2.0 years below the US's (PaG 2021, future)"
+JPN,Japan,wpp2024_nraAdj,2080,0.71391166,84729.966,105123.17,"men's normal retirement age 2.0 years below the US's (PaG 2021, future)"
+KOR,Korea,wpp2024_nraAdj,1990,1.1941368,44081.427,26115.379,"men's normal retirement age 4.0 years below the US's (PaG 2021, current)"
+KOR,Korea,wpp2024_nraAdj,2020,0.88132625,51858.482,44081.427,"men's normal retirement age 4.0 years below the US's (PaG 2021, current)"
+KOR,Korea,wpp2024_nraAdj,2050,0.76790794,45143.134,51858.482,"men's normal retirement age 2.0 years below the US's (PaG 2021, future)"
+KOR,Korea,wpp2024_nraAdj,2080,0.58770547,29671.508,45143.134,"men's normal retirement age 2.0 years below the US's (PaG 2021, future)"
+LUX,Luxembourg,wpp2024_nraAdj,1990,0.90689027,381.7,313.877,"men's normal retirement age 4.0 years below the US's (PaG 2021, current)"
+LUX,Luxembourg,wpp2024_nraAdj,2020,1.1733391,630.597,381.7,"men's normal retirement age 4.0 years below the US's (PaG 2021, current)"
+LUX,Luxembourg,wpp2024_nraAdj,2050,0.86497928,791.464,630.597,"men's normal retirement age 5.0 years below the US's (PaG 2021, future)"
+LUX,Luxembourg,wpp2024_nraAdj,2080,0.7072588,782.395,791.464,"men's normal retirement age 5.0 years below the US's (PaG 2021, future)"
+MEX,Mexico,wpp2024_nraAdj,1990,2.0275779,82820.17,36724.615,"men's normal retirement age 1.0 years below the US's (PaG 2021, current)"
+MEX,Mexico,wpp2024_nraAdj,2020,1.4081208,126799.05,82820.17,"men's normal retirement age 1.0 years below the US's (PaG 2021, current)"
+MEX,Mexico,wpp2024_nraAdj,2050,1.0167318,148946.27,126799.05,"men's normal retirement age 2.0 years below the US's (PaG 2021, future)"
+MEX,Mexico,wpp2024_nraAdj,2080,0.84658665,143798.33,148946.27,"men's normal retirement age 2.0 years below the US's (PaG 2021, future)"
+NLD,Netherlands,wpp2024_nraAdj,1990,1.3344604,15030.878,11486.911,"men's normal retirement age -0.33 years below the US's (PaG 2021, current)"
+NLD,Netherlands,wpp2024_nraAdj,2020,1.1977863,17636.731,15030.878,"men's normal retirement age -0.33 years below the US's (PaG 2021, current)"
+NLD,Netherlands,wpp2024_nraAdj,2050,1.2231529,18958.475,17636.731,"men's normal retirement age -2.0 years below the US's (PaG 2021, future)"
+NLD,Netherlands,wpp2024_nraAdj,2080,1.1028943,18251.35,18958.475,"men's normal retirement age -2.0 years below the US's (PaG 2021, future)"
+NZL,New Zealand,wpp2024_nraAdj,1990,1.317338,3396.979,2379.481,"men's normal retirement age 1.0 years below the US's (PaG 2021, current)"
+NZL,New Zealand,wpp2024_nraAdj,2020,1.37435,5069.895,3396.979,"men's normal retirement age 1.0 years below the US's (PaG 2021, current)"
+NZL,New Zealand,wpp2024_nraAdj,2050,0.98496791,5755.288,5069.895,"men's normal retirement age 2.0 years below the US's (PaG 2021, future)"
+NZL,New Zealand,wpp2024_nraAdj,2080,0.89056013,5864.587,5755.288,"men's normal retirement age 2.0 years below the US's (PaG 2021, future)"
+NOR,Norway,wpp2024_nraAdj,1990,1.2597127,4241.44,3581.121,"men's normal retirement age -1.0 years below the US's (PaG 2021, current)"
+NOR,Norway,wpp2024_nraAdj,2020,1.346482,5379.274,4241.44,"men's normal retirement age -1.0 years below the US's (PaG 2021, current)"
+NOR,Norway,wpp2024_nraAdj,2050,1.0967705,5899.829,5379.274,"men's normal retirement age 0.0 years below the US's (PaG 2021, future)"
+NOR,Norway,wpp2024_nraAdj,2080,0.9602558,5665.345,5899.829,"men's normal retirement age 0.0 years below the US's (PaG 2021, future)"
+POL,Poland,wpp2024_nraAdj,1990,1.1926587,38055.455,29575.966,"men's normal retirement age 1.0 years below the US's (PaG 2021, current)"
+POL,Poland,wpp2024_nraAdj,2020,0.9382326,38171.012,38055.455,"men's normal retirement age 1.0 years below the US's (PaG 2021, current)"
+POL,Poland,wpp2024_nraAdj,2050,0.75885872,32814.096,38171.012,"men's normal retirement age 2.0 years below the US's (PaG 2021, future)"
+POL,Poland,wpp2024_nraAdj,2080,0.65187099,24037.703,32814.096,"men's normal retirement age 2.0 years below the US's (PaG 2021, future)"
+PRT,Portugal,wpp2024_nraAdj,1990,1.0739208,9989.524,8873.218,"men's normal retirement age 0.67 years below the US's (PaG 2021, current)"
+PRT,Portugal,wpp2024_nraAdj,2020,0.9921801,10370.519,9989.524,"men's normal retirement age 0.67 years below the US's (PaG 2021, current)"
+PRT,Portugal,wpp2024_nraAdj,2050,1.0090894,9770.271,10370.519,"men's normal retirement age -1.0 years below the US's (PaG 2021, future)"
+PRT,Portugal,wpp2024_nraAdj,2080,0.97347736,8868.424,9770.271,"men's normal retirement age -1.0 years below the US's (PaG 2021, future)"
+ESP,Spain,wpp2024_nraAdj,1990,1.1915737,39084.979,30404.939,"men's normal retirement age 1.0 years below the US's (PaG 2021, current)"
+ESP,Spain,wpp2024_nraAdj,2020,1.1331523,47679.489,39084.979,"men's normal retirement age 1.0 years below the US's (PaG 2021, current)"
+ESP,Spain,wpp2024_nraAdj,2050,0.8274997,44928.558,47679.489,"men's normal retirement age 2.0 years below the US's (PaG 2021, future)"
+ESP,Spain,wpp2024_nraAdj,2080,0.71974298,36524.535,44928.558,"men's normal retirement age 2.0 years below the US's (PaG 2021, future)"
+SWE,Sweden,wpp2024_nraAdj,1990,1.0647886,8558.567,7484.596,"men's normal retirement age 1.0 years below the US's (PaG 2021, current)"
+SWE,Sweden,wpp2024_nraAdj,2020,1.1240916,10353.686,8558.567,"men's normal retirement age 1.0 years below the US's (PaG 2021, current)"
+SWE,Sweden,wpp2024_nraAdj,2050,0.95030397,11309.63,10353.686,"men's normal retirement age 2.0 years below the US's (PaG 2021, future)"
+SWE,Sweden,wpp2024_nraAdj,2080,0.88385651,11431.817,11309.63,"men's normal retirement age 2.0 years below the US's (PaG 2021, future)"
+CHE,Switzerland,wpp2024_nraAdj,1990,1.1689344,6713.173,5327.78,"men's normal retirement age 1.0 years below the US's (PaG 2021, current)"
+CHE,Switzerland,wpp2024_nraAdj,2020,1.19302,8640.582,6713.173,"men's normal retirement age 1.0 years below the US's (PaG 2021, current)"
+CHE,Switzerland,wpp2024_nraAdj,2050,0.94130957,9342.586,8640.582,"men's normal retirement age 2.0 years below the US's (PaG 2021, future)"
+CHE,Switzerland,wpp2024_nraAdj,2080,0.85456338,9110.194,9342.586,"men's normal retirement age 2.0 years below the US's (PaG 2021, future)"
+TUR,Turkey,wpp2024_nraAdj,1990,0.5484618,56015.628,28329.898,"men's normal retirement age 14.0 years below the US's (PaG 2021, current)"
+TUR,Turkey,wpp2024_nraAdj,2020,0.47733375,86091.692,56015.628,"men's normal retirement age 14.0 years below the US's (PaG 2021, current)"
+TUR,Turkey,wpp2024_nraAdj,2050,0.92404307,91258.061,86091.692,"men's normal retirement age 2.0 years below the US's (PaG 2021, future)"
+TUR,Turkey,wpp2024_nraAdj,2080,0.759817,78555.666,91258.061,"men's normal retirement age 2.0 years below the US's (PaG 2021, future)"
+GBR,United Kingdom,wpp2024_nraAdj,1990,1.0919194,57367.862,52538.548,"men's normal retirement age 0.0 years below the US's (PaG 2021, current)"
+GBR,United Kingdom,wpp2024_nraAdj,2020,1.1740347,67351.861,57367.862,"men's normal retirement age 0.0 years below the US's (PaG 2021, current)"
+GBR,United Kingdom,wpp2024_nraAdj,2050,1.1210482,75504.681,67351.861,"men's normal retirement age 0.0 years below the US's (PaG 2021, future)"
+GBR,United Kingdom,wpp2024_nraAdj,2080,1.0059807,75956.251,75504.681,"men's normal retirement age 0.0 years below the US's (PaG 2021, future)"
+USA,United States,wpp2024_nraAdj,1990,1.4054861,253373.39,180274.55,"men's normal retirement age 0.0 years below the US's (PaG 2021, current)"
+USA,United States,wpp2024_nraAdj,2020,1.3396678,339436.16,253373.39,"men's normal retirement age 0.0 years below the US's (PaG 2021, current)"
+USA,United States,wpp2024_nraAdj,2050,1.1219986,380846.91,339436.16,"men's normal retirement age 0.0 years below the US's (PaG 2021, future)"
+USA,United States,wpp2024_nraAdj,2080,1.0688804,407079.82,380846.91,"men's normal retirement age 0.0 years below the US's (PaG 2021, future)"
+AUS,Australia,oecdHist_fig1,2020,1.503,25649.248,17065.128,figure 1 popGrowth (data/oecdFigure1.csv)
+AUT,Austria,oecdHist_fig1,2020,1.1608,8912.293,7677.85,figure 1 popGrowth (data/oecdFigure1.csv)
+BEL,Belgium,oecdHist_fig1,2020,1.1545,11506.938,9967.378,figure 1 popGrowth (data/oecdFigure1.csv)
+CAN,Canada,oecdHist_fig1,2020,1.3733,38028.638,27691.138,figure 1 popGrowth (data/oecdFigure1.csv)
+CZE,Czech Republic,oecdHist_fig1,2020,1.0326,10700.155,10362.74,figure 1 popGrowth (data/oecdFigure1.csv)
+DNK,Denmark,oecdHist_fig1,2020,1.1331,5825.337,5140.939,figure 1 popGrowth (data/oecdFigure1.csv)
+FIN,Finland,oecdHist_fig1,2020,1.1089,5529.545,4986.433,figure 1 popGrowth (data/oecdFigure1.csv)
+FRA,France,oecdHist_fig1,2020,1.1915,67569.466,56708.826,figure 1 popGrowth (data/oecdFigure1.csv)
+DEU,Germany,oecdHist_fig1,2020,1.0469,83160.877,79433.034,figure 1 popGrowth (data/oecdFigure1.csv)
+GRC,Greece,oecdHist_fig1,2020,1.0492,10698.597,10196.801,figure 1 popGrowth (data/oecdFigure1.csv)
+HUN,Hungary,oecdHist_fig1,2020,0.9322,9670.416,10373.987,figure 1 popGrowth (data/oecdFigure1.csv)
+ISL,Iceland,oecdHist_fig1,2020,1.3977,356.165,254.82,figure 1 popGrowth (data/oecdFigure1.csv)
+IRL,Ireland,oecdHist_fig1,2020,1.4347,5029.875,3505.8,figure 1 popGrowth (data/oecdFigure1.csv)
+ITA,Italy,oecdHist_fig1,2020,1.0479,59438.845,56719.239,figure 1 popGrowth (data/oecdFigure1.csv)
+JPN,Japan,oecdHist_fig1,2020,1.0205,126146.1,123611.17,figure 1 popGrowth (data/oecdFigure1.csv)
+KOR,Korea,oecdHist_fig1,2020,1.2092,51836.239,42869.283,figure 1 popGrowth (data/oecdFigure1.csv)
+LUX,Luxembourg,oecdHist_fig1,2020,1.6509,630.413,381.857,figure 1 popGrowth (data/oecdFigure1.csv)
+MEX,Mexico,oecdHist_fig1,2020,1.5172,128209.17,84502.988,figure 1 popGrowth (data/oecdFigure1.csv)
+NLD,Netherlands,oecdHist_fig1,2020,1.1665,17441.5,14951.51,figure 1 popGrowth (data/oecdFigure1.csv)
+NZL,New Zealand,oecdHist_fig1,2020,1.4962,5072.4,3390.085,figure 1 popGrowth (data/oecdFigure1.csv)
+NOR,Norway,oecdHist_fig1,2020,1.2683,5379.472,4241.476,figure 1 popGrowth (data/oecdFigure1.csv)
+POL,Poland,oecdHist_fig1,2020,1.0039,38177.724,38030.5,figure 1 popGrowth (data/oecdFigure1.csv)
+PRT,Portugal,oecdHist_fig1,2020,1.0402,10384.846,9983.218,figure 1 popGrowth (data/oecdFigure1.csv)
+ESP,Spain,oecdHist_fig1,2020,1.2183,47344.852,38860.827,figure 1 popGrowth (data/oecdFigure1.csv)
+SWE,Sweden,oecdHist_fig1,2020,1.2096,10352.39,8558.834,figure 1 popGrowth (data/oecdFigure1.csv)
+CHE,Switzerland,oecdHist_fig1,2020,1.2869,8638.169,6712.273,figure 1 popGrowth (data/oecdFigure1.csv)
+TUR,Turkey,oecdHist_fig1,2020,1.5128,83384.688,55120,figure 1 popGrowth (data/oecdFigure1.csv)
+GBR,United Kingdom,oecdHist_fig1,2020,1.166,66739.867,57237.493,figure 1 popGrowth (data/oecdFigure1.csv)
+USA,United States,oecdHist_fig1,2020,1.3283,331578.1,249622.81,figure 1 popGrowth (data/oecdFigure1.csv)

@@ -1,0 +1,85 @@
+{
+ "figure": "ARG_LOG_FourInOne",
+ "marks": [
+  {
+   "id": "ARG_LOG_FourInOne--tau--pre",
+   "label": "pre-reform ε = 0.21",
+   "series": "θ = 0.84",
+   "panel": "Tax rate τ",
+   "value": 11.812105765186889,
+   "text": "11.8%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_LOG_FourInOne--tau--post",
+   "label": "post-reform εᵁ = 0.55",
+   "series": "θ = 0.84",
+   "panel": "Tax rate τ",
+   "value": 15.03299933534065,
+   "text": "15.0%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_LOG_FourInOne--sr--pre",
+   "label": "pre-reform ε = 0.21",
+   "series": "θ = 0.84",
+   "panel": "Savings rate",
+   "value": 13.3272102782236,
+   "text": "13.3% of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_LOG_FourInOne--sr--post",
+   "label": "post-reform εᵁ = 0.55",
+   "series": "θ = 0.84",
+   "panel": "Savings rate",
+   "value": 12.796329968727449,
+   "text": "12.8% of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_LOG_FourInOne--ww--pre",
+   "label": "pre-reform ε = 0.21",
+   "series": "θ = 0.84",
+   "panel": "Average workweek",
+   "value": 42.5375,
+   "text": "42.5 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_LOG_FourInOne--ww--post",
+   "label": "post-reform εᵁ = 0.55",
+   "series": "θ = 0.84",
+   "panel": "Average workweek",
+   "value": 41.78236214219902,
+   "text": "41.8 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_LOG_FourInOne--iota--pre",
+   "label": "pre-reform ε = 0.21",
+   "series": "θ = 0.84",
+   "panel": "Informal savings ratio ι = s^0/s",
+   "value": 0.3278822456713089,
+   "text": "0.328",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "ARG_LOG_FourInOne--iota--post",
+   "label": "post-reform εᵁ = 0.55",
+   "series": "θ = 0.84",
+   "panel": "Informal savings ratio ι = s^0/s",
+   "value": 0.2764510704975032,
+   "text": "0.276",
+   "table": null,
+   "row": null
+  }
+ ]
+}

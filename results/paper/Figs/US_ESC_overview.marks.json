@@ -1,0 +1,965 @@
+{
+ "figure": "US_ESC_overview",
+ "marks": [
+  {
+   "id": "US_ESC_overview--acute--rho0.5--theta--pinned",
+   "label": "Acute ageing",
+   "series": "ρ = 0.5, θ pinned",
+   "panel": "Pension design in 2020",
+   "value": 0.544496,
+   "text": "0.544",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--acute--rho0.5--theta--chosen",
+   "label": "Acute ageing",
+   "series": "ρ = 0.5, θ chosen",
+   "panel": "Pension design in 2020",
+   "value": 0.8179276317866678,
+   "text": "0.818",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frIncome--rho0.5--theta--pinned",
+   "label": "French income distr.",
+   "series": "ρ = 0.5, θ pinned",
+   "panel": "Pension design in 2020",
+   "value": 0.544496,
+   "text": "0.544",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frIncome--rho0.5--theta--chosen",
+   "label": "French income distr.",
+   "series": "ρ = 0.5, θ chosen",
+   "panel": "Pension design in 2020",
+   "value": 0.4728920055555356,
+   "text": "0.473",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frVoting--rho0.5--theta--pinned",
+   "label": "French voting",
+   "series": "ρ = 0.5, θ pinned",
+   "panel": "Pension design in 2020",
+   "value": 0.544496,
+   "text": "0.544",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frVoting--rho0.5--theta--chosen",
+   "label": "French voting",
+   "series": "ρ = 0.5, θ chosen",
+   "panel": "Pension design in 2020",
+   "value": 0.5198785647228094,
+   "text": "0.520",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frLeisure--rho0.5--theta--pinned",
+   "label": "French leisure",
+   "series": "ρ = 0.5, θ pinned",
+   "panel": "Pension design in 2020",
+   "value": 0.544496,
+   "text": "0.544",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frLeisure--rho0.5--theta--chosen",
+   "label": "French leisure",
+   "series": "ρ = 0.5, θ chosen",
+   "panel": "Pension design in 2020",
+   "value": 0.5443031410224398,
+   "text": "0.544",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--acute--rho1.0--theta--pinned",
+   "label": "Acute ageing",
+   "series": "ρ = 1.0, θ pinned",
+   "panel": "Pension design in 2020",
+   "value": 0.544496,
+   "text": "0.544",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--acute--rho1.0--theta--chosen",
+   "label": "Acute ageing",
+   "series": "ρ = 1.0, θ chosen",
+   "panel": "Pension design in 2020",
+   "value": 0.8232247137765947,
+   "text": "0.823",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frIncome--rho1.0--theta--pinned",
+   "label": "French income distr.",
+   "series": "ρ = 1.0, θ pinned",
+   "panel": "Pension design in 2020",
+   "value": 0.544496,
+   "text": "0.544",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frIncome--rho1.0--theta--chosen",
+   "label": "French income distr.",
+   "series": "ρ = 1.0, θ chosen",
+   "panel": "Pension design in 2020",
+   "value": 0.5346884753181227,
+   "text": "0.535",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frVoting--rho1.0--theta--pinned",
+   "label": "French voting",
+   "series": "ρ = 1.0, θ pinned",
+   "panel": "Pension design in 2020",
+   "value": 0.544496,
+   "text": "0.544",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frVoting--rho1.0--theta--chosen",
+   "label": "French voting",
+   "series": "ρ = 1.0, θ chosen",
+   "panel": "Pension design in 2020",
+   "value": 0.4660676480995555,
+   "text": "0.466",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frLeisure--rho1.0--theta--pinned",
+   "label": "French leisure",
+   "series": "ρ = 1.0, θ pinned",
+   "panel": "Pension design in 2020",
+   "value": 0.544496,
+   "text": "0.544",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frLeisure--rho1.0--theta--chosen",
+   "label": "French leisure",
+   "series": "ρ = 1.0, θ chosen",
+   "panel": "Pension design in 2020",
+   "value": 0.5444959999994029,
+   "text": "0.544",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--acute--rho2.0--theta--pinned",
+   "label": "Acute ageing",
+   "series": "ρ = 2.0, θ pinned",
+   "panel": "Pension design in 2020",
+   "value": 0.544496,
+   "text": "0.544",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--acute--rho2.0--theta--chosen",
+   "label": "Acute ageing",
+   "series": "ρ = 2.0, θ chosen",
+   "panel": "Pension design in 2020",
+   "value": 0.8243903380654172,
+   "text": "0.824",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frIncome--rho2.0--theta--pinned",
+   "label": "French income distr.",
+   "series": "ρ = 2.0, θ pinned",
+   "panel": "Pension design in 2020",
+   "value": 0.544496,
+   "text": "0.544",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frIncome--rho2.0--theta--chosen",
+   "label": "French income distr.",
+   "series": "ρ = 2.0, θ chosen",
+   "panel": "Pension design in 2020",
+   "value": 0.837876209281237,
+   "text": "0.838",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frVoting--rho2.0--theta--pinned",
+   "label": "French voting",
+   "series": "ρ = 2.0, θ pinned",
+   "panel": "Pension design in 2020",
+   "value": 0.544496,
+   "text": "0.544",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frVoting--rho2.0--theta--chosen",
+   "label": "French voting",
+   "series": "ρ = 2.0, θ chosen",
+   "panel": "Pension design in 2020",
+   "value": 0.1843643375839698,
+   "text": "0.184",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frLeisure--rho2.0--theta--pinned",
+   "label": "French leisure",
+   "series": "ρ = 2.0, θ pinned",
+   "panel": "Pension design in 2020",
+   "value": 0.544496,
+   "text": "0.544",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frLeisure--rho2.0--theta--chosen",
+   "label": "French leisure",
+   "series": "ρ = 2.0, θ chosen",
+   "panel": "Pension design in 2020",
+   "value": 0.5444877067573731,
+   "text": "0.544",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--acute--rho0.5--tau--pinned",
+   "label": "Acute ageing",
+   "series": "ρ = 0.5, θ pinned",
+   "panel": "Equilibrium tax rate",
+   "value": 5.41382322711261,
+   "text": "+5.4 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--acute--rho0.5--tau--chosen",
+   "label": "Acute ageing",
+   "series": "ρ = 0.5, θ chosen",
+   "panel": "Equilibrium tax rate",
+   "value": 8.16802727167427,
+   "text": "+8.2 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frIncome--rho0.5--tau--pinned",
+   "label": "French income distr.",
+   "series": "ρ = 0.5, θ pinned",
+   "panel": "Equilibrium tax rate",
+   "value": -0.6651924286513191,
+   "text": "−0.7 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frIncome--rho0.5--tau--chosen",
+   "label": "French income distr.",
+   "series": "ρ = 0.5, θ chosen",
+   "panel": "Equilibrium tax rate",
+   "value": -0.7688114204993712,
+   "text": "−0.8 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frVoting--rho0.5--tau--pinned",
+   "label": "French voting",
+   "series": "ρ = 0.5, θ pinned",
+   "panel": "Equilibrium tax rate",
+   "value": 0.32433699324666,
+   "text": "+0.3 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frVoting--rho0.5--tau--chosen",
+   "label": "French voting",
+   "series": "ρ = 0.5, θ chosen",
+   "panel": "Equilibrium tax rate",
+   "value": 0.24631364216305962,
+   "text": "+0.2 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frLeisure--rho0.5--tau--pinned",
+   "label": "French leisure",
+   "series": "ρ = 0.5, θ pinned",
+   "panel": "Equilibrium tax rate",
+   "value": -0.0018620065327892843,
+   "text": "−0.002 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frLeisure--rho0.5--tau--chosen",
+   "label": "French leisure",
+   "series": "ρ = 0.5, θ chosen",
+   "panel": "Equilibrium tax rate",
+   "value": -0.002149616957730638,
+   "text": "−0.002 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--acute--rho1.0--tau--pinned",
+   "label": "Acute ageing",
+   "series": "ρ = 1.0, θ pinned",
+   "panel": "Equilibrium tax rate",
+   "value": 5.749273134887812,
+   "text": "+5.7 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--acute--rho1.0--tau--chosen",
+   "label": "Acute ageing",
+   "series": "ρ = 1.0, θ chosen",
+   "panel": "Equilibrium tax rate",
+   "value": 7.64942387358209,
+   "text": "+7.6 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frIncome--rho1.0--tau--pinned",
+   "label": "French income distr.",
+   "series": "ρ = 1.0, θ pinned",
+   "panel": "Equilibrium tax rate",
+   "value": -0.905297029837529,
+   "text": "−0.9 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frIncome--rho1.0--tau--chosen",
+   "label": "French income distr.",
+   "series": "ρ = 1.0, θ chosen",
+   "panel": "Equilibrium tax rate",
+   "value": -0.9089968767796899,
+   "text": "−0.9 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frVoting--rho1.0--tau--pinned",
+   "label": "French voting",
+   "series": "ρ = 1.0, θ pinned",
+   "panel": "Equilibrium tax rate",
+   "value": 1.0577941110427411,
+   "text": "+1.1 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frVoting--rho1.0--tau--chosen",
+   "label": "French voting",
+   "series": "ρ = 1.0, θ chosen",
+   "panel": "Equilibrium tax rate",
+   "value": 0.9629590166065503,
+   "text": "+1.0 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frLeisure--rho1.0--tau--pinned",
+   "label": "French leisure",
+   "series": "ρ = 1.0, θ pinned",
+   "panel": "Equilibrium tax rate",
+   "value": -9.71445146547012e-15,
+   "text": "0.000 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frLeisure--rho1.0--tau--chosen",
+   "label": "French leisure",
+   "series": "ρ = 1.0, θ chosen",
+   "panel": "Equilibrium tax rate",
+   "value": -6.591949208711867e-13,
+   "text": "0.000 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--acute--rho2.0--tau--pinned",
+   "label": "Acute ageing",
+   "series": "ρ = 2.0, θ pinned",
+   "panel": "Equilibrium tax rate",
+   "value": 6.434656635567849,
+   "text": "+6.4 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--acute--rho2.0--tau--chosen",
+   "label": "Acute ageing",
+   "series": "ρ = 2.0, θ chosen",
+   "panel": "Equilibrium tax rate",
+   "value": 7.265251951983299,
+   "text": "+7.3 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frIncome--rho2.0--tau--pinned",
+   "label": "French income distr.",
+   "series": "ρ = 2.0, θ pinned",
+   "panel": "Equilibrium tax rate",
+   "value": -0.917213972620079,
+   "text": "−0.9 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frIncome--rho2.0--tau--chosen",
+   "label": "French income distr.",
+   "series": "ρ = 2.0, θ chosen",
+   "panel": "Equilibrium tax rate",
+   "value": -0.6790510746050791,
+   "text": "−0.7 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frVoting--rho2.0--tau--pinned",
+   "label": "French voting",
+   "series": "ρ = 2.0, θ pinned",
+   "panel": "Equilibrium tax rate",
+   "value": 2.4789357637304095,
+   "text": "+2.5 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frVoting--rho2.0--tau--chosen",
+   "label": "French voting",
+   "series": "ρ = 2.0, θ chosen",
+   "panel": "Equilibrium tax rate",
+   "value": 2.671813785139211,
+   "text": "+2.7 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frLeisure--rho2.0--tau--pinned",
+   "label": "French leisure",
+   "series": "ρ = 2.0, θ pinned",
+   "panel": "Equilibrium tax rate",
+   "value": 7.76257605208941e-05,
+   "text": "0.000 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frLeisure--rho2.0--tau--chosen",
+   "label": "French leisure",
+   "series": "ρ = 2.0, θ chosen",
+   "panel": "Equilibrium tax rate",
+   "value": -0.00016676670256954296,
+   "text": "0.000 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--acute--rho0.5--sr--pinned",
+   "label": "Acute ageing",
+   "series": "ρ = 0.5, θ pinned",
+   "panel": "Savings over GDP",
+   "value": -0.5754590866579725,
+   "text": "−0.6 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--acute--rho0.5--sr--chosen",
+   "label": "Acute ageing",
+   "series": "ρ = 0.5, θ chosen",
+   "panel": "Savings over GDP",
+   "value": -1.908677357741182,
+   "text": "−1.9 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frIncome--rho0.5--sr--pinned",
+   "label": "French income distr.",
+   "series": "ρ = 0.5, θ pinned",
+   "panel": "Savings over GDP",
+   "value": 0.03753087307471009,
+   "text": "+0.04 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frIncome--rho0.5--sr--chosen",
+   "label": "French income distr.",
+   "series": "ρ = 0.5, θ chosen",
+   "panel": "Savings over GDP",
+   "value": 0.3112322854582761,
+   "text": "+0.3 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frVoting--rho0.5--sr--pinned",
+   "label": "French voting",
+   "series": "ρ = 0.5, θ pinned",
+   "panel": "Savings over GDP",
+   "value": -0.16164050108829708,
+   "text": "−0.2 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frVoting--rho0.5--sr--chosen",
+   "label": "French voting",
+   "series": "ρ = 0.5, θ chosen",
+   "panel": "Savings over GDP",
+   "value": -0.08835208575257408,
+   "text": "−0.1 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frLeisure--rho0.5--sr--pinned",
+   "label": "French leisure",
+   "series": "ρ = 0.5, θ pinned",
+   "panel": "Savings over GDP",
+   "value": 0.00039767220110092927,
+   "text": "0.000 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frLeisure--rho0.5--sr--chosen",
+   "label": "French leisure",
+   "series": "ρ = 0.5, θ chosen",
+   "panel": "Savings over GDP",
+   "value": 0.0006623449285464433,
+   "text": "+0.001 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--acute--rho1.0--sr--pinned",
+   "label": "Acute ageing",
+   "series": "ρ = 1.0, θ pinned",
+   "panel": "Savings over GDP",
+   "value": -1.3588048728822737,
+   "text": "−1.4 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--acute--rho1.0--sr--chosen",
+   "label": "Acute ageing",
+   "series": "ρ = 1.0, θ chosen",
+   "panel": "Savings over GDP",
+   "value": -1.9078518085019063,
+   "text": "−1.9 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frIncome--rho1.0--sr--pinned",
+   "label": "French income distr.",
+   "series": "ρ = 1.0, θ pinned",
+   "panel": "Savings over GDP",
+   "value": 0.14238146889122144,
+   "text": "+0.1 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frIncome--rho1.0--sr--chosen",
+   "label": "French income distr.",
+   "series": "ρ = 1.0, θ chosen",
+   "panel": "Savings over GDP",
+   "value": 0.2303388427019601,
+   "text": "+0.2 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frVoting--rho1.0--sr--pinned",
+   "label": "French voting",
+   "series": "ρ = 1.0, θ pinned",
+   "panel": "Savings over GDP",
+   "value": -0.35391719094816726,
+   "text": "−0.4 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frVoting--rho1.0--sr--chosen",
+   "label": "French voting",
+   "series": "ρ = 1.0, θ chosen",
+   "panel": "Savings over GDP",
+   "value": -0.2336765814956171,
+   "text": "−0.2 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frLeisure--rho1.0--sr--pinned",
+   "label": "French leisure",
+   "series": "ρ = 1.0, θ pinned",
+   "panel": "Savings over GDP",
+   "value": 2.1371793224034263e-14,
+   "text": "0.000 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frLeisure--rho1.0--sr--chosen",
+   "label": "French leisure",
+   "series": "ρ = 1.0, θ chosen",
+   "panel": "Savings over GDP",
+   "value": 2.661759701538813e-13,
+   "text": "0.000 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--acute--rho2.0--sr--pinned",
+   "label": "Acute ageing",
+   "series": "ρ = 2.0, θ pinned",
+   "panel": "Savings over GDP",
+   "value": -1.65667712912746,
+   "text": "−1.7 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--acute--rho2.0--sr--chosen",
+   "label": "Acute ageing",
+   "series": "ρ = 2.0, θ chosen",
+   "panel": "Savings over GDP",
+   "value": -1.7881996986983646,
+   "text": "−1.8 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frIncome--rho2.0--sr--pinned",
+   "label": "French income distr.",
+   "series": "ρ = 2.0, θ pinned",
+   "panel": "Savings over GDP",
+   "value": 0.1348542935634786,
+   "text": "+0.1 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frIncome--rho2.0--sr--chosen",
+   "label": "French income distr.",
+   "series": "ρ = 2.0, θ chosen",
+   "panel": "Savings over GDP",
+   "value": 0.04587454489107662,
+   "text": "+0.05 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frVoting--rho2.0--sr--pinned",
+   "label": "French voting",
+   "series": "ρ = 2.0, θ pinned",
+   "panel": "Savings over GDP",
+   "value": -0.49554127824888466,
+   "text": "−0.5 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frVoting--rho2.0--sr--chosen",
+   "label": "French voting",
+   "series": "ρ = 2.0, θ chosen",
+   "panel": "Savings over GDP",
+   "value": -0.33867092042302427,
+   "text": "−0.3 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frLeisure--rho2.0--sr--pinned",
+   "label": "French leisure",
+   "series": "ρ = 2.0, θ pinned",
+   "panel": "Savings over GDP",
+   "value": 3.471525476944626e-05,
+   "text": "0.000 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frLeisure--rho2.0--sr--chosen",
+   "label": "French leisure",
+   "series": "ρ = 2.0, θ chosen",
+   "panel": "Savings over GDP",
+   "value": -3.065900199689109e-05,
+   "text": "0.000 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--acute--rho0.5--ww--pinned",
+   "label": "Acute ageing",
+   "series": "ρ = 0.5, θ pinned",
+   "panel": "Average workweek",
+   "value": 0.7176441373028482,
+   "text": "+0.7 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--acute--rho0.5--ww--chosen",
+   "label": "Acute ageing",
+   "series": "ρ = 0.5, θ chosen",
+   "panel": "Average workweek",
+   "value": -0.0502005894143025,
+   "text": "−0.1 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frIncome--rho0.5--ww--pinned",
+   "label": "French income distr.",
+   "series": "ρ = 0.5, θ pinned",
+   "panel": "Average workweek",
+   "value": 0.9338257748206544,
+   "text": "+0.9 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frIncome--rho0.5--ww--chosen",
+   "label": "French income distr.",
+   "series": "ρ = 0.5, θ chosen",
+   "panel": "Average workweek",
+   "value": 0.9198307583247569,
+   "text": "+0.9 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frVoting--rho0.5--ww--pinned",
+   "label": "French voting",
+   "series": "ρ = 0.5, θ pinned",
+   "panel": "Average workweek",
+   "value": -0.09253250482537823,
+   "text": "−0.1 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frVoting--rho0.5--ww--chosen",
+   "label": "French voting",
+   "series": "ρ = 0.5, θ chosen",
+   "panel": "Average workweek",
+   "value": -0.0871523198534021,
+   "text": "−0.1 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frLeisure--rho0.5--ww--pinned",
+   "label": "French leisure",
+   "series": "ρ = 0.5, θ pinned",
+   "panel": "Average workweek",
+   "value": -4.091736112273438,
+   "text": "−4.1 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frLeisure--rho0.5--ww--chosen",
+   "label": "French leisure",
+   "series": "ρ = 0.5, θ chosen",
+   "panel": "Average workweek",
+   "value": -4.115504509851597,
+   "text": "−4.1 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--acute--rho1.0--ww--pinned",
+   "label": "Acute ageing",
+   "series": "ρ = 1.0, θ pinned",
+   "panel": "Average workweek",
+   "value": 0.08494810647108864,
+   "text": "+0.1 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--acute--rho1.0--ww--chosen",
+   "label": "Acute ageing",
+   "series": "ρ = 1.0, θ chosen",
+   "panel": "Average workweek",
+   "value": -0.27033979699874067,
+   "text": "−0.3 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frIncome--rho1.0--ww--pinned",
+   "label": "French income distr.",
+   "series": "ρ = 1.0, θ pinned",
+   "panel": "Average workweek",
+   "value": 0.9330807111926447,
+   "text": "+0.9 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frIncome--rho1.0--ww--chosen",
+   "label": "French income distr.",
+   "series": "ρ = 1.0, θ chosen",
+   "panel": "Average workweek",
+   "value": 0.9372391191145795,
+   "text": "+0.9 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frVoting--rho1.0--ww--pinned",
+   "label": "French voting",
+   "series": "ρ = 1.0, θ pinned",
+   "panel": "Average workweek",
+   "value": -0.24153851419750794,
+   "text": "−0.2 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frVoting--rho1.0--ww--chosen",
+   "label": "French voting",
+   "series": "ρ = 1.0, θ chosen",
+   "panel": "Average workweek",
+   "value": -0.28511782898070237,
+   "text": "−0.3 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frLeisure--rho1.0--ww--pinned",
+   "label": "French leisure",
+   "series": "ρ = 1.0, θ pinned",
+   "panel": "Average workweek",
+   "value": -4.058348356781281,
+   "text": "−4.1 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frLeisure--rho1.0--ww--chosen",
+   "label": "French leisure",
+   "series": "ρ = 1.0, θ chosen",
+   "panel": "Average workweek",
+   "value": -4.080214541177554,
+   "text": "−4.1 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--acute--rho2.0--ww--pinned",
+   "label": "Acute ageing",
+   "series": "ρ = 2.0, θ pinned",
+   "panel": "Average workweek",
+   "value": -0.41985723247563556,
+   "text": "−0.4 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--acute--rho2.0--ww--chosen",
+   "label": "Acute ageing",
+   "series": "ρ = 2.0, θ chosen",
+   "panel": "Average workweek",
+   "value": -0.49049245222744986,
+   "text": "−0.5 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frIncome--rho2.0--ww--pinned",
+   "label": "French income distr.",
+   "series": "ρ = 2.0, θ pinned",
+   "panel": "Average workweek",
+   "value": 0.8655363874670527,
+   "text": "+0.9 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frIncome--rho2.0--ww--chosen",
+   "label": "French income distr.",
+   "series": "ρ = 2.0, θ chosen",
+   "panel": "Average workweek",
+   "value": 0.9693574271981973,
+   "text": "+1.0 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frVoting--rho2.0--ww--pinned",
+   "label": "French voting",
+   "series": "ρ = 2.0, θ pinned",
+   "panel": "Average workweek",
+   "value": -0.43498525514871034,
+   "text": "−0.4 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frVoting--rho2.0--ww--chosen",
+   "label": "French voting",
+   "series": "ρ = 2.0, θ chosen",
+   "panel": "Average workweek",
+   "value": -0.7564304129995918,
+   "text": "−0.8 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frLeisure--rho2.0--ww--pinned",
+   "label": "French leisure",
+   "series": "ρ = 2.0, θ pinned",
+   "panel": "Average workweek",
+   "value": -4.021858367559005,
+   "text": "−4.0 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_overview--frLeisure--rho2.0--ww--chosen",
+   "label": "French leisure",
+   "series": "ρ = 2.0, θ chosen",
+   "panel": "Average workweek",
+   "value": -4.03929447468299,
+   "text": "−4.0 hours",
+   "table": null,
+   "row": null
+  }
+ ]
+}

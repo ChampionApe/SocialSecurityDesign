@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+# stage (0)'s raw downloads (python/paper/oecd29Data.py, oecd26PensionTiers.py, oecd26Topups.py)
+logs/
+# build.py without --no-copy copies into writing/Paper, which this repository does not hold
+writing/
+results/paper/superseded/

@@ -1,0 +1,24 @@
+Data and documentation
+
+The data compilations in data/ and results/ and the documentation in this repository (README.md, CLAUDE.md,
+data/README.md, python/README.md and docs/) are made available by the authors under the Creative Commons
+Attribution 4.0 International licence (CC BY 4.0): https://creativecommons.org/licenses/by/4.0/
+(legal code: https://creativecommons.org/licenses/by/4.0/legalcode).
+
+Attribution: Berg, R. K. S. and M. Gonzalez-Eiras (2026), Social Security Design and Its Political Support,
+replication package, https://github.com/ChampionApe/SocialSecurityDesign.
+
+The licence covers the authors' own contribution. The third-party statistics these files are compiled from remain
+subject to their providers' terms, listed with their citations in README.md (Data availability and provenance).
+
+Exception: the values taken from the World Inequality Database and the World Income Inequality Database are not
+covered by CC BY 4.0. They keep their providers' licences, which allow non-commercial use only and require
+adaptations to be shared under the same licence:
+- data/oecdFigure1.csv, columns gini_widPretax and gini_widPretax_year (WID.world; CC BY-NC-SA 4.0,
+  https://creativecommons.org/licenses/by-nc-sa/4.0/);
+- data/oecd29_distribution.csv, rows with source wid_ptinc or wid_diinc (WID.world; CC BY-NC-SA 4.0);
+- data/oecdFigure1.csv, columns gini, gini_year, gini_wiidId, gini_source, gini_wiidMarket and gini_wiidMarket_year
+  (UNU-WIDER, WIID; CC BY-NC-SA 3.0 IGO, https://creativecommons.org/licenses/by-nc-sa/3.0/igo/);
+- the results derived from these columns (results/paper/oecdCorrelations.csv, figure 1).
+
+The code in this repository is licensed separately under the MIT licence (LICENSE).

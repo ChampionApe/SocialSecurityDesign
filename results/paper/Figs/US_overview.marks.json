@@ -1,0 +1,635 @@
+{
+ "figure": "US_overview",
+ "marks": [
+  {
+   "id": "US_overview--theta0--rho0.5--tau",
+   "label": "θ = 0",
+   "series": "ρ = 0.5",
+   "panel": "Equilibrium tax rate",
+   "value": 4.059954977411191,
+   "text": "+4.1 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--theta1--rho0.5--tau",
+   "label": "θ = 1",
+   "series": "ρ = 0.5",
+   "panel": "Equilibrium tax rate",
+   "value": -5.05750311135856,
+   "text": "−5.1 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--acute--rho0.5--tau",
+   "label": "Acute ageing",
+   "series": "ρ = 0.5",
+   "panel": "Equilibrium tax rate",
+   "value": 9.117123149684172,
+   "text": "+9.1 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--mild--rho0.5--tau",
+   "label": "Mild ageing",
+   "series": "ρ = 0.5",
+   "panel": "Equilibrium tax rate",
+   "value": 4.178681166232119,
+   "text": "+4.2 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--income--rho0.5--tau",
+   "label": "French income distr.",
+   "series": "ρ = 0.5",
+   "panel": "Equilibrium tax rate",
+   "value": -2.3952021234892498,
+   "text": "−2.4 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--voting--rho0.5--tau",
+   "label": "French voting",
+   "series": "ρ = 0.5",
+   "panel": "Equilibrium tax rate",
+   "value": 0.5066657304496194,
+   "text": "+0.5 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--leisure--rho0.5--tau",
+   "label": "French leisure",
+   "series": "ρ = 0.5",
+   "panel": "Equilibrium tax rate",
+   "value": 0.00018587055412022657,
+   "text": "0.000 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--theta0--rho1.0--tau",
+   "label": "θ = 0",
+   "series": "ρ = 1.0",
+   "panel": "Equilibrium tax rate",
+   "value": 3.07036077386042,
+   "text": "+3.1 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--theta1--rho1.0--tau",
+   "label": "θ = 1",
+   "series": "ρ = 1.0",
+   "panel": "Equilibrium tax rate",
+   "value": -3.6044688226144497,
+   "text": "−3.6 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--acute--rho1.0--tau",
+   "label": "Acute ageing",
+   "series": "ρ = 1.0",
+   "panel": "Equilibrium tax rate",
+   "value": 8.56209539249318,
+   "text": "+8.6 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--mild--rho1.0--tau",
+   "label": "Mild ageing",
+   "series": "ρ = 1.0",
+   "panel": "Equilibrium tax rate",
+   "value": 3.94340466130928,
+   "text": "+3.9 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--income--rho1.0--tau",
+   "label": "French income distr.",
+   "series": "ρ = 1.0",
+   "panel": "Equilibrium tax rate",
+   "value": -2.0157913523395896,
+   "text": "−2.0 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--voting--rho1.0--tau",
+   "label": "French voting",
+   "series": "ρ = 1.0",
+   "panel": "Equilibrium tax rate",
+   "value": 1.4503354789329403,
+   "text": "+1.5 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--leisure--rho1.0--tau",
+   "label": "French leisure",
+   "series": "ρ = 1.0",
+   "panel": "Equilibrium tax rate",
+   "value": 0.0,
+   "text": "0.000 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--theta0--rho2.0--tau",
+   "label": "θ = 0",
+   "series": "ρ = 2.0",
+   "panel": "Equilibrium tax rate",
+   "value": 0.8009258923384999,
+   "text": "+0.8 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--theta1--rho2.0--tau",
+   "label": "θ = 1",
+   "series": "ρ = 2.0",
+   "panel": "Equilibrium tax rate",
+   "value": -1.24268197208008,
+   "text": "−1.2 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--acute--rho2.0--tau",
+   "label": "Acute ageing",
+   "series": "ρ = 2.0",
+   "panel": "Equilibrium tax rate",
+   "value": 7.613174697652589,
+   "text": "+7.6 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--mild--rho2.0--tau",
+   "label": "Mild ageing",
+   "series": "ρ = 2.0",
+   "panel": "Equilibrium tax rate",
+   "value": 3.5435690391753787,
+   "text": "+3.5 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--income--rho2.0--tau",
+   "label": "French income distr.",
+   "series": "ρ = 2.0",
+   "panel": "Equilibrium tax rate",
+   "value": -1.2952903187968101,
+   "text": "−1.3 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--voting--rho2.0--tau",
+   "label": "French voting",
+   "series": "ρ = 2.0",
+   "panel": "Equilibrium tax rate",
+   "value": 2.8208889691990704,
+   "text": "+2.8 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--leisure--rho2.0--tau",
+   "label": "French leisure",
+   "series": "ρ = 2.0",
+   "panel": "Equilibrium tax rate",
+   "value": 0.0012165616405490631,
+   "text": "+0.001 p.p.",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--theta0--rho0.5--sr",
+   "label": "θ = 0",
+   "series": "ρ = 0.5",
+   "panel": "Savings over GDP",
+   "value": -1.7061285687098693,
+   "text": "−1.7 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--theta1--rho0.5--sr",
+   "label": "θ = 1",
+   "series": "ρ = 0.5",
+   "panel": "Savings over GDP",
+   "value": 2.693894376107991,
+   "text": "+2.7 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--acute--rho0.5--sr",
+   "label": "Acute ageing",
+   "series": "ρ = 0.5",
+   "panel": "Savings over GDP",
+   "value": -2.207658814400859,
+   "text": "−2.2 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--mild--rho0.5--sr",
+   "label": "Mild ageing",
+   "series": "ρ = 0.5",
+   "panel": "Savings over GDP",
+   "value": -1.0316492423762398,
+   "text": "−1.0 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--income--rho0.5--sr",
+   "label": "French income distr.",
+   "series": "ρ = 0.5",
+   "panel": "Savings over GDP",
+   "value": 1.34052221684505,
+   "text": "+1.3 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--voting--rho0.5--sr",
+   "label": "French voting",
+   "series": "ρ = 0.5",
+   "panel": "Savings over GDP",
+   "value": -0.27564486726449067,
+   "text": "−0.3 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--leisure--rho0.5--sr",
+   "label": "French leisure",
+   "series": "ρ = 0.5",
+   "panel": "Savings over GDP",
+   "value": 0.0006210089374014682,
+   "text": "+0.001 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--theta0--rho1.0--sr",
+   "label": "θ = 0",
+   "series": "ρ = 1.0",
+   "panel": "Savings over GDP",
+   "value": -0.7916442614426311,
+   "text": "−0.8 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--theta1--rho1.0--sr",
+   "label": "θ = 1",
+   "series": "ρ = 1.0",
+   "panel": "Savings over GDP",
+   "value": 1.18394101741639,
+   "text": "+1.2 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--acute--rho1.0--sr",
+   "label": "Acute ageing",
+   "series": "ρ = 1.0",
+   "panel": "Savings over GDP",
+   "value": -2.023472911931781,
+   "text": "−2.0 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--mild--rho1.0--sr",
+   "label": "Mild ageing",
+   "series": "ρ = 1.0",
+   "panel": "Savings over GDP",
+   "value": -0.9670329905923813,
+   "text": "−1.0 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--income--rho1.0--sr",
+   "label": "French income distr.",
+   "series": "ρ = 1.0",
+   "panel": "Savings over GDP",
+   "value": 0.7396900792488392,
+   "text": "+0.7 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--voting--rho1.0--sr",
+   "label": "French voting",
+   "series": "ρ = 1.0",
+   "panel": "Savings over GDP",
+   "value": -0.5156584604254,
+   "text": "−0.5 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--leisure--rho1.0--sr",
+   "label": "French leisure",
+   "series": "ρ = 1.0",
+   "panel": "Savings over GDP",
+   "value": -1.1102230246251565e-14,
+   "text": "0.000 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--theta0--rho2.0--sr",
+   "label": "θ = 0",
+   "series": "ρ = 2.0",
+   "panel": "Savings over GDP",
+   "value": -0.012638179628360335,
+   "text": "−0.01 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--theta1--rho2.0--sr",
+   "label": "θ = 1",
+   "series": "ρ = 2.0",
+   "panel": "Savings over GDP",
+   "value": 0.15728588595284032,
+   "text": "+0.2 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--acute--rho2.0--sr",
+   "label": "Acute ageing",
+   "series": "ρ = 2.0",
+   "panel": "Savings over GDP",
+   "value": -1.7835399290196285,
+   "text": "−1.8 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--mild--rho2.0--sr",
+   "label": "Mild ageing",
+   "series": "ρ = 2.0",
+   "panel": "Savings over GDP",
+   "value": -0.8726034692163293,
+   "text": "−0.9 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--income--rho2.0--sr",
+   "label": "French income distr.",
+   "series": "ρ = 2.0",
+   "panel": "Savings over GDP",
+   "value": 0.2726439839292605,
+   "text": "+0.3 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--voting--rho2.0--sr",
+   "label": "French voting",
+   "series": "ρ = 2.0",
+   "panel": "Savings over GDP",
+   "value": -0.5795739164304092,
+   "text": "−0.6 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--leisure--rho2.0--sr",
+   "label": "French leisure",
+   "series": "ρ = 2.0",
+   "panel": "Savings over GDP",
+   "value": -6.85514983889135e-05,
+   "text": "0.000 p.p. of GDP",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--theta0--rho0.5--ww",
+   "label": "θ = 0",
+   "series": "ρ = 0.5",
+   "panel": "Average workweek",
+   "value": -1.7202723202240335,
+   "text": "−1.7 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--theta1--rho0.5--ww",
+   "label": "θ = 1",
+   "series": "ρ = 0.5",
+   "panel": "Average workweek",
+   "value": 1.753639251218992,
+   "text": "+1.8 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--acute--rho0.5--ww",
+   "label": "Acute ageing",
+   "series": "ρ = 0.5",
+   "panel": "Average workweek",
+   "value": -0.6241007381397168,
+   "text": "−0.6 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--mild--rho0.5--ww",
+   "label": "Mild ageing",
+   "series": "ρ = 0.5",
+   "panel": "Average workweek",
+   "value": -0.2494541552634999,
+   "text": "−0.2 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--income--rho0.5--ww",
+   "label": "French income distr.",
+   "series": "ρ = 0.5",
+   "panel": "Average workweek",
+   "value": 1.3910316236725393,
+   "text": "+1.4 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--voting--rho0.5--ww",
+   "label": "French voting",
+   "series": "ρ = 0.5",
+   "panel": "Average workweek",
+   "value": -0.1429207483301198,
+   "text": "−0.1 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--leisure--rho0.5--ww",
+   "label": "French leisure",
+   "series": "ρ = 0.5",
+   "panel": "Average workweek",
+   "value": -4.014821554534848,
+   "text": "−4.0 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--theta0--rho1.0--ww",
+   "label": "θ = 0",
+   "series": "ρ = 1.0",
+   "panel": "Average workweek",
+   "value": -1.2566726281598903,
+   "text": "−1.3 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--theta1--rho1.0--ww",
+   "label": "θ = 1",
+   "series": "ρ = 1.0",
+   "panel": "Average workweek",
+   "value": 1.142317157854471,
+   "text": "+1.1 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--acute--rho1.0--ww",
+   "label": "Acute ageing",
+   "series": "ρ = 1.0",
+   "panel": "Average workweek",
+   "value": -0.6846115904573011,
+   "text": "−0.7 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--mild--rho1.0--ww",
+   "label": "Mild ageing",
+   "series": "ρ = 1.0",
+   "panel": "Average workweek",
+   "value": -0.29042764377273045,
+   "text": "−0.3 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--income--rho1.0--ww",
+   "label": "French income distr.",
+   "series": "ρ = 1.0",
+   "panel": "Average workweek",
+   "value": 1.153474440180986,
+   "text": "+1.2 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--voting--rho1.0--ww",
+   "label": "French voting",
+   "series": "ρ = 1.0",
+   "panel": "Average workweek",
+   "value": -0.32786278741178876,
+   "text": "−0.3 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--leisure--rho1.0--ww",
+   "label": "French leisure",
+   "series": "ρ = 1.0",
+   "panel": "Average workweek",
+   "value": -4.004806641149031,
+   "text": "−4.0 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--theta0--rho2.0--ww",
+   "label": "θ = 0",
+   "series": "ρ = 2.0",
+   "panel": "Average workweek",
+   "value": -0.6524383428844587,
+   "text": "−0.7 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--theta1--rho2.0--ww",
+   "label": "θ = 1",
+   "series": "ρ = 2.0",
+   "panel": "Average workweek",
+   "value": 0.5838026980321231,
+   "text": "+0.6 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--acute--rho2.0--ww",
+   "label": "Acute ageing",
+   "series": "ρ = 2.0",
+   "panel": "Average workweek",
+   "value": -0.6627383703251581,
+   "text": "−0.7 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--mild--rho2.0--ww",
+   "label": "Mild ageing",
+   "series": "ρ = 2.0",
+   "panel": "Average workweek",
+   "value": -0.2928963771772928,
+   "text": "−0.3 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--income--rho2.0--ww",
+   "label": "French income distr.",
+   "series": "ρ = 2.0",
+   "panel": "Average workweek",
+   "value": 0.9184238253196142,
+   "text": "+0.9 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--voting--rho2.0--ww",
+   "label": "French voting",
+   "series": "ρ = 2.0",
+   "panel": "Average workweek",
+   "value": -0.4913117344674589,
+   "text": "−0.5 hours",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_overview--leisure--rho2.0--ww",
+   "label": "French leisure",
+   "series": "ρ = 2.0",
+   "panel": "Average workweek",
+   "value": -4.001562210702247,
+   "text": "−4.0 hours",
+   "table": null,
+   "row": null
+  }
+ ]
+}
