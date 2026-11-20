@@ -613,8 +613,32 @@ def oecdFigure1Sources():
 
 def oecdCorrelations():
     """ Pairwise Pearson and Spearman correlations of figure 1's four variables per concept set (`variant`
-    'named' | 'asEPS' | 'epsReadings'), pairwise complete, as the OECDdata build writes them. """
+    'named' | 'asEPS' | 'epsReadings' | 'figure'), pairwise complete, as the OECDdata build writes them; the role
+    'inequality' is the Gini in the first three, config.INEQUALITY's measure in 'figure'. """
     return pd.read_csv(_need(OECDCORR))
+
+
+# Page D1's section on inequality: the csvs the OECD_InequalityMeasures and OECD26_Layer1Inequality builds write into
+# config.PAPERDIR (read at call time, so that a test's PAPERDIR holds them).
+OECDINEQCORR    = 'oecdInequalityCorrelations.csv'
+OECD26INEQSLOPE = 'oecd26Layer1InequalitySlopes.csv'
+
+
+def paperCsv(name):
+    """ results/paper/<name> under the current config.PAPERDIR. """
+    return os.path.join(C.PAPERDIR, name)
+
+
+def oecdInequalityCorrelations():
+    """ The Gini against the model's measures of income inequality on figure 1's countries (tablesOA.
+    inequalityCorrelations), as the OECD_InequalityMeasures build writes it. """
+    return pd.read_csv(_need(paperCsv(OECDINEQCORR)))
+
+
+def oecd26InequalitySlopes():
+    """ Figure 7's spending and index on each measure of income inequality, data and model at the paper's variant
+    (tablesOECD26.inequalitySlopes), as the OECD26_Layer1Inequality build writes it. """
+    return pd.read_csv(_need(paperCsv(OECD26INEQSLOPE)))
 
 
 # The cross-country test: python/US/runOECD26.py writes results/oecd26/, stage (0)'s oecd26Sample.py the sample.
@@ -648,6 +672,50 @@ def oecd26SampleOf(variant = None):
     """ The cross-section's countries under the θ variant, in figure 1.1's order: thetaVariant's `sample`. """
     t = thetaVariant(variant)
     return [c for c in oecdFigure1Data().index if c in t.index and bool(t.at[c, 'sample'])]
+
+
+# The income groups the model is fed (python/US/oecd26.readData), the source of config.INEQUALITY's model measures.
+OECD29DIST    = os.path.join(C.DATA, 'oecd29_distribution.csv')
+OECD29SOURCES = os.path.join(C.DATA, 'oecd29_sources.csv')
+GROUPTOL      = 1e-6                                   # the csv's eight digits: Σγy = 1 and Ṽ hold to ~2e-8
+
+
+def incomeGroups(isos = None):
+    r""" config.INCOMEGROUPS' rows of data/oecd29_distribution.csv, one row per country of `isos` (the rows' countries
+    when None), indexed on ISO3 in that order: `y1`-`y3`, `gamma1`-`gamma3`, `Vtilde` = Σ_i γ_i (y_i - 1)²/y_i (Eq
+    esc:budget's \tilde V), `yHighOverLow` = y_3/y_1 and `year`. Raises unless every country of `isos` has exactly the
+    three groups, with finite y and γ, Σγ = Σγy = 1, one year, and the file's Vtilde = Σγ(y - 1)²/y. """
+    d = pd.read_csv(_need(OECD29DIST))
+    g = C.INCOMEGROUPS
+    d = d[(d['role'] == g['role']) & (d['source'] == g['source']) & (d['convention'] == g['convention'])]
+    isos = list(dict.fromkeys(d['iso3'])) if isos is None else list(isos)
+    d = d[d['iso3'].isin(isos)]
+    n = d.groupby('iso3')['group'].apply(lambda s: sorted(s) == [1, 2, 3]).reindex(isos, fill_value = False)
+    if not n.all():
+        raise ValueError('{}: not the three income groups of {} for {}'.format(
+            os.path.relpath(OECD29DIST, C.REPO), g, ', '.join(n.index[~n])))
+    y = d.pivot(index = 'iso3', columns = 'group', values = 'y').loc[isos].astype(float)
+    γ = d.pivot(index = 'iso3', columns = 'group', values = 'gamma').loc[isos].astype(float)
+    first = d.groupby('iso3').first().loc[isos]
+    V = (γ*(y - 1)**2/y).sum(axis = 1)
+    bad = ~(np.isfinite(y).all(axis = 1) & np.isfinite(γ).all(axis = 1)
+            & ((γ.sum(axis = 1) - 1).abs() <= GROUPTOL) & (((γ*y).sum(axis = 1) - 1).abs() <= GROUPTOL)
+            & ((first['Vtilde'].astype(float) - V).abs() <= GROUPTOL)
+            & (d.groupby('iso3')['year'].nunique().reindex(isos) == 1))
+    if bad.any():
+        raise ValueError('{}: the groups of {} are not y, γ with Σγ = Σγy = 1 and Vtilde = Σγ(y - 1)²/y for {}'
+                         .format(os.path.relpath(OECD29DIST, C.REPO), g, ', '.join(bad.index[bad])))
+    out = pd.DataFrame({'y{}'.format(k): y[k] for k in (1, 2, 3)} | {'gamma{}'.format(k): γ[k] for k in (1, 2, 3)},
+                       index = pd.Index(isos, name = 'iso3'))
+    out['Vtilde'] = first['Vtilde'].astype(float)
+    out['yHighOverLow'] = y[3]/y[1]
+    out['year'] = first['year'].astype(int)
+    return out
+
+
+def oecd29Sources():
+    """ data/oecd29_sources.csv (stage (0)'s oecd29Data.py): one row per data column or group of columns, as text. """
+    return pd.read_csv(_need(OECD29SOURCES), dtype = str, keep_default_na = False)
 
 
 def oecd26Dir(theta = None, root = None):
@@ -966,6 +1034,46 @@ def strategicTerm():
     2050 policy function there, `strategic` their product, and the three as elasticities; under log only the
     zeros of prop:LOG:PEE (the rest NaN). """
     path = os.path.join(C.NUMDIR, 'C5_strategicTerm.csv')
+    return _noDuplicates(_readUS(path), ['ρ'], path).sort_values('ρ')
+
+
+def criticalTurnout():
+    """ The sign of eq:esc:seqFOC without the cost, the design chosen with the tax (python/US/c5Numbers.py a1;
+    prop:esc:corner, app:esc:corner): per (rho, date, tax), on the calibrated equilibrium of each dated period,
+    `negativeEverywhere` over theta_t in [0, 1], `turnoutRatio` the observed mu_H/mu_L and the critical ratio at
+    which the derivative first turns non-negative somewhere, weights mu_i = (mu_i^CPS)^m (`ratioCrit_μm`) or
+    y_i^k (`ratioCrit_yk`). `tax` 'calibrated' evaluates at the path's tax of that date (the paper's numbers);
+    'theta0', at t0 only, at the tax of the theta = 0 counterfactual (US_shocksCommonX.csv). """
+    path = os.path.join(C.NUMDIR, 'C5_criticalTurnout.csv')
+    return _noDuplicates(_readUS(path), ['ρ', 'date', 'tax'], path).sort_values(['ρ', 'date', 'tax'])
+
+
+def designDecomp():
+    """ The design choice of 2020 under log preferences (python/US/c5Numbers.py design; eq:esc:leadFOC at the 1990
+    electorate). `kind` 'foc': per (`case` US/FR, `route`, `piece`), `value` dW_t/dtheta_{t+1} at the U.S. choice
+    `θ1`, route 'total', 'design' (the benefit formula's theta, the share lost and the tax held), 'cost' (the share
+    lost's theta alone, eq:esc:ftheta) or 'tax' (the anticipated tax T_{t+1}(theta)); piece 'W' the sum of the four
+    blocs. `kind` 'choice': per `experiment`, `θ2020` the design in force in 2020 on the free path: 'US', 'FR' (France's
+    income distribution), 'X1' (FR with the cost at the U.S. size), 'X2' (at the U.S. size and dispersion), 'X3' (the
+    U.S. with France's dispersion in the cost), each with the `gap` of the cost to its target. """
+    path = os.path.join(C.NUMDIR, 'C5_designDecomp.csv')
+    return _noDuplicates(_readUS(path), ['kind', 'case', 'experiment', 'route', 'piece'], path)
+
+
+def designDecompCRRA(ρ):
+    """ c5Numbers.py designCRRA at `rho` (the exact 2-D recursion): designDecomp's 'choice' rows X1 and X2. """
+    path = os.path.join(C.NUMDIR, 'C5_designDecompCRRA_rho{:g}.csv'.format(ρ))
+    return _noDuplicates(_readUS(path), ['experiment'], path)
+
+
+def lambdaElasticity():
+    """ The calibrated lambda against participation and taxable-income elasticities (c5Numbers.py lambda; appendix
+    app:esc:cost), per rho: `πBaseline2020` = Pi/R in 2020 without the cost, `τ2020`, `tbar2020` the wedge in place
+    eq:esc:wedge, `λ`; at k = 2 the suffix _A under the paper's carrier lambda = 2 kappa pi (1 - pi), _C under the
+    fiscal externality's 3 kappa pi (1 - pi): `εLocal_*` the local elasticity at the wedge in place, `baseOutside_*`
+    the share of earnings outside the base, `λ_ε<e>_A` the lambda an elasticity e implies, `multiple_ε<e>_*` lambda
+    over it. """
+    path = os.path.join(C.NUMDIR, 'C5_lambdaElasticity.csv')
     return _noDuplicates(_readUS(path), ['ρ'], path).sort_values('ρ')
 
 

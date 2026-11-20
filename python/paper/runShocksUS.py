@@ -16,8 +16,8 @@ published numbers were produced at.
 
 THE θ VARIANT. Every command carries config.thetaFlags() (--theta config.US['theta'] --main: the U.S., France and
 the UK at the variant's θ0, the standard results/ paths), and an output counts as present only where it holds rows
-at that thetaSource (`_atTheta`). Appendix G's data variants, config.US['oecd26']['thetaVariants'], run without
---main into their own results/oecd26_theta_<V>/ (`oecd26Variants`).
+at that thetaSource (`_atTheta`). The data variants of the supplemental appendix's page C4,
+config.US['oecd26']['thetaVariants'], run without --main into their own results/oecd26_theta_<V>/ (`oecd26Variants`).
 
 TWO PARTS. `part = 'main'` is what a routine rebuild runs: the exogenous-theta shocks in both variants and
 the LOG leg of the endogenous-theta appendix, all cheap, and the cross-section. `part = 'prepub'` holds the
@@ -215,8 +215,8 @@ EXPERIMENTS = {
     # The cross-country test (python/US/runOECD26.py, results/oecd26/): the U.S. at the OECD inputs (anchor), every
     # in-sample country of the θ variant at its omega and cost parameter (layer 1) and with its own omega (layer 2),
     # LOG; one command per variant of config.US['oecd26']['variants'] (costs, turnout, layer 1's omega, stages) and per
-    # retAge of it, in its order: the paper's specification, appendix G's population variants, the supplemental appendix's
-    # readings. Its rows are keyed on their inputs, so the child decides what to recompute: always run.
+    # retAge of it, in its order: the paper's specification, the supplemental appendix's (page C4) population variants
+    # and readings. Its rows are keyed on their inputs, so the child decides what to recompute: always run.
     'oecd26': {
         'part':    'main',
         'always':  True,
@@ -229,7 +229,7 @@ EXPERIMENTS = {
         'requires': lambda: [C.usSweepCsv('US', True)],
         'note':    'the cross-country test, LOG (rho = 1)',
     },
-    # Appendix G's data variants (config.US['oecd26']['thetaVariants']), each at its own U.S. sweep at rho = 1
+    # Page C4's data variants (config.US['oecd26']['thetaVariants']), each at its own U.S. sweep at rho = 1
     # (calibrateRhoGrid.py --theta V, which resumes at its θ0) and the paper's specification of the cross-section
     # (turnout, layer 1's omega, retAge), into results/oecd26_theta_<V>/ (OECD26_Variants). Always run, as 'oecd26'.
     'oecd26Variants': {

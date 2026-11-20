@@ -324,3 +324,172 @@ def escTauTheta():
     with open(path, 'w', encoding = 'utf-8', newline = '\n') as f:
         f.write(BANNER.format(name = name, src = 'results/esc/escTauTheta.csv, escCalibration.csv') + note + '\n')
     return out + [path]
+
+
+# ---------------------------------------------------------------------------------------------------
+# Page D1's section on inequality: the Gini against the model's measures
+# ---------------------------------------------------------------------------------------------------
+# Label offsets in points, with a cost (pixels^2) that keeps the far ones for when every near one collides.
+OFFSETS = [(3, 2, 'left', 'bottom', 0), (3, -2, 'left', 'top', 0), (-3, 2, 'right', 'bottom', 0),
+           (-3, -2, 'right', 'top', 0), (0, 4, 'center', 'bottom', 0), (0, -4, 'center', 'top', 0),
+           (5, 0, 'left', 'center', 0), (-5, 0, 'right', 'center', 0), (7, 5, 'left', 'bottom', 25),
+           (-7, -5, 'right', 'top', 25), (7, -5, 'left', 'top', 25), (-7, 5, 'right', 'bottom', 25),
+           (0, 8, 'center', 'bottom', 25), (0, -8, 'center', 'top', 25)]
+
+
+def _isoLabels(ax, xs, ys, texts, bold = (), avoid = (), fontsize = 5.6, ambiguous = 40., passes = 3):
+    """ Point labels at the first of OFFSETS with no overlap, else the least bad: the score is the offset's cost plus
+    the overlap (pixels^2) with placed labels (x4), other markers and the boxes `avoid`, plus `ambiguous` (x10 at a far
+    offset) where another marker is nearer the label than its own, plus 1e5 outside the axes. Crowded points first,
+    then `passes` passes that re-place each label against all the others. Needs the final layout. """
+    from matplotlib.transforms import Bbox
+    fig = ax.figure
+    fig.canvas.draw()
+    rend = fig.canvas.get_renderer()
+    pts = ax.transData.transform(np.c_[xs, ys])
+    rad = 2.2*fig.dpi/72
+    dots = [Bbox.from_extents(px - rad, py - rad, px + rad, py + rad) for px, py in pts]
+    box = ax.get_window_extent(rend)
+    ov = lambda a, b: max(0., min(a.x1, b.x1) - max(a.x0, b.x0))*max(0., min(a.y1, b.y1) - max(a.y0, b.y0))
+    dist = lambda b, p: np.hypot(max(b.x0 - p[0], 0, p[0] - b.x1), max(b.y0 - p[1], 0, p[1] - b.y1))
+
+    def score(i, bb, others, far):
+        s = 4*sum(ov(bb, q) for q in others) + sum(ov(bb, d) for j, d in enumerate(dots) if j != i)
+        s += sum(ov(bb, a) for a in avoid)
+        own = dist(bb, pts[i])
+        s += ambiguous*(10 if far else 1)*any(dist(bb, pts[j]) < own for j in range(len(pts)) if j != i)
+        if not (box.x0 <= bb.x0 and bb.x1 <= box.x1 and box.y0 <= bb.y0 and bb.y1 <= box.y1):
+            s += 1e5
+        return s
+
+    def place(i, others):
+        best = None
+        for dx, dy, ha, va, cost in OFFSETS:
+            t = ax.annotate(texts[i], (xs[i], ys[i]), xytext = (dx, dy), textcoords = 'offset points', ha = ha,
+                            va = va, fontsize = fontsize, zorder = 6,
+                            color = INK['primary'] if texts[i] in bold else INK['secondary'],
+                            fontweight = 'bold' if texts[i] in bold else 'normal')
+            bb = t.get_window_extent(rend).expanded(1.04, 1.08)
+            s = cost + score(i, bb, others, cost > 0)
+            if best is None or s < best[0]:
+                if best is not None:
+                    best[1].remove()
+                best = (s, t, bb)
+            else:
+                t.remove()
+            if s == 0:
+                break
+        return best
+
+    crowd = [-sum(ov(dots[i].expanded(4, 4), d) > 0 for d in dots) for i in range(len(xs))]
+    placed = {}
+    for i in np.argsort(crowd, kind = 'stable'):
+        placed[i] = place(i, [b for _, _, b in placed.values()])
+    for _ in range(passes):
+        for i in list(placed):
+            placed[i][1].remove()
+            placed[i] = place(i, [b for j, (_, _, b) in placed.items() if j != i])
+
+
+def oecdInequalityMeasures():
+    r""" OECD_InequalityMeasures (page D1): on the countries of figure 1 (tablesOA.inequalityMeasures), the Gini of
+    disposable income against the two measures of the income groups the model is fed (tablesOA.INEQUALITYMEASURES:
+    y_3/y_1 and Ṽ), one panel each, with the least-squares line over all of them and over all but the U.S., and Pearson's
+    r and Spearman's rank correlation with and without the U.S. Writes results/paper/oecdInequalityCorrelations.csv
+    (tablesOA.inequalityCorrelations, which OECD_InequalityCorrelations prints) and its note. Every dot and line is a
+    mark, a dot linked to its country's row of OECD_Countries, a line and the statistics to their row of
+    OECD_InequalityCorrelations. """
+    import oecdFigure1 as F1
+    from figuresOECD26 import EDGE, yearsText, INEQUALITYSOURCE
+    name = 'OECD_InequalityMeasures'
+    m = T.inequalityMeasures()
+    corr = T.inequalityCorrelations(m)
+    os.makedirs(C.PAPERDIR, exist_ok = True)
+    csv = D.paperCsv(D.OECDINEQCORR)
+    corr.to_csv(csv, index = False)
+    cols = T.INEQUALITYMEASURES
+    H = 2.75*len(cols) + 0.7
+    fig, axes = plt.subplots(len(cols), 1, figsize = (WIDTH, H), sharex = True, squeeze = False)
+    # a fixed layout: constrained_layout counts the source lines and collapses the axes
+    fig.subplots_adjust(left = 0.09, right = 0.985, top = 1 - 0.35/H, bottom = 0.75/H, hspace = 0.42)
+    x = m['gini'].astype(float)
+    lo, hi = float(x.min()), float(x.max())
+    pad = 0.06*(hi - lo)
+    G = C.INEQUALITYLABELS['gini']
+    marks, statBox = [], {}
+    for k, (ax, col) in enumerate(zip(axes[:, 0], cols)):
+        lab = C.INEQUALITYLABELS[col]
+        panel = '{} against {}'.format(lab['plain'], G['plain'])
+        c = corr[(corr['measure'] == col) & (corr['sample'] == 'all')].iloc[0]
+        cn = corr[(corr['measure'] == col) & (corr['sample'] == 'noUSA')].iloc[0]
+        _panel(ax, '', '', labelsize = 6.5)
+        ax.set_ylabel(lab['axis'].split(', ')[-1], color = INK['secondary'], fontsize = 7.5)
+        # the title's second line is blank: the source line is drawn into it in secondary ink
+        ax.set_title('({}) {}\n'.format('abc'[k], lab['axis']), color = INK['primary'], fontsize = 8, loc = 'left',
+                     pad = 3)
+        ax.text(0, 1.0, INEQUALITYSOURCE[col] + ', ' + yearsText(m['year']), transform = ax.transAxes, ha = 'left',
+                va = 'bottom', fontsize = 6.3, color = INK['secondary'])
+        ax.tick_params(labelbottom = True, length = 2.5)
+        y = m[col].astype(float)
+        for iso in m.index:
+            pt, = ax.plot(x[iso], y[iso], 'o', ms = 3.8, ls = 'none', zorder = 4 if iso == 'USA' else 3,
+                          color = SERIES[0], mec = EDGE, mew = 0.5)
+            pt.set_gid(markId(name, col, iso.lower()))
+            marks.append({'id': pt.get_gid(), 'label': m.at[iso, 'country'], 'series': 'data', 'panel': panel,
+                          'value': float(y[iso]),
+                          'text': '{}: {}; {}: {}'.format(G['mark'], G['fmt'].format(x[iso]), lab['mark'],
+                                                          lab['fmt'].format(y[iso])),
+                          'table': 'OECD_Countries', 'row': iso.lower()})
+        nu = np.asarray(m.index != 'USA')
+        for o, keep, style, part in ((c, np.ones(len(m), bool), {'color': SERIES[0], 'lw': 1.1}, 'all'),
+                                     (cn, nu, {'color': INK['muted'], 'lw': 0.9, 'ls': (0, (3, 2))}, 'nousa')):
+            xs = np.array([float(x[keep].min()), float(x[keep].max())])
+            ln, = ax.plot(xs, o['intercept'] + o['slope']*xs, zorder = 2, **style)
+            ln.set_gid(markId(name, col, 'fit', part))
+            marks.append({'id': ln.get_gid(), 'series': 'data', 'panel': panel, 'value': float(o['slope']),
+                          'label': 'least squares, ' + ('all' if part == 'all' else 'without the U.S.'),
+                          'text': 'slope {} (s.e. {})'.format(lab['fmt'].format(o['slope']), lab['fmt'].format(o['se'])),
+                          'table': 'OECD_InequalityCorrelations', 'row': T._keyOf(col) + '_' + part})
+        # headroom: the statistics box spans the top left of the axes, so every point under it (left 70% of the
+        # axis) stays in the lower 70% of the axis, room for a label above it
+        ymin, ymax = float(y.min()), float(y.max())
+        bottom = ymin - 0.08*(ymax - ymin)
+        yLeft = float(y[x <= lo - pad + 0.70*(hi - lo + 2*pad)].max())
+        ax.set_ylim(bottom, max(ymax + 0.10*(ymax - ymin), (yLeft - 0.30*bottom)/0.70))
+        ax.set_xlim(lo - pad, hi + pad)
+        statBox[ax] = ax.text(0.03, 0.97, 'r = {:.2f}   (without the U.S. {:.2f})\nSpearman {:.2f}   ({:.2f}),  n = {}'.format(
+            c['pearson'], cn['pearson'], c['spearman'], cn['spearman'], int(c['n'])), transform = ax.transAxes,
+            ha = 'left', va = 'top', fontsize = 6.2, color = INK['secondary'], linespacing = 1.35, zorder = 7,
+            bbox = {'facecolor': EDGE, 'edgecolor': 'none', 'alpha': 0.9, 'pad': 1.5})
+        statBox[ax].set_gid(markId(name, col, 'stats'))
+        marks.append({'id': statBox[ax].get_gid(), 'label': 'Pearson r', 'series': 'data', 'panel': panel,
+                      'value': float(c['pearson']),
+                      'text': 'r {:.2f}, without the U.S. {:.2f}; Spearman {:.2f}, without the U.S. {:.2f}'.format(
+                          c['pearson'], cn['pearson'], c['spearman'], cn['spearman']),
+                      'table': 'OECD_InequalityCorrelations', 'row': T._keyOf(col) + '_all'})
+    axes[-1, 0].set_xlabel('{} (WIID, {})'.format(F1.LABEL['gini'], yearsText(m['gini_year'])),
+                           color = INK['secondary'], fontsize = 7.5)
+    fig.canvas.draw()
+    rend = fig.canvas.get_renderer()
+    for ax, col in zip(axes[:, 0], cols):
+        _isoLabels(ax, x.to_numpy(float), m[col].to_numpy(float), list(m.index), bold = ('USA',),
+                   avoid = [statBox[ax].get_window_extent(rend).expanded(1.06, 1.25)])
+    h = [Line2D([], [], color = SERIES[0], lw = 1.1), Line2D([], [], color = INK['muted'], lw = 0.9, ls = (0, (3, 2)))]
+    fig.legend(h, ['least squares, all {}'.format(len(m)), 'least squares, without the U.S.'],
+               loc = 'lower center', ncol = 2, frameon = False, fontsize = 6.5, labelcolor = INK['secondary'],
+               handlelength = 1.8, columnspacing = 1.4)
+    out = _save(fig, name, marks)
+    g = D.incomeGroups(m.index)
+    shares = ', '.join(r'{:.0f}\%'.format(100*float(g['gamma{}'.format(k)].iloc[0])) for k in (1, 2, 3))
+    note = (r'\textit{Note:} The ' + str(len(m)) + r' countries of figure \ref{fig:US:OECDdata}. The Gini is that of '
+            r'disposable income (WIID); high over low income, $y_3/y_1$, and the dispersion $\tilde V = \sum_i \gamma_i '
+            r'(y_i - 1)^2/y_i$ are of the three income groups the model is fed, at the U.S.\ shares of the population ('
+            + shares + r', from the bottom), in the gross earnings of men working full time (OECD). The solid line is '
+            r'the least-squares fit over all countries, the dashed one over all but the U.S.; each panel gives '
+            r'Pearson\textquotesingle s $r$ and Spearman\textquotesingle s rank correlation, with the U.S.\ and, in '
+            r'parentheses, without it (table \ref{table:OA:OECD_InequalityCorrelations}).')
+    path = os.path.join(C.PAPERDIR, 'Figs', name + '_note.tex')
+    with open(path, 'w', encoding = 'utf-8', newline = '\n') as f:
+        f.write(BANNER.format(name = name, src = 'data/oecdFigure1.csv, oecd29_distribution.csv, oecd26_theta.csv')
+                + note + '\n')
+    return out + [csv, path]

@@ -52,27 +52,36 @@ URL = {'socx': SDMX + 'OECD.ELS.SPD,DSD_SOCX_AGG@DF_SOCX_AGG,1.0/.A.SOCX.PT_B1GQ
        'wiid': 'https://www.wider.unu.edu/sites/default/files/WIID/WIID-08SEP2026.xlsx',
        'wid':  'https://wid.world/bulk_download/wid_all_data.zip'}
 
-# The concepts the footnote names, and the ones that reproduce the published EPS. No source found
-# reproduces the EPS Gini; gini_widPretax is the nearest (see the sources csv).
-NAMED  = {'spending': 'pensionSpending', 'growth': 'popGrowth', 'index': 'bbIndex', 'gini': 'gini'}
+# The concepts the footnote names, and the ones that reproduce the published EPS, by role ('inequality' is income
+# inequality). No source found reproduces the EPS Gini; gini_widPretax is the nearest (see the sources csv).
+NAMED  = {'spending': 'pensionSpending', 'growth': 'popGrowth', 'index': 'bbIndex', 'inequality': 'gini'}
 AS_EPS = {'spending': 'pensionSpending_cashInKind', 'growth': 'popGrowth_wb', 'index': 'bbIndex_mean',
-          'gini': 'gini_widPretax'}
+          'inequality': 'gini_widPretax'}
 EPSCOL = {'spending': 'eps_pensionSpending', 'growth': 'eps_popGrowth', 'index': 'eps_bbIndex',
-          'gini': 'eps_gini'}
-# What the figure plots: the named spending, growth and Gini, and the design's index under config.US['theta']'s
-# measure, I = 1/(2 - θ) from data/oecd26_theta.csv (column THETAINDEX of `plotted`), on that measure's countries.
+          'inequality': 'eps_gini'}
+ROLES = ('spending', 'growth', 'index', 'inequality')
+# What the figure plots: the named spending and growth, the design's index under config.US['theta']'s measure, I =
+# 1/(2 - θ) from data/oecd26_theta.csv (column THETAINDEX of `plotted`), and config.INEQUALITY's measure of income
+# inequality (a column of `plotted` where data/oecdFigure1.csv has none: datasets.incomeGroups), on that measure's
+# countries.
 THETAINDEX = 'thetaIndex'
-PLOT = NAMED | {'index': THETAINDEX}
+PLOT = NAMED | {'index': THETAINDEX, 'inequality': C.INEQUALITY}
 LABEL = {'pensionSpending': 'Pension spending, % of GDP', THETAINDEX: 'Bismarckian index',
          'pensionSpending_cashInKind': 'Old-age spending, % of GDP',
          'popGrowth': 'Population 2020 / 1990', 'popGrowth_wb': 'Population 2020 / 1990',
          'bbIndex': 'Bismarckian index', 'bbIndex_mean': 'Bismarckian index',
-         'gini': 'Gini, disposable income', 'gini_widPretax': 'Gini, pre-tax income',
-         'gini_wiidMarket': 'Gini, market income'}
+         'gini_widPretax': 'Gini, pre-tax income', 'gini_wiidMarket': 'Gini, market income'} | {
+         m: l['axis'] for m, l in C.INEQUALITYLABELS.items()}
 HIGHLIGHT = {'USA': 'US', 'FRA': 'FR'}   # the economies section 6 calibrates (the UK's calibration is appendix F's)
 # A mark's name for each variable and how its text prints the value.
 MARKFMT = {'spending': ('pension spending', '{:.1f}% of GDP'), 'growth': ('population 2020/1990', '{:.2f}'),
-           'index': ('Bismarckian index', '{:.3f}'), 'gini': ('Gini', '{:.3f}')}
+           'index': ('Bismarckian index', '{:.3f}'),
+           'inequality': (C.INEQUALITYLABELS[C.INEQUALITY]['mark'], C.INEQUALITYLABELS[C.INEQUALITY]['fmt'])}
+
+
+def plainLabel(column):
+    """ LABEL[column] as plain unicode, for a mark's text. """
+    return C.INEQUALITYLABELS[column]['plain'] if column in C.INEQUALITYLABELS else LABEL[column]
 
 
 # --- fetching (network) ----------------------------------------------------------------------------------
@@ -377,11 +386,17 @@ def collect():
 def plotted(df = None):
     """ The figure's data: data/oecdFigure1.csv's rows (`df`, read when None) of the countries of config.US['theta']'s
     measure of the design (datasets.oecd26SampleOf: inSample and a finite θ), in the footnote's order, with the
-    design's index I = 1/(2 - θ) of that measure as column THETAINDEX. """
+    design's index I = 1/(2 - θ) of that measure as column THETAINDEX and, where config.INEQUALITY is a measure of the
+    model's income groups, that measure and `<measure>_year` from datasets.incomeGroups (which raises on a country
+    without its three groups). """
     df = pd.read_csv(D._need(OUT), index_col = 'iso3') if df is None else df
     keep = D.oecd26SampleOf()
     out = df.loc[keep].copy()
     out[THETAINDEX] = D.thetaVariant().loc[keep, 'index'].astype(float)
+    m = PLOT['inequality']
+    if m not in out.columns:
+        g = D.incomeGroups(keep)
+        out[m], out[m + '_year'] = g[m], g['year']
     return out
 
 
@@ -402,7 +417,7 @@ def figureCorrelations(fig):
 def _pairwise(variant, cols, frame):
     from scipy import stats
     rows = []
-    for a, b in itertools.combinations(('spending', 'growth', 'index', 'gini'), 2):
+    for a, b in itertools.combinations(ROLES, 2):
         x, y = frame[cols[a]].astype(float), frame[cols[b]].astype(float)
         ok = x.notna() & y.notna()
         pr, sr = stats.pearsonr(x[ok], y[ok]), stats.spearmanr(x[ok], y[ok])
@@ -445,9 +460,10 @@ def _labels(ax, x, y, size = 6.5):
 
 def figure(plot = None):
     r""" Figure \ref{fig:US:OECDdata}, 2x3: rows are spending and the Bismarckian index, columns population
-    growth and the Gini; the third column holds spending against the index (the size-design relation of
-    sec:esc) above the legend. Equal panels keep one aspect ratio, so slopes compare across panels. The countries
-    and the index are config.US['theta']'s measure's (`plotted`), the other variables data/oecdFigure1.csv's.
+    growth and income inequality (config.INEQUALITY); the third column holds spending against the index (the
+    size-design relation of sec:esc) above the legend. Equal panels keep one aspect ratio, so slopes compare across
+    panels. The countries and the index are config.US['theta']'s measure's (`plotted`), the measure of inequality
+    config.INEQUALITY's, the other variables data/oecdFigure1.csv's.
     Also writes results/paper/oecdCorrelations.csv and the note OECDdata_note.tex (the measure and the sample).
     Every dot is a mark linked to its country's row (lowercase ISO3) of OECD_Countries. """
     plot = PLOT if plot is None else plot
@@ -457,8 +473,8 @@ def figure(plot = None):
     correlations(full, df).to_csv(CORR, index = False)
 
     fig, axes = plt.subplots(2, 3, figsize = (5.91, 3.9), constrained_layout = True)
-    cells = [(0, 0, 'growth', 'spending'), (0, 1, 'gini', 'spending'), (0, 2, 'index', 'spending'),
-             (1, 0, 'growth', 'index'), (1, 1, 'gini', 'index')]
+    cells = [(0, 0, 'growth', 'spending'), (0, 1, 'inequality', 'spending'), (0, 2, 'index', 'spending'),
+             (1, 0, 'growth', 'index'), (1, 1, 'inequality', 'index')]
     hi = df.index.isin(list(HIGHLIGHT))
     ns, points, marks = set(), [], []
     for r, c, xv, yv in cells:
@@ -478,7 +494,7 @@ def figure(plot = None):
                 pt.set_gid(markId('OECDdata', yv + '_' + xv, iso.lower()))
                 marks.append(mark(pt.get_gid(), df.at[iso, 'country'], y[iso],
                                   '{}: {}; {}: {}'.format(xn, xf.format(x[iso]), yn, yf.format(y[iso])),
-                                  panel = '{} against {}'.format(LABEL[plot[yv]], LABEL[plot[xv]]),
+                                  panel = '{} against {}'.format(plainLabel(plot[yv]), plainLabel(plot[xv])),
                                   table = 'OECD_Countries', row = iso.lower()))
         if c == 0:
             ax.set_ylabel(LABEL[plot[yv]], color = INK['secondary'], fontsize = 7.5)
@@ -506,6 +522,67 @@ def figure(plot = None):
     return _save(fig, 'OECDdata', marks) + [CORR, writeNote(full, df)]
 
 
+def _yearsShort(s):
+    """ '2019' or '2019 (Poland 2018)': the modal year of `s` (on ISO3) and the countries read at another. """
+    s = s.astype(int)
+    mode = int(s.mode().iloc[0])
+    other = s[s != mode]
+    names = D.oecdFigure1Data()['country']
+    return str(mode) + (' ({})'.format(', '.join('{} {}'.format(names[c], v) for c, v in other.items()))
+                        if len(other) else '')
+
+
+def inequalityNote(isos, measure = None):
+    r""" The notes' clause on the measure of income inequality `measure` (config.INEQUALITY by default) on the countries
+    `isos`: the Gini's concept, or what the model's measure is of its income groups (datasets.incomeGroups), with the
+    groups' population shares and the year, from the data. """
+    measure = C.INEQUALITY if measure is None else measure
+    if measure == 'gini':
+        return 'the Gini is that of disposable income'
+    g = D.incomeGroups(isos)
+    shares = ', '.join(r'{:.0f}\%'.format(100*float(g['gamma{}'.format(k)].iloc[0])) for k in (1, 2, 3))
+    what = {'yHighOverLow': r'high over low income is $y_3/y_1$, the relative income of the top of three income groups '
+                            r'over that of the bottom one',
+            'Vtilde': r'the dispersion is $\tilde V = \sum_i \gamma_i (y_i - 1)^2/y_i$ of the relative incomes $y_i$ '
+                      r'of three income groups'}[measure]
+    return (what + r', the groups at the U.S.\ shares of the population (' + shares + r', from the bottom), in the gross '
+            r'earnings of men working full time (OECD), ' + _yearsShort(g['year']) + ', as in the model')
+
+
+def derivedSources(isos = None):
+    """ The rows of OECD_Sources for the columns `plotted` adds to data/oecdFigure1.csv (config.INEQUALITY's model
+    measure), in data/oecdFigure1_sources.csv's columns: provider, dataset, series, vintage, retrieval date and url of
+    the income groups' source (data/oecd29_sources.csv, the row of config.INCOMEGROUPS' source), the years on `isos`
+    (the figure's countries when None). Empty under the Gini, which the csv sources. """
+    m = PLOT['inequality']
+    cols = ['column', 'provider', 'dataset', 'series', 'vintage', 'years', 'retrieved', 'url', 'note']
+    if m == NAMED['inequality']:
+        return pd.DataFrame(columns = cols)
+    src = D.oecd29Sources()
+    tag = 'oecd29_distribution.csv source ' + C.INCOMEGROUPS['source']
+    r = src[src['column'].str.contains(tag, regex = False)]
+    if len(r) != 1:
+        raise ValueError('{}: {} rows source {}'.format(os.path.relpath(D.OECD29SOURCES, C.REPO), len(r), tag))
+    r = r.iloc[0]
+    isos = D.oecd26SampleOf() if isos is None else list(isos)
+    g = D.incomeGroups(isos)
+    what = {'yHighOverLow': 'y3/y1', 'Vtilde': 'Vtilde = sum_i gamma_i (y_i - 1)^2 / y_i'}[m]
+    shares = '/'.join('{:.3f}'.format(float(g['gamma{}'.format(k)].iloc[0])) for k in (1, 2, 3))
+    series = ('{} of the three income groups at the U.S. population shares {} (data/oecd29_distribution.csv, role {}, '
+              'source {}, convention {}); {}'.format(what, shares, C.INCOMEGROUPS['role'], C.INCOMEGROUPS['source'],
+                                                    C.INCOMEGROUPS['convention'], r['series']))
+    mode = int(g['year'].mode().iloc[0])
+    years = ('{} ({} of {})'.format(mode, int((g['year'] == mode).sum()), len(g))
+             + ''.join('; {}: {}'.format(y, ', '.join(g.index[g['year'] == y]))
+                       for y in sorted(set(g['year'])) if y != mode))
+    return pd.DataFrame([{'column': '{}, {}_year'.format(m, m), 'provider': r['provider'], 'dataset': r['dataset'],
+                          'series': series, 'vintage': r['vintage'], 'years': years, 'retrieved': r['retrieved'],
+                          'url': r['url'],
+                          'note': 'Not a column of data/oecdFigure1.csv: derived at build time from the income groups '
+                                  'the model is fed (python/US/oecd26.py), sourced in data/oecd29_sources.csv.'}],
+                        columns = cols)
+
+
 def writeNote(full, df):
     r""" results/paper/Figs/OECDdata_note.tex: the figure's measure of the design and its countries, from the data
     (the paper inputs it beside the figure once placed). """
@@ -525,11 +602,18 @@ def writeNote(full, df):
             r'Bismarckian index is $I = 1/(2-\theta)$, with $\theta$ ' + C.THETADEF + r' (Pensions at a Glance 2021). '
             r'Pension spending is public cash spending on old age '
             r'and survivors, ' + str(YEAR) + r', in \% of GDP; population growth is the population of ' + str(YEAR)
-            + ' over that of ' + str(BASE) + '; the Gini is that of disposable income.')
+            + ' over that of ' + str(BASE) + '; ' + inequalityNote(list(df.index)) + '.')
     path = os.path.join(C.PAPERDIR, 'Figs', 'OECDdata_note.tex')
     with open(path, 'w', encoding = 'utf-8', newline = '\n') as f:
-        f.write(BANNER.format(name = 'OECDdata', src = 'data/oecdFigure1.csv, data/oecd26_theta.csv') + note + '\n')
+        f.write(BANNER.format(name = 'OECDdata', src = 'data/oecdFigure1.csv, data/oecd26_theta.csv' + distSource())
+                + note + '\n')
     return path
+
+
+def distSource():
+    """ ', data/oecd29_distribution.csv' for a banner's %% Source: line where config.INEQUALITY is read off the
+    model's income groups, else ''. """
+    return '' if C.INEQUALITY == NAMED['inequality'] else ', data/oecd29_distribution.csv'
 
 
 def main():

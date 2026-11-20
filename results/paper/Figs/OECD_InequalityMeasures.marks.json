@@ -1,0 +1,485 @@
+{
+ "figure": "OECD_InequalityMeasures",
+ "marks": [
+  {
+   "id": "OECD_InequalityMeasures--yHighOverLow--aut",
+   "label": "Austria",
+   "series": "data",
+   "panel": "High over low income, y₃/y₁ against Gini, disposable income",
+   "value": 2.5288876097259876,
+   "text": "Gini: 0.304; high over low income: 2.53",
+   "table": "OECD_Countries",
+   "row": "aut"
+  },
+  {
+   "id": "OECD_InequalityMeasures--yHighOverLow--bel",
+   "label": "Belgium",
+   "series": "data",
+   "panel": "High over low income, y₃/y₁ against Gini, disposable income",
+   "value": 2.1167989395319897,
+   "text": "Gini: 0.274; high over low income: 2.12",
+   "table": "OECD_Countries",
+   "row": "bel"
+  },
+  {
+   "id": "OECD_InequalityMeasures--yHighOverLow--can",
+   "label": "Canada",
+   "series": "data",
+   "panel": "High over low income, y₃/y₁ against Gini, disposable income",
+   "value": 2.574221088590135,
+   "text": "Gini: 0.318; high over low income: 2.57",
+   "table": "OECD_Countries",
+   "row": "can"
+  },
+  {
+   "id": "OECD_InequalityMeasures--yHighOverLow--cze",
+   "label": "Czech Republic",
+   "series": "data",
+   "panel": "High over low income, y₃/y₁ against Gini, disposable income",
+   "value": 2.565786407439117,
+   "text": "Gini: 0.254; high over low income: 2.57",
+   "table": "OECD_Countries",
+   "row": "cze"
+  },
+  {
+   "id": "OECD_InequalityMeasures--yHighOverLow--fin",
+   "label": "Finland",
+   "series": "data",
+   "panel": "High over low income, y₃/y₁ against Gini, disposable income",
+   "value": 2.0420395873569044,
+   "text": "Gini: 0.277; high over low income: 2.04",
+   "table": "OECD_Countries",
+   "row": "fin"
+  },
+  {
+   "id": "OECD_InequalityMeasures--yHighOverLow--fra",
+   "label": "France",
+   "series": "data",
+   "panel": "High over low income, y₃/y₁ against Gini, disposable income",
+   "value": 2.456228736202441,
+   "text": "Gini: 0.321; high over low income: 2.46",
+   "table": "OECD_Countries",
+   "row": "fra"
+  },
+  {
+   "id": "OECD_InequalityMeasures--yHighOverLow--deu",
+   "label": "Germany",
+   "series": "data",
+   "panel": "High over low income, y₃/y₁ against Gini, disposable income",
+   "value": 2.420589754853467,
+   "text": "Gini: 0.323; high over low income: 2.42",
+   "table": "OECD_Countries",
+   "row": "deu"
+  },
+  {
+   "id": "OECD_InequalityMeasures--yHighOverLow--grc",
+   "label": "Greece",
+   "series": "data",
+   "panel": "High over low income, y₃/y₁ against Gini, disposable income",
+   "value": 2.950148769870187,
+   "text": "Gini: 0.331; high over low income: 2.95",
+   "table": "OECD_Countries",
+   "row": "grc"
+  },
+  {
+   "id": "OECD_InequalityMeasures--yHighOverLow--hun",
+   "label": "Hungary",
+   "series": "data",
+   "panel": "High over low income, y₃/y₁ against Gini, disposable income",
+   "value": 3.2164066027936933,
+   "text": "Gini: 0.303; high over low income: 3.22",
+   "table": "OECD_Countries",
+   "row": "hun"
+  },
+  {
+   "id": "OECD_InequalityMeasures--yHighOverLow--irl",
+   "label": "Ireland",
+   "series": "data",
+   "panel": "High over low income, y₃/y₁ against Gini, disposable income",
+   "value": 3.0661696261960008,
+   "text": "Gini: 0.302; high over low income: 3.07",
+   "table": "OECD_Countries",
+   "row": "irl"
+  },
+  {
+   "id": "OECD_InequalityMeasures--yHighOverLow--ita",
+   "label": "Italy",
+   "series": "data",
+   "panel": "High over low income, y₃/y₁ against Gini, disposable income",
+   "value": 2.3472581776974155,
+   "text": "Gini: 0.358; high over low income: 2.35",
+   "table": "OECD_Countries",
+   "row": "ita"
+  },
+  {
+   "id": "OECD_InequalityMeasures--yHighOverLow--jpn",
+   "label": "Japan",
+   "series": "data",
+   "panel": "High over low income, y₃/y₁ against Gini, disposable income",
+   "value": 2.2651001929936427,
+   "text": "Gini: 0.330; high over low income: 2.27",
+   "table": "OECD_Countries",
+   "row": "jpn"
+  },
+  {
+   "id": "OECD_InequalityMeasures--yHighOverLow--lux",
+   "label": "Luxembourg",
+   "series": "data",
+   "panel": "High over low income, y₃/y₁ against Gini, disposable income",
+   "value": 2.7115625449624905,
+   "text": "Gini: 0.341; high over low income: 2.71",
+   "table": "OECD_Countries",
+   "row": "lux"
+  },
+  {
+   "id": "OECD_InequalityMeasures--yHighOverLow--nzl",
+   "label": "New Zealand",
+   "series": "data",
+   "panel": "High over low income, y₃/y₁ against Gini, disposable income",
+   "value": 2.395748792910513,
+   "text": "Gini: 0.320; high over low income: 2.40",
+   "table": "OECD_Countries",
+   "row": "nzl"
+  },
+  {
+   "id": "OECD_InequalityMeasures--yHighOverLow--nor",
+   "label": "Norway",
+   "series": "data",
+   "panel": "High over low income, y₃/y₁ against Gini, disposable income",
+   "value": 2.101344160889703,
+   "text": "Gini: 0.277; high over low income: 2.10",
+   "table": "OECD_Countries",
+   "row": "nor"
+  },
+  {
+   "id": "OECD_InequalityMeasures--yHighOverLow--pol",
+   "label": "Poland",
+   "series": "data",
+   "panel": "High over low income, y₃/y₁ against Gini, disposable income",
+   "value": 3.0443548692633366,
+   "text": "Gini: 0.308; high over low income: 3.04",
+   "table": "OECD_Countries",
+   "row": "pol"
+  },
+  {
+   "id": "OECD_InequalityMeasures--yHighOverLow--prt",
+   "label": "Portugal",
+   "series": "data",
+   "panel": "High over low income, y₃/y₁ against Gini, disposable income",
+   "value": 3.142046172976082,
+   "text": "Gini: 0.328; high over low income: 3.14",
+   "table": "OECD_Countries",
+   "row": "prt"
+  },
+  {
+   "id": "OECD_InequalityMeasures--yHighOverLow--esp",
+   "label": "Spain",
+   "series": "data",
+   "panel": "High over low income, y₃/y₁ against Gini, disposable income",
+   "value": 2.6770084624212673,
+   "text": "Gini: 0.343; high over low income: 2.68",
+   "table": "OECD_Countries",
+   "row": "esp"
+  },
+  {
+   "id": "OECD_InequalityMeasures--yHighOverLow--swe",
+   "label": "Sweden",
+   "series": "data",
+   "panel": "High over low income, y₃/y₁ against Gini, disposable income",
+   "value": 1.9483736376019587,
+   "text": "Gini: 0.307; high over low income: 1.95",
+   "table": "OECD_Countries",
+   "row": "swe"
+  },
+  {
+   "id": "OECD_InequalityMeasures--yHighOverLow--gbr",
+   "label": "United Kingdom",
+   "series": "data",
+   "panel": "High over low income, y₃/y₁ against Gini, disposable income",
+   "value": 2.6845627406906485,
+   "text": "Gini: 0.329; high over low income: 2.68",
+   "table": "OECD_Countries",
+   "row": "gbr"
+  },
+  {
+   "id": "OECD_InequalityMeasures--yHighOverLow--usa",
+   "label": "United States",
+   "series": "data",
+   "panel": "High over low income, y₃/y₁ against Gini, disposable income",
+   "value": 3.653477701591544,
+   "text": "Gini: 0.419; high over low income: 3.65",
+   "table": "OECD_Countries",
+   "row": "usa"
+  },
+  {
+   "id": "OECD_InequalityMeasures--yHighOverLow--fit--all",
+   "series": "data",
+   "panel": "High over low income, y₃/y₁ against Gini, disposable income",
+   "value": 6.703171136925423,
+   "label": "least squares, all",
+   "text": "slope 6.70 (s.e. 2.47)",
+   "table": "OECD_InequalityCorrelations",
+   "row": "yhighoverlow_all"
+  },
+  {
+   "id": "OECD_InequalityMeasures--yHighOverLow--fit--nousa",
+   "series": "data",
+   "panel": "High over low income, y₃/y₁ against Gini, disposable income",
+   "value": 3.757682214105781,
+   "label": "least squares, without the U.S.",
+   "text": "slope 3.76 (s.e. 3.29)",
+   "table": "OECD_InequalityCorrelations",
+   "row": "yhighoverlow_nousa"
+  },
+  {
+   "id": "OECD_InequalityMeasures--yHighOverLow--stats",
+   "label": "Pearson r",
+   "series": "data",
+   "panel": "High over low income, y₃/y₁ against Gini, disposable income",
+   "value": 0.5278409183812153,
+   "text": "r 0.53, without the U.S. 0.26; Spearman 0.33, without the U.S. 0.22",
+   "table": "OECD_InequalityCorrelations",
+   "row": "yhighoverlow_all"
+  },
+  {
+   "id": "OECD_InequalityMeasures--Vtilde--aut",
+   "label": "Austria",
+   "series": "data",
+   "panel": "The model's dispersion, Ṽ against Gini, disposable income",
+   "value": 0.16128271,
+   "text": "Gini: 0.304; dispersion Ṽ: 0.161",
+   "table": "OECD_Countries",
+   "row": "aut"
+  },
+  {
+   "id": "OECD_InequalityMeasures--Vtilde--bel",
+   "label": "Belgium",
+   "series": "data",
+   "panel": "The model's dispersion, Ṽ against Gini, disposable income",
+   "value": 0.10388124,
+   "text": "Gini: 0.274; dispersion Ṽ: 0.104",
+   "table": "OECD_Countries",
+   "row": "bel"
+  },
+  {
+   "id": "OECD_InequalityMeasures--Vtilde--can",
+   "label": "Canada",
+   "series": "data",
+   "panel": "The model's dispersion, Ṽ against Gini, disposable income",
+   "value": 0.17076164,
+   "text": "Gini: 0.318; dispersion Ṽ: 0.171",
+   "table": "OECD_Countries",
+   "row": "can"
+  },
+  {
+   "id": "OECD_InequalityMeasures--Vtilde--cze",
+   "label": "Czech Republic",
+   "series": "data",
+   "panel": "The model's dispersion, Ṽ against Gini, disposable income",
+   "value": 0.16953955,
+   "text": "Gini: 0.254; dispersion Ṽ: 0.170",
+   "table": "OECD_Countries",
+   "row": "cze"
+  },
+  {
+   "id": "OECD_InequalityMeasures--Vtilde--fin",
+   "label": "Finland",
+   "series": "data",
+   "panel": "The model's dispersion, Ṽ against Gini, disposable income",
+   "value": 0.093705375,
+   "text": "Gini: 0.277; dispersion Ṽ: 0.094",
+   "table": "OECD_Countries",
+   "row": "fin"
+  },
+  {
+   "id": "OECD_InequalityMeasures--Vtilde--fra",
+   "label": "France",
+   "series": "data",
+   "panel": "The model's dispersion, Ṽ against Gini, disposable income",
+   "value": 0.15004476,
+   "text": "Gini: 0.321; dispersion Ṽ: 0.150",
+   "table": "OECD_Countries",
+   "row": "fra"
+  },
+  {
+   "id": "OECD_InequalityMeasures--Vtilde--deu",
+   "label": "Germany",
+   "series": "data",
+   "panel": "The model's dispersion, Ṽ against Gini, disposable income",
+   "value": 0.14779573,
+   "text": "Gini: 0.323; dispersion Ṽ: 0.148",
+   "table": "OECD_Countries",
+   "row": "deu"
+  },
+  {
+   "id": "OECD_InequalityMeasures--Vtilde--grc",
+   "label": "Greece",
+   "series": "data",
+   "panel": "The model's dispersion, Ṽ against Gini, disposable income",
+   "value": 0.22507489,
+   "text": "Gini: 0.331; dispersion Ṽ: 0.225",
+   "table": "OECD_Countries",
+   "row": "grc"
+  },
+  {
+   "id": "OECD_InequalityMeasures--Vtilde--hun",
+   "label": "Hungary",
+   "series": "data",
+   "panel": "The model's dispersion, Ṽ against Gini, disposable income",
+   "value": 0.26546921,
+   "text": "Gini: 0.303; dispersion Ṽ: 0.265",
+   "table": "OECD_Countries",
+   "row": "hun"
+  },
+  {
+   "id": "OECD_InequalityMeasures--Vtilde--irl",
+   "label": "Ireland",
+   "series": "data",
+   "panel": "The model's dispersion, Ṽ against Gini, disposable income",
+   "value": 0.24025219,
+   "text": "Gini: 0.302; dispersion Ṽ: 0.240",
+   "table": "OECD_Countries",
+   "row": "irl"
+  },
+  {
+   "id": "OECD_InequalityMeasures--Vtilde--ita",
+   "label": "Italy",
+   "series": "data",
+   "panel": "The model's dispersion, Ṽ against Gini, disposable income",
+   "value": 0.13371876,
+   "text": "Gini: 0.358; dispersion Ṽ: 0.134",
+   "table": "OECD_Countries",
+   "row": "ita"
+  },
+  {
+   "id": "OECD_InequalityMeasures--Vtilde--jpn",
+   "label": "Japan",
+   "series": "data",
+   "panel": "The model's dispersion, Ṽ against Gini, disposable income",
+   "value": 0.12423947,
+   "text": "Gini: 0.330; dispersion Ṽ: 0.124",
+   "table": "OECD_Countries",
+   "row": "jpn"
+  },
+  {
+   "id": "OECD_InequalityMeasures--Vtilde--lux",
+   "label": "Luxembourg",
+   "series": "data",
+   "panel": "The model's dispersion, Ṽ against Gini, disposable income",
+   "value": 0.18678488,
+   "text": "Gini: 0.341; dispersion Ṽ: 0.187",
+   "table": "OECD_Countries",
+   "row": "lux"
+  },
+  {
+   "id": "OECD_InequalityMeasures--Vtilde--nzl",
+   "label": "New Zealand",
+   "series": "data",
+   "panel": "The model's dispersion, Ṽ against Gini, disposable income",
+   "value": 0.14145631,
+   "text": "Gini: 0.320; dispersion Ṽ: 0.141",
+   "table": "OECD_Countries",
+   "row": "nzl"
+  },
+  {
+   "id": "OECD_InequalityMeasures--Vtilde--nor",
+   "label": "Norway",
+   "series": "data",
+   "panel": "The model's dispersion, Ṽ against Gini, disposable income",
+   "value": 0.10115079,
+   "text": "Gini: 0.277; dispersion Ṽ: 0.101",
+   "table": "OECD_Countries",
+   "row": "nor"
+  },
+  {
+   "id": "OECD_InequalityMeasures--Vtilde--pol",
+   "label": "Poland",
+   "series": "data",
+   "panel": "The model's dispersion, Ṽ against Gini, disposable income",
+   "value": 0.24041302,
+   "text": "Gini: 0.308; dispersion Ṽ: 0.240",
+   "table": "OECD_Countries",
+   "row": "pol"
+  },
+  {
+   "id": "OECD_InequalityMeasures--Vtilde--prt",
+   "label": "Portugal",
+   "series": "data",
+   "panel": "The model's dispersion, Ṽ against Gini, disposable income",
+   "value": 0.24940866,
+   "text": "Gini: 0.328; dispersion Ṽ: 0.249",
+   "table": "OECD_Countries",
+   "row": "prt"
+  },
+  {
+   "id": "OECD_InequalityMeasures--Vtilde--esp",
+   "label": "Spain",
+   "series": "data",
+   "panel": "The model's dispersion, Ṽ against Gini, disposable income",
+   "value": 0.18341717,
+   "text": "Gini: 0.343; dispersion Ṽ: 0.183",
+   "table": "OECD_Countries",
+   "row": "esp"
+  },
+  {
+   "id": "OECD_InequalityMeasures--Vtilde--swe",
+   "label": "Sweden",
+   "series": "data",
+   "panel": "The model's dispersion, Ṽ against Gini, disposable income",
+   "value": 0.080954131,
+   "text": "Gini: 0.307; dispersion Ṽ: 0.081",
+   "table": "OECD_Countries",
+   "row": "swe"
+  },
+  {
+   "id": "OECD_InequalityMeasures--Vtilde--gbr",
+   "label": "United Kingdom",
+   "series": "data",
+   "panel": "The model's dispersion, Ṽ against Gini, disposable income",
+   "value": 0.18489182,
+   "text": "Gini: 0.329; dispersion Ṽ: 0.185",
+   "table": "OECD_Countries",
+   "row": "gbr"
+  },
+  {
+   "id": "OECD_InequalityMeasures--Vtilde--usa",
+   "label": "United States",
+   "series": "data",
+   "panel": "The model's dispersion, Ṽ against Gini, disposable income",
+   "value": 0.33348476,
+   "text": "Gini: 0.419; dispersion Ṽ: 0.333",
+   "table": "OECD_Countries",
+   "row": "usa"
+  },
+  {
+   "id": "OECD_InequalityMeasures--Vtilde--fit--all",
+   "series": "data",
+   "panel": "The model's dispersion, Ṽ against Gini, disposable income",
+   "value": 0.984221932855219,
+   "label": "least squares, all",
+   "text": "slope 0.984 (s.e. 0.365)",
+   "table": "OECD_InequalityCorrelations",
+   "row": "vtilde_all"
+  },
+  {
+   "id": "OECD_InequalityMeasures--Vtilde--fit--nousa",
+   "series": "data",
+   "panel": "The model's dispersion, Ṽ against Gini, disposable income",
+   "value": 0.5076816179932834,
+   "label": "least squares, without the U.S.",
+   "text": "slope 0.508 (s.e. 0.480)",
+   "table": "OECD_InequalityCorrelations",
+   "row": "vtilde_nousa"
+  },
+  {
+   "id": "OECD_InequalityMeasures--Vtilde--stats",
+   "label": "Pearson r",
+   "series": "data",
+   "panel": "The model's dispersion, Ṽ against Gini, disposable income",
+   "value": 0.5265076629659486,
+   "text": "r 0.53, without the U.S. 0.24; Spearman 0.33, without the U.S. 0.23",
+   "table": "OECD_InequalityCorrelations",
+   "row": "vtilde_all"
+  }
+ ]
+}

@@ -4,8 +4,10 @@ tablesOECD26.RELATIONS. Layer 1 draws all five panels; layer 2 draws the two pan
 (turnout, sample, reading, spec, betaRule, spending, omegaRule, retAge, theta) are tablesOECD26's, each None for the
 paper's variant. Section 6's spending test (`oecd26Spending`) draws the two spending panels of layer 1 without the cost
 (config.US['oecd26']['spendingSpec']) at the observed designs. The predicted against the observed design
-(`oecd26ThetaFit`; appendix G's `oecd26ThetaFitRows`, the population and the data variants) draws tablesOECD26.thetaFit's
-panels. Each figure the paper inputs also writes `<name>_note.tex`, its note, which build.py copies beside the pdf.
+(`oecd26ThetaFit`; the supplemental appendix's `oecd26ThetaFitRows`, the population and the data variants of page C4)
+draws tablesOECD26.thetaFit's panels; page D1's `oecd26Layer1Inequality` layer 1's panels on inequality under each
+measure of tablesOECD26.INEQUALITYROWS. Each figure also writes `<name>_note.tex`, its note, which build.py copies beside
+the pdf for a figure the paper inputs and the site shows for one it does not (onlineAppendix.generatedNote).
 Layer 1 prints as "the model" (legend `model`, panel title `Model`), layer 2 as "own ω" (`Own $\omega$`), whose first
 definition is OECD26_ThetaFit's note (tablesOECD26's NAMES).
 """
@@ -30,7 +32,7 @@ LEGEND = {1: 'model', 2: r'model, own $\omega$'}                 # the model's l
 
 def _src(theta = None, layers = 'layer1.csv, layer2.csv, anchor.csv'):
     """ A note's %% Source: line: the csvs of the measure `theta`'s results directory (datasets.oecd26Dir) and the data. """
-    return D.oecd26DirRel(theta) + layers + '; data/oecdFigure1.csv, oecd26_theta.csv'
+    return D.oecd26DirRel(theta) + layers + '; ' + T.DATASRC
 
 
 def _note(name, src, text):
@@ -53,9 +55,9 @@ def oecd26Figure(layer = 1, turnout = None, sample = None, reading = None, spec 
     p = panelData(layer, **v)
     sfx = suffix(**v)
     name = 'OECD26_Layer{}'.format(layer) + sfx
-    cells = ([(0, 0, 'spending', 'growth'), (0, 1, 'spending', 'gini'), (0, 2, 'spending', 'index'),
-              (1, 0, 'index', 'growth'), (1, 1, 'index', 'gini')] if layer == 1 else
-             [(0, 0, 'index', 'growth'), (0, 1, 'index', 'gini')])
+    cells = ([(0, 0, 'spending', 'growth'), (0, 1, 'spending', 'inequality'), (0, 2, 'spending', 'index'),
+              (1, 0, 'index', 'growth'), (1, 1, 'index', 'inequality')] if layer == 1 else
+             [(0, 0, 'index', 'growth'), (0, 1, 'index', 'inequality')])
     rows = 2 if layer == 1 else 1
     fig, axes = plt.subplots(rows, 3, figsize = (5.91, 3.9 if layer == 1 else 2.15), constrained_layout = True,
                              squeeze = False)
@@ -83,14 +85,15 @@ def oecd26Figure(layer = 1, turnout = None, sample = None, reading = None, spec 
             ln, = ax.plot(xs, o['intercept'] + o['slope']*xs, color = colour, linewidth = 1.2, zorder = z - 1)
             ln.set_gid(markId(name, yv + '_' + xv, side.lower(), 'fit'))
             marks.append(mark(ln.get_gid(), 'fitted line', o['slope'],
-                              'slope {:.2f} (s.e. {:.2f})'.format(o['slope'], o['se']), series = side.lower(),
+                              'slope {:.{d}f} (s.e. {:.{d}f})'.format(o['slope'], o['se'], d = T.slopeDigits(yv, xv)),
+                              series = side.lower(),
                               panel = '{} against {}'.format(yn, xn),
                               table = 'OECD26_Slopes' + sfx if slopesTable else None,
                               row = yv + '_' + xv if slopesTable else None))
         if c == 0:
-            ax.set_ylabel(F1.LABEL[F1.NAMED[yv]], color = INK['secondary'], fontsize = 7.5)
+            ax.set_ylabel(F1.LABEL[F1.PLOT[yv]], color = INK['secondary'], fontsize = 7.5)
         if r == rows - 1 or (layer == 1 and c == 2):
-            ax.set_xlabel(F1.LABEL[F1.NAMED[xv]], color = INK['secondary'], fontsize = 7.5)
+            ax.set_xlabel(F1.LABEL[F1.PLOT[xv]], color = INK['secondary'], fontsize = 7.5)
         if yv == 'index':
             ax.set_ylim(*AXIS['index'])
         else:
@@ -116,9 +119,9 @@ def oecd26Figure(layer = 1, turnout = None, sample = None, reading = None, spec 
         # the anchor of the OECD26 notes: the later exhibits point here (tablesOECD26.specText)
         T.paperWording()
         ω = T.layer1Omega(v)
-        shared = (r'every country at the U.S.\ $\beta$ and $' + C.PIRSYMBOL + r'$ and at $\omega = ' + C.num(ω, 2)
+        shared = (r'every country at the U.S.\ $\beta$ and at $\omega = ' + C.num(ω, 2)
                   + '$, ' + T._meanWords(v) + r' (appendix \ref{app:oecd26:layer2})' if ω is not None else
-                  r'every country at the U.S.\ $\beta$, $\omega$ and $' + C.PIRSYMBOL + '$')
+                  r'every country at the U.S.\ $\beta$ and $\omega$')
         note = (r'\textit{Note:} ' + '{} countries'.format(n) + r', as in figure \ref{fig:OECD26:spending}, in the data '
                 r'and in the model (section \ref{sec:esc:crossSection}): ' + shared + r', at its cost '
                 r'$\lambda_{n,t}$ and at its own CSES propensities to vote, Luxembourg, which has none, at a flat '
@@ -133,7 +136,8 @@ def oecd26Figure(layer = 1, turnout = None, sample = None, reading = None, spec 
 
 
 def oecd26Spending(turnout = None, sample = None):
-    r""" OECD26_Spending (section 6's spending test): pension spending on population growth and on the Gini, the data
+    r""" OECD26_Spending (section 6's spending test): pension spending on population growth and on income inequality
+    (config.INEQUALITY), the data
     and layer 1 at config.US['oecd26']['spendingSpec'] (no cost) and the β rule 'common', at the observed designs;
     1x3 as layer 2's figure, the legend in the third cell. Also writes `OECD26_Spending_note.tex`, the figure's note
     (the sample, the anchor's β and ω without the cost, the turnout; the slopes are in section 6's text), which build.py copies beside the pdf for the paper's tablenotes to \input.
@@ -164,11 +168,12 @@ def oecd26Spending(turnout = None, sample = None):
             ln, = ax.plot(xs, o['intercept'] + o['slope']*xs, color = colour, linewidth = 1.2, zorder = z - 1)
             ln.set_gid(markId(name, yv + '_' + xv, side.lower(), 'fit'))
             marks.append(mark(ln.get_gid(), 'fitted line', o['slope'],
-                              'slope {:.2f} (s.e. {:.2f})'.format(o['slope'], o['se']), series = side.lower(),
+                              'slope {:.{d}f} (s.e. {:.{d}f})'.format(o['slope'], o['se'], d = T.slopeDigits(yv, xv)),
+                              series = side.lower(),
                               panel = '{} against {}'.format(yn, xn)))
         if c == 0:
-            ax.set_ylabel(F1.LABEL[F1.NAMED[yv]], color = INK['secondary'], fontsize = 7.5)
-        ax.set_xlabel(F1.LABEL[F1.NAMED[xv]], color = INK['secondary'], fontsize = 7.5)
+            ax.set_ylabel(F1.LABEL[F1.PLOT[yv]], color = INK['secondary'], fontsize = 7.5)
+        ax.set_xlabel(F1.LABEL[F1.PLOT[xv]], color = INK['secondary'], fontsize = 7.5)
         ax.set_ylim(0, max(AXIS['spending'][1], float(np.nanmax(p[['spendingData', 'spendingModel']].values)) + 1))
     legendAx = axes[0, 2]
     legendAx.axis('off')
@@ -195,10 +200,106 @@ def oecd26Spending(turnout = None, sample = None):
 
 
 # ---------------------------------------------------------------------------------------------------
-# The predicted against the observed design (OECD26_ThetaFit and its index version; appendix G's
-# OECD26_ThetaFitPopulation and OECD26_ThetaFitMeasure).
+# Page D1's section on inequality: figure 7.2's panels on inequality under each measure of tablesOECD26.INEQUALITYROWS.
+INEQUALITYSOURCE = {'gini': 'WIID', 'yHighOverLow': 'OECD earnings, men full-time',
+                    'Vtilde': 'OECD earnings, men full-time'}
+
+
+def yearsText(s):
+    """ '2019' or '2019 (POL 2018)': the modal year of `s` (on ISO3) and the countries read at another. """
+    s = s.astype(int)
+    mode = int(s.mode().iloc[0])
+    other = s[s != mode]
+    return str(mode) + (' ({})'.format(', '.join('{} {}'.format(c, v) for c, v in other.items())) if len(other) else '')
+
+
+def oecd26Layer1Inequality():
+    r""" OECD26_Layer1Inequality (page D1, ONLINE_ONLY): figure 7.2's spending and index panels on income inequality,
+    one row per measure of tablesOECD26.INEQUALITYROWS (the Gini, y_3/y_1, Ṽ), the data and the model at the paper's
+    variant, the least-squares line of each, and in each panel the data's and the model's slope (s.e.) and Pearson r.
+    Writes results/paper/oecd26Layer1InequalitySlopes.csv (tablesOECD26.inequalitySlopes, which
+    OECD26_Layer1InequalitySlopes prints) and its note. Every dot and line is a mark, a line linked to its row of that
+    table. """
+    name = 'OECD26_Layer1Inequality'
+    p = panelData(1)
+    s = T.inequalitySlopes(p)
+    os.makedirs(C.PAPERDIR, exist_ok = True)
+    csv = D.paperCsv(D.OECD26INEQSLOPE)
+    s.to_csv(csv, index = False)
+    years = {'gini': D.oecdFigure1Data().loc[p.index, 'gini_year'], 'yHighOverLow': D.incomeGroups(p.index)['year']}
+    years['Vtilde'] = years['yHighOverLow']
+    rows = T.INEQUALITYROWS
+    H = 2.6*len(rows) + 0.9
+    fig, axes = plt.subplots(len(rows), 2, figsize = (5.91, H))
+    fig.subplots_adjust(left = 0.10, right = 0.985, top = 1 - 0.32/H, bottom = 0.95/H, wspace = 0.22, hspace = 0.48)
+    marks = []
+    for r, m in enumerate(rows):
+        x = p[m].astype(float)
+        lab = C.INEQUALITYLABELS[m]
+        xn, xf = lab['mark'], lab['fmt']
+        for c, yv in enumerate(('spending', 'index')):
+            ax = axes[r, c]
+            _panel(ax, '', '', labelsize = 6.5)
+            ax.tick_params(length = 2.5)
+            if c == 0:
+                ax.set_title('({}) {}{}\n'.format('abc'[r], lab['axis'], " (the paper's)" if m == C.INEQUALITY else ''),
+                             color = INK['primary'], fontsize = 8, loc = 'left', pad = 3)
+                ax.text(0, 1.0, INEQUALITYSOURCE[m] + ', ' + yearsText(years[m]), transform = ax.transAxes,
+                        ha = 'left', va = 'bottom', fontsize = 6.3, color = INK['secondary'])
+            ax.set_ylabel(F1.LABEL[F1.PLOT[yv]], color = INK['secondary'], fontsize = 6.5)
+            ax.set_xlabel(lab['axis'], color = INK['secondary'], fontsize = 6.5, labelpad = 1)
+            yn, yf = MARKFMT[yv]
+            txt = []
+            for side, colour, marker, z in (('Data', SERIES[0], 'o', 3), ('Model', SERIES[1], 'D', 4)):
+                y = p[yv + side]
+                for iso in p.index:
+                    pt, = ax.plot(x[iso], y[iso], ls = 'none', marker = marker, ms = 3.2, color = colour, mec = EDGE,
+                                  mew = 0.5, zorder = z)
+                    pt.set_gid(markId(name, m, yv, side.lower(), iso.lower()))
+                    marks.append(mark(pt.get_gid(), p.at[iso, 'country'], y[iso],
+                                      '{}: {}; {}: {}'.format(xn, xf.format(x[iso]), yn, yf.format(y[iso])),
+                                      series = side.lower(), panel = '{} against {}'.format(yn, xn)))
+                o = s[(s['measure'] == m) & (s['y'] == yv) & (s['side'] == side.lower())].iloc[0]
+                xs = np.array([float(x.min()), float(x.max())])
+                ln, = ax.plot(xs, o['intercept'] + o['slope']*xs, color = colour, lw = 1.1, zorder = z - 1)
+                ln.set_gid(markId(name, m, yv, side.lower(), 'fit'))
+                d = 3 if yv == 'index' else 2                       # as OECD26_Layer1InequalitySlopes prints them
+                marks.append(mark(ln.get_gid(), 'fitted line', o['slope'],
+                                  'slope {:.{d}f} (s.e. {:.{d}f}), r {:.2f}'.format(o['slope'], o['se'], o['r'], d = d),
+                                  series = side.lower(), panel = '{} against {}'.format(yn, xn),
+                                  table = 'OECD26_Layer1InequalitySlopes', row = yv + '_' + m.lower()))
+                txt.append((colour, '{} {:.{d}f} ({:.{d}f}), r {:.2f}'.format(LEGEND[1] if side == 'Model' else 'data',
+                                                                             o['slope'], o['se'], o['r'], d = d)))
+            if yv == 'index':
+                ax.set_ylim(AXIS['index'][0], AXIS['index'][1] + 0.2)
+            else:
+                ax.set_ylim(0, max(AXIS['spending'][1], float(np.nanmax(p[['spendingData', 'spendingModel']].values)) + 1)
+                            + 7)
+            for k, (colour, t) in enumerate(txt):
+                ax.text(0.02, 0.97 - 0.07*k, t, transform = ax.transAxes, ha = 'left', va = 'top', fontsize = 5.8,
+                        color = colour, zorder = 7)
+    h = [plt.Line2D([], [], color = SERIES[0], lw = 1.1, marker = 'o', ms = 3.2, mec = EDGE, mew = 0.5),
+         plt.Line2D([], [], color = SERIES[1], lw = 1.1, marker = 'D', ms = 3.2, mec = EDGE, mew = 0.5)]
+    leg = fig.legend(h, ['data', LEGEND[1]], loc = 'lower center', ncol = 2, frameon = False, fontsize = 6.5,
+                     labelcolor = INK['secondary'], title = '{} countries, fitted lines; in each panel: slope (s.e.), '
+                                                            'Pearson r'.format(len(p)), title_fontsize = 6.5)
+    leg.get_title().set_color(INK['secondary'])
+    out = _save(fig, name, marks)
+    paper = lambda k: r', the measure of figure \ref{fig:OECD26:layer1}' if k == C.INEQUALITY else ''
+    note = (r'\textit{Note:} ' + '{} countries'.format(len(p)) + r', the data and the model of figure '
+            r'\ref{fig:OECD26:layer1}: spending and the index against three measures of income inequality, the Gini of '
+            r'disposable income (WIID)' + paper('gini') + r'; high over low income, $y_3/y_1$' + paper('yHighOverLow')
+            + r'; and the dispersion $\tilde V = \sum_i \gamma_i (y_i - 1)^2/y_i$' + paper('Vtilde')
+            + r', the last two of the income groups the model is fed. The lines are least-squares fits; table '
+            r'\ref{table:OA:OECD26_Layer1InequalitySlopes} reports their slopes.')
+    return out + [csv, _note(name, _src(layers = 'layer1.csv, anchor.csv'), note)]
+
+
+# ---------------------------------------------------------------------------------------------------
+# The predicted against the observed design (OECD26_ThetaFit and its index version; page C4's
+# OECD26_ThetaFitPopulation and OECD26_ThetaFitMeasure, ONLINE_ONLY).
 UNITS = {'theta': (r'$\theta$', (-0.04, 1.04), 'θ'), 'index': (r'index $1/(2-\theta)$', (0.47, 1.02), 'I')}
-NUTITLE = {'none': r'$\nu$ uncorrected', 'nra': r'$\nu$ at the statutory age', 'exit': r'$\nu$ at the exit age'}
+NUTITLE = {'none': r'$\nu$ uncorrected', 'nra': r'$\nu$ at the normal age', 'exit': r'$\nu$ at the exit age'}
 
 
 def layerTitle(layer, omegaRule = None):
@@ -213,7 +314,7 @@ def layerTitle(layer, omegaRule = None):
 
 
 def fitRows(kind):
-    """ The rows of appendix G's figure `kind` ('population' | 'measure'): (title, thetaFit's keywords), the paper's
+    """ The rows of page C4's figure `kind` ('population' | 'measure'): (title, thetaFit's keywords), the paper's
     marked: the readings of ν (tablesOECD26.populationRows) or the measures of the design (tablesOECD26.MEASURES). """
     paper = lambda on: " (the paper's)" if on else ''
     if kind == 'population':
@@ -354,16 +455,17 @@ def oecd26ThetaFit(units = 'theta'):
     return out + [_note(name, _src(), note)]
 
 
+# The measures are defined on the site (page C4's section esc-oecd26-measure), which the paper has no label for: \oa.
 FITNOTE = {
-    'population': (r'with $\nu$ corrected for each country\textquotesingle s gap to the U.S.\ statutory retirement age '
+    'population': (r'with $\nu$ corrected for each country\textquotesingle s gap to the U.S.\ normal retirement age '
                    r'(the paper\textquotesingle s), uncorrected, or corrected for its gap in the effective age of '
                    r'labor-market exit'),
-    'measure':    (r'under each measure of $\theta$ (appendix \ref{app:oecd26:readings}), each its own cross-section with '
+    'measure':    (r'under each measure of $\theta$ (\oa{esc-oecd26-measure}), each its own cross-section with '
                    r'the U.S.\ anchor recalibrated under it, at the paper\textquotesingle s $\nu$')}
 
 
 def oecd26ThetaFitRows(kind, units = 'theta'):
-    r""" Appendix G's OECD26_ThetaFitPopulation (`kind` 'population') or OECD26_ThetaFitMeasure ('measure'):
+    r""" Page C4's OECD26_ThetaFitPopulation (`kind` 'population') or OECD26_ThetaFitMeasure ('measure'):
     thetaFit's panels without labels on common axes, one row per reading of fitRows(kind), the paper's among them,
     the model | own ω (layers 1 | 2) at the paper's other settings (a data variant from its results/oecd26_theta_<V>/).
     Writes its note; the statistics are on the panels. """

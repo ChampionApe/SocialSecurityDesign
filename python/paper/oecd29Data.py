@@ -21,8 +21,8 @@ piecewise-linear Lorenz curve (income constant within a reported bin) or a two-p
 quantile ratios; 'own' is NaN when no such group exists at the data's resolution (never filled).
 
 Secondary inputs: CSES turnout by household-income quintile, with mu_i its average over each group's
-percentile range, flat within quintiles (this rule on CSES France 2007, unweighted, at the US cuts gives
-FRMain.xlsx's voting shares to 4e-4); PaG 2021 normal retirement ages, also behind the nu variant
+percentile range, flat within quintiles (FRMain.xlsx's and UKMain.xlsx's voting shares are this rule on the
+file's own elections, France at the US cuts and the UK at its workbook's cuts; data/README.md); PaG 2021 normal retirement ages, also behind the nu variant
 wpp2024_nraAdj; PWT 11.0; OECD hours worked; ILO SDG 8.3.1 (informality) and 1.3.1 (pension coverage).
 """
 import os, io, re, sys, zipfile, argparse, datetime
@@ -698,8 +698,8 @@ def _secondarySources(sec):
          cses + '2023/07/cses5_csv.zip; ' + cses + '2025/12/cses6_csv.zip; ' + cses + '2024/02/cses_imd_csv.zip',
          'One election per country, nearest 2020 within {}-{} with >= {} valid respondents per quintile, else the '
          'nearest outside (cses_inWindow False). mu takes a voter\'s household-income rank for the rank of the '
-         "group's earnings. The workbooks' voting shares (CPS for the US, CSES for France and the UK) come from other "
-         'elections or cuts; see data/README.md.'.format(*CSES_WINDOW, CSES_MINQ)),
+         "group's earnings. The U.S. workbook's voting shares are the CPS's; France's and the UK's are these "
+         'elections (the UK at its own cuts); see data/README.md.'.format(*CSES_WINDOW, CSES_MINQ)),
         ('nra_current_men, nra_current_women, nra_future_men, nra_future_women; oecd29_population.csv definition '
          'wpp2024_nraAdj', 'OECD', 'Pensions at a Glance 2021, figure 3.7 (StatLink xlsx, sheet Data)',
          'normal retirement age after a full career from age 22: current = retiring in 2020, future = entering the '

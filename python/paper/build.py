@@ -49,7 +49,7 @@ OUTPUTS = {
     'ARG_CRRA_LOG':           ('figure', figures.argCrraLog,          'Figs/ARG_CRRA_LOG.pdf'),
     # --- US / France / UK (section 6 and its appendix). The paper's calibration table is the U.S. and France
     # (USFRCalibration, table:US:CalibUSFR, which appendix F refers to); the three countries (OECD_Calibration) and the
-    # UK's groups are the supplemental appendix's (B5). ---
+    # UK's groups are the supplemental appendix's (B4). ---
     'USFRCalibration':        ('table', partial(tablesUS.usukfrCalibration, countries = ('US', 'FR')),
                                'Tables/USFRCalibration.tex'),
     'OECD_Calibration':       ('table', partial(tablesUS.usukfrCalibration, name = 'OECD_Calibration',
@@ -63,12 +63,18 @@ OUTPUTS = {
     'US_ESC_overview':        ('figure', figuresUS.escOverview,       'Figs/US_ESC_overview.pdf'),
     'US_ESC_Calibration':     ('table', tablesUS.escCalibrationTable, 'Tables/US_ESC_Calibration.tex'),
     # The supplemental appendix's (ONLINE_ONLY): the UK's own cost per rho at its own income groups and the deep test -- the
-    # UK and France under the US parameter and their own -- (page C6), the baseline path (C1), and the 2020 tax against
-    # a design pinned on the whole path, with and without the cost (C2; it writes its note, US_ESC_TauTheta_note.tex).
+    # UK and France under the US parameter and their own -- (page C5), the baseline path (C1), and on page C2 the
+    # costless design under the two timings of app:esc:corner (it reads python/US/c5Numbers.py a1's
+    # C5_criticalTurnout.csv), the two costs calibrated under log, the 2020 tax against a design pinned on the whole
+    # path, with and without the cost (the figure writes its note, US_ESC_TauTheta_note.tex), and the decompositions
+    # section 7 and appendix C.2 state (c5Numbers.py design, designCRRA, lambda).
     'UK_ESC_Calibration':     ('table', tablesUS.ukEscCalibrationTable, 'Tables/UK_ESC_Calibration.tex'),
     'US_ESC_Country':         ('table', tablesUS.escCountryTable,     'Tables/US_ESC_Country.tex'),
     'US_ESC_Path':            ('figure', figuresOA.escPathPaper,      'Figs/US_ESC_Path.pdf'),
+    'ESC_CostCalibration':    ('table', tablesOA.escCostCalibration,  'Tables/ESC_CostCalibration.tex'),
     'US_ESC_TauTheta':        ('figure', figuresOA.escTauTheta,       'Figs/US_ESC_TauTheta.pdf'),
+    'ESC_Timing':             ('table', tablesOA.escTiming,           'Tables/ESC_Timing.tex'),
+    'ESC_Decompositions':     ('table', tablesOA.escDecompositions,   'Tables/ESC_Decompositions.tex'),
     # Figure 1 (fig:US:OECDdata) from stage (0)'s data/oecdFigure1.csv; also writes oecdCorrelations.csv.
     'OECDdata':               ('figure', oecdFigure1.figure,          'Figs/OECDdata.pdf'),
     # The cross-country test at config.US['oecd26']'s variant (own turnout, Luxembourg flat; the model, layer 1, at
@@ -78,21 +84,15 @@ OUTPUTS = {
     # 1.1's relations with the model beside the data (spending at the chosen designs,
     # config.US['oecd26']['spendingReading']), the slopes of the data and the model, and each country's own omega,
     # at the design in force in 2020; the predicted against the observed design, the model and own omega
-    # (OECD26_ThetaFit, section 7.3, where own omega is defined); appendix G's slopes under the
-    # population and the data variants (OECD26_Variants) and the predicted design under each
-    # (OECD26_ThetaFitPopulation, OECD26_ThetaFitMeasure). Each figure writes its note (Figs/<name>_note.tex). The
-    # index version of figure 7.3 is built for discussion, not input. Inputs: python/US/runOECD26.py (results/oecd26/,
-    # results/oecd26_theta_<V>/), data/oecd26_theta.csv and stage (0)'s oecd26Sample.py.
+    # (OECD26_ThetaFit, section 7.3, where own omega is defined). Each figure writes its note (Figs/<name>_note.tex).
+    # The index version of figure 7.3 is built for discussion, not input. The variants are page C4's (below). Inputs:
+    # python/US/runOECD26.py (results/oecd26/, results/oecd26_theta_<V>/), data/oecd26_theta.csv and stage (0)'s
+    # oecd26Sample.py.
     'OECD26_Spending':        ('figure', figuresOECD26.oecd26Spending, 'Figs/OECD26_Spending.pdf'),
     'OECD26_Layer1':          ('figure', figuresOECD26.oecd26Figure,  'Figs/OECD26_Layer1.pdf'),
     'OECD26_Slopes':          ('table', tablesOECD26.oecd26Slopes,    'Tables/OECD26_Slopes.tex'),
     'OECD26_Omega':           ('table', tablesOECD26.oecd26Omega,     'Tables/OECD26_Omega.tex'),
     'OECD26_ThetaFit':        ('figure', figuresOECD26.oecd26ThetaFit, 'Figs/OECD26_ThetaFit.pdf'),
-    'OECD26_Variants':        ('table', tablesOECD26.oecd26Variants,  'Tables/OECD26_Variants.tex'),
-    'OECD26_ThetaFitPopulation': ('figure', partial(figuresOECD26.oecd26ThetaFitRows, 'population'),
-                                  'Figs/OECD26_ThetaFitPopulation.pdf'),
-    'OECD26_ThetaFitMeasure': ('figure', partial(figuresOECD26.oecd26ThetaFitRows, 'measure'),
-                               'Figs/OECD26_ThetaFitMeasure.pdf'),
     'OECD26_ThetaFitIndex':   ('figure', partial(figuresOECD26.oecd26ThetaFit, units = 'index'),
                                'Figs/OECD26_ThetaFitIndex.pdf'),
     # Appendix D (app:T): the horizon and the terminal condition and the first order condition's residuals off the
@@ -106,6 +106,14 @@ OUTPUTS = {
     'OECD_Countries':         ('table', tablesOA.oecdCountries,       'Tables/OECD_Countries.tex'),
     'OECD_Sources':           ('table', tablesOA.oecdSources,         'Tables/OECD_Sources.tex'),
     'OECD_Correlations':      ('table', tablesOA.oecdCorrelations,    'Tables/OECD_Correlations.tex'),
+    # Page D1's section on inequality: the Gini against the model's measures of income inequality, and figure 7.2's
+    # panels on inequality under the three; each table after the figure whose build writes its csv.
+    'OECD_InequalityMeasures': ('figure', figuresOA.oecdInequalityMeasures, 'Figs/OECD_InequalityMeasures.pdf'),
+    'OECD_InequalityCorrelations': ('table', tablesOA.oecdInequalityCorrelations,
+                                    'Tables/OECD_InequalityCorrelations.tex'),
+    'OECD26_Layer1Inequality': ('figure', figuresOECD26.oecd26Layer1Inequality, 'Figs/OECD26_Layer1Inequality.pdf'),
+    'OECD26_Layer1InequalitySlopes': ('table', tablesOECD26.oecd26Layer1InequalitySlopes,
+                                      'Tables/OECD26_Layer1InequalitySlopes.tex'),
     'ARG_RhoGrid':            ('figure', figuresOA.argRhoGrid,        'Figs/ARG_RhoGrid.pdf'),
     'OECD_RhoGrid':           ('figure', figuresOA.oecdRhoGrid,       'Figs/OECD_RhoGrid.pdf'),
     'NUM_Stationary':         ('table', tablesOA.numStationary,       'Tables/NUM_Stationary.tex'),
@@ -120,9 +128,17 @@ OUTPUTS = {
     'US_Strategic':           ('table', tablesOA.usStrategic,           'Tables/US_Strategic.tex'),
     'NUM_HorizonPaths':       ('table', tablesHorizon.numHorizonPaths,  'Tables/NUM_HorizonPaths.tex'),
     'NUM_SelectionFiles':     ('table', tablesOA.numSelectionFiles,     'Tables/NUM_SelectionFiles.tex'),
-    # Page C5, the cross-country test: appendix G's variants in full (figure 7.2 and table 10 at each population and
-    # data variant; their slopes are OECD26_Variants's), Luxembourg left out and the model at the U.S. omega (figure 7.2
-    # and table 5 at each). Names: the builder's output name, OECD26_<base> + tablesOECD26.suffix.
+    # Page C4, the cross-country test: the slopes of the paper's specification beside its population and data variants
+    # (OECD26_Variants, whose starred own-omega rows are the paper's only own-omega slopes) and the predicted design
+    # under each (OECD26_ThetaFitPopulation, OECD26_ThetaFitMeasure, each writing its note); each variant in full
+    # (figure 7.2 and table 10 at each population and data variant; their slopes are OECD26_Variants's), Luxembourg
+    # left out and the model at the U.S. omega (figure 7.2 and table 5 at each). Names: the builder's output name,
+    # OECD26_<base> + tablesOECD26.suffix.
+    'OECD26_Variants':        ('table', tablesOECD26.oecd26Variants,  'Tables/OECD26_Variants.tex'),
+    'OECD26_ThetaFitPopulation': ('figure', partial(figuresOECD26.oecd26ThetaFitRows, 'population'),
+                                  'Figs/OECD26_ThetaFitPopulation.pdf'),
+    'OECD26_ThetaFitMeasure': ('figure', partial(figuresOECD26.oecd26ThetaFitRows, 'measure'),
+                               'Figs/OECD26_ThetaFitMeasure.pdf'),
     'OECD26_Layer1_nuNone':   ('figure', partial(figuresOECD26.oecd26Figure, 1, retAge = 'none', slopesTable = False),
                                'Figs/OECD26_Layer1_nuNone.pdf'),
     'OECD26_Omega_nuNone':    ('table', partial(tablesOECD26.oecd26Omega, retAge = 'none'), 'Tables/OECD26_Omega_nuNone.tex'),
@@ -150,12 +166,15 @@ OUTPUTS = {
 
 # Registered outputs that belong to the supplemental appendix alone: built into results/paper, never copied
 # into writing/Paper.
-ONLINE_ONLY = ({'OECD_Countries', 'OECD_Sources', 'OECD_Correlations', 'ARG_RhoGrid', 'OECD_RhoGrid',
+ONLINE_ONLY = ({'OECD_Countries', 'OECD_Sources', 'OECD_Correlations', 'OECD_InequalityMeasures',
+                'OECD_InequalityCorrelations', 'OECD26_Layer1Inequality', 'OECD26_Layer1InequalitySlopes',
+                'ARG_RhoGrid', 'OECD_RhoGrid',
                 'NUM_Stationary', 'ARG_LeisureCalibration', 'ARG_LeisureRho',
                 'OECD_LeisureCalibration', 'OECD_LeisureGroups',
                 'US_TaxState', 'US_Strategic', 'NUM_HorizonPaths', 'NUM_Selection',
                 'NUM_SelectionFiles', 'OECD_Calibration', 'UK_householdheterogeneity', 'UK_ESC_Calibration',
-                'US_ESC_Country', 'US_ESC_Path', 'US_ESC_TauTheta'}
+                'US_ESC_Country', 'US_ESC_Path', 'US_ESC_TauTheta', 'ESC_CostCalibration', 'ESC_Timing',
+                'ESC_Decompositions', 'OECD26_Variants', 'OECD26_ThetaFitPopulation', 'OECD26_ThetaFitMeasure'}
                | {n for n in OUTPUTS if n.startswith(('OECD26_Layer1_', 'OECD26_Omega_', 'OECD26_Slopes_'))}
                | {n for n, e in OUTPUTS.items() if e[0] == 'data'})
 
@@ -232,11 +251,12 @@ def _traceInputs(fn):
 
 
 def _compress(paths):
-    """ Paths that differ only in a rho value collapse into one `rho*` pattern with a file count. """
+    """ Paths that differ only in a rho value (`rho0.5`, or `rho2` as `{:g}` writes it) collapse into one `rho*`
+    pattern with a file count. """
     import re
     groups = {}
     for p in paths:
-        groups.setdefault(re.sub(r'rho\d+\.\d+', 'rho*', p), []).append(p)
+        groups.setdefault(re.sub(r'rho\d+(?:\.\d+)?', 'rho*', p), []).append(p)
     return ', '.join('`{}`'.format(pat) + (' ({} files)'.format(len(ps)) if len(ps) > 1 else '')
                      for pat, ps in groups.items())
 

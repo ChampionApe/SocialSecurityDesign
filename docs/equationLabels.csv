@@ -347,25 +347,24 @@ tab:data:variants,tab:data:variants,,table,4,103,
 app:EE,app:EE,paper,section,A,1,Economic equilibrium
 app:EE:CRRA,app:EE:CRRA,paper,subsection,A.1,1,With CRRA-GHH preferences
 app:EE:LOG,app:EE:LOG,paper,subsection,A.2,4,With log-GHH preferences
-app:EPH,app:EPH,paper,section,E,30,Calibration – Argentina
-app:EPH:vectorX,app:EPH:vectorX,paper,Xi,E.5,34,
+app:EPH,app:EPH,paper,section,E,29,Calibration – Argentina
+app:EPH:vectorX,app:EPH:vectorX,paper,Xi,E.5,32,
 app:PEE,app:PEE,paper,section,B,6,Politico-economic equilibrium
-app:PEE:CRRA,app:PEE:CRRA,paper,subsection,B.3,14,With CRRA-GHH preferences and informal savings
+app:PEE:CRRA,app:PEE:CRRA,paper,subsection,B.3,15,With CRRA-GHH preferences and informal savings
 app:PEE:LOG,app:PEE:LOG,paper,subsection,B.1,6,Proof of proposition prop:LOG:PEE
 app:PEE:LOG_s0,app:PEE:LOG_s0,paper,subsection,B.2,13,With log-GHH preferences and informal savings
-app:T,app:T,paper,section,D,26,Terminal states and numerical checks
-app:US,app:US,paper,section,F,34,Calibration – the U.S. and France
+app:T,app:T,paper,section,D,25,Terminal states and numerical checks
+app:US,app:US,paper,section,F,33,Calibration – the U.S. and France
 app:esc,app:esc,paper,section,C,16,Endogenous pension design
-app:esc:corner,app:esc:corner,paper,subsection,C.1,16,Costless redistribution
+app:esc:corner,app:esc:corner,paper,subsection,C.1,17,Costless redistribution
 app:esc:cost,app:esc:cost,paper,subsection,C.2,18,The deadweight cost of redistribution
-app:esc:equilibrium,app:esc:equilibrium,paper,subsection,C.3,24,The equilibrium with the cost
-app:esc:log,app:esc:log,paper,subsection,C.4,25,The design choice under log preferences
-app:oecd26,app:oecd26,paper,section,G,36,The OECD cross-section
-app:oecd26:anchor,app:oecd26:anchor,paper,subsection,G.2,38,The U.S. at these data
-app:oecd26:data,app:oecd26:data,paper,subsection,G.1,36,Sample and data
-app:oecd26:layer2,app:oecd26:layer2,paper,subsection,G.3,39,Each country's political weight
-app:oecd26:readings,app:oecd26:readings,paper,subsection,G.4,39,Other population data and other measures of the design
-def:PEE,def:PEE,paper,definition,1,10,
+app:esc:equilibrium,app:esc:equilibrium,paper,subsection,C.3,22,The equilibrium with the cost
+app:esc:log,app:esc:log,paper,subsection,C.4,23,The design choice under log preferences
+app:oecd26,app:oecd26,paper,section,G,35,The OECD cross-section
+app:oecd26:anchor,app:oecd26:anchor,paper,subsection,G.2,37,The U.S. at this data
+app:oecd26:data,app:oecd26:data,paper,subsection,G.1,35,Sample and data
+app:oecd26:layer2,app:oecd26:layer2,paper,subsection,G.3,38,Each country's political weight
+def:PEE,def:PEE,paper,definition,1,11,
 eq:EE:h0,eq:EE:h0,paper,equation,A.1,1,
 eq:EE:si,eq:EE:si,paper,equation,A.4,2,
 eq:LOG:E10,eq:LOG:E10,paper,equation,B.3,7,
@@ -373,82 +372,79 @@ eq:LOG:E1i,eq:LOG:E1i,paper,equation,B.4,7,
 eq:LOG:E20,eq:LOG:E20,paper,equation,B.1,7,
 eq:LOG:E2i,eq:LOG:E2i,paper,equation,B.2,7,
 eq:LOG:E2sigma,eq:LOG:E2sigma,paper,equation,B.5,8,
-eq:LOG:PolObj,eq:LOG:PolObj,paper,equation,14,13,
+eq:LOG:PolObj,eq:LOG:PolObj,paper,equation,14,14,
 eq:LOG:epsCondition,eq:LOG:epsCondition,paper,equation,B.9,11,
-eq:LOG:formalSol_i,eq:LOG:formalSol_i,paper,equation,11,11,
-eq:LOG:nuCondition,eq:LOG:nuCondition,paper,equation,B.7,9,
+eq:LOG:formalSol_i,eq:LOG:formalSol_i,paper,equation,11,12,
+eq:LOG:nuCondition,eq:LOG:nuCondition,paper,equation,B.7,10,
 eq:LOG:nuEffect,eq:LOG:nuEffect,paper,equation,B.6,9,
 eq:LOG:repAgentTax,eq:LOG:repAgentTax,paper,equation,B.10,12,
-eq:LOG:thetaEffect,eq:LOG:thetaEffect,paper,equation,B.8,10,
-eq:calibration_eta,eq:calibration_eta,paper,equation,E.1,33,
-eq:esc:E2,eq:esc:E2,paper,equation,C.9,24,
-eq:esc:budget,eq:esc:budget,paper,equation,17,27,
-eq:esc:expansion,eq:esc:expansion,paper,equation,C.4,20,
-eq:esc:ftheta,eq:esc:ftheta,paper,equation,C.10,24,
+eq:LOG:thetaEffect,eq:LOG:thetaEffect,paper,equation,B.8,11,
+eq:calibration_eta,eq:calibration_eta,paper,equation,E.1,32,
+eq:esc:E2,eq:esc:E2,paper,equation,C.9,23,
+eq:esc:budget,eq:esc:budget,paper,equation,17,28,
+eq:esc:expansion,eq:esc:expansion,paper,equation,C.4,19,
+eq:esc:ftheta,eq:esc:ftheta,paper,equation,C.10,23,
 eq:esc:harberger,eq:esc:harberger,paper,equation,C.5,20,
 eq:esc:implicitTax,eq:esc:implicitTax,paper,equation,16,27,
 eq:esc:leadFOC,eq:esc:leadFOC,paper,equation,C.1,17,
 eq:esc:lossShare,eq:esc:lossShare,paper,equation,C.6,20,
-eq:esc:lossShareKappa,eq:esc:lossShareKappa,paper,equation,C.7,21,
+eq:esc:lossShareKappa,eq:esc:lossShareKappa,paper,equation,C.7,20,
 eq:esc:pi,eq:esc:pi,paper,equation,C.8,22,
-eq:esc:separability,eq:esc:separability,paper,equation,C.11,25,
-eq:esc:separabilityTerms,eq:esc:separabilityTerms,paper,equation,C.12,26,
-eq:esc:seqFOC,eq:esc:seqFOC,paper,equation,15,25,
+eq:esc:separability,eq:esc:separability,paper,equation,C.12,24,
+eq:esc:separabilityTerms,eq:esc:separabilityTerms,paper,equation,C.11,23,
+eq:esc:seqFOC,eq:esc:seqFOC,paper,equation,15,26,
 eq:esc:transfer,eq:esc:transfer,paper,equation,C.2,18,
 eq:esc:wedge,eq:esc:wedge,paper,equation,C.3,19,
 eq:factorPrices,eq:factorPrices,paper,equation,3,7,
 eq:h,eq:h,paper,equation,A.6,2,
 eq:hi_h,eq:hi_h,paper,equation,A.3,2,
 eq:householdChoices,eq:householdChoices,paper,equation,7,8,
-eq:model:BC,eq:model:BC,paper,equation,5,7,
-eq:model:aggStates,eq:model:aggStates,paper,equation,1,6,
+eq:model:BC,eq:model:BC,paper,equation,5,8,
+eq:model:aggStates,eq:model:aggStates,paper,equation,1,7,
 eq:model:formalFOCs,eq:model:formalFOCs,paper,equation,6,8,
-eq:model:governmentBudget,eq:model:governmentBudget,paper,equation,8,8,
+eq:model:governmentBudget,eq:model:governmentBudget,paper,equation,8,9,
 eq:model:informalEuler,eq:model:informalEuler,paper,equation,6d,8,
 eq:model:lawOfMotion_General,eq:model:lawOfMotion_General,paper,equation,9,10,
 eq:production,eq:production,paper,equation,2,7,
 eq:s,eq:s,paper,equation,A.5,2,
 eq:s0_s,eq:s0_s,paper,equation,A.9,3,
 eq:si_s,eq:si_s,paper,equation,A.8,3,
-fig:ARG:EffectOfCRRA,fig:ARG:EffectOfCRRA,paper,figure,5.2,20,
-fig:Arg,fig:Arg,paper,figure,5.1,17,
-fig:OECD26:layer1,fig:OECD26:layer1,paper,figure,7.2,33,
-fig:OECD26:spending,fig:OECD26:spending,paper,figure,6.2,24,
-fig:OECD26:thetaFit,fig:OECD26:thetaFit,paper,figure,7.3,35,
-fig:OECD26:thetaFitMeasure,fig:OECD26:thetaFitMeasure,paper,figure,G.2,42,
-fig:OECD26:thetaFitPopulation,fig:OECD26:thetaFitPopulation,paper,figure,G.1,41,
-fig:US:OECDdata,fig:US:OECDdata,paper,figure,1.1,3,
-fig:US:overview,fig:US:overview,paper,figure,6.1,22,
-fig:US_ESC:overview,fig:US_ESC:overview,paper,figure,7.1,31,
-prop:LOG:EE,prop:LOG:EE,paper,proposition,1,11,
-prop:LOG:PEE,prop:LOG:PEE,paper,proposition,2,13,
-prop:PEE:unique,prop:PEE:unique,paper,corollary,1,8,
-prop:esc:corner,prop:esc:corner,paper,proposition,3,25,
-prop:esc:separability,prop:esc:separability,paper,corollary,2,25,
+fig:ARG:EffectOfCRRA,fig:ARG:EffectOfCRRA,paper,figure,3,21,
+fig:Arg,fig:Arg,paper,figure,2,17,
+fig:OECD26:layer1,fig:OECD26:layer1,paper,figure,7,32,
+fig:OECD26:spending,fig:OECD26:spending,paper,figure,5,25,
+fig:OECD26:thetaFit,fig:OECD26:thetaFit,paper,figure,8,34,
+fig:US:OECDdata,fig:US:OECDdata,paper,figure,1,4,
+fig:US:overview,fig:US:overview,paper,figure,4,23,
+fig:US_ESC:overview,fig:US_ESC:overview,paper,figure,6,30,
+prop:LOG:EE,prop:LOG:EE,paper,proposition,1,12,
+prop:LOG:PEE,prop:LOG:PEE,paper,proposition,2,14,
+prop:PEE:unique,prop:PEE:unique,paper,lemma,1,8,
+prop:esc:corner,prop:esc:corner,paper,proposition,3,26,
+prop:esc:separability,prop:esc:separability,paper,corollary,1,24,
 sec:LOG,sec:LOG,paper,section,3,11,Logarithmic-GHH Preferences
-sec:argentina,sec:argentina,paper,section,5,16,Pension System Reform in Argentina
-sec:conclu,sec:conclu,paper,section,8,35,Conclusions
-sec:esc,sec:esc,paper,section,7,25,Endogenous Pension Design
+sec:argentina,sec:argentina,paper,section,5,17,Pension System Reform in Argentina
+sec:conclu,sec:conclu,paper,section,8,34,Conclusions
+sec:esc,sec:esc,paper,section,7,26,Endogenous Pension Design
 sec:esc:calibration,sec:esc:calibration,paper,subsection,7.2,29,Calibration and the determinants of the design
-sec:esc:cost,sec:esc:cost,paper,subsection,7.1,25,The deadweight cost of redistribution
-sec:esc:crossSection,sec:esc:crossSection,paper,subsection,7.3,32,Pension design on the OECD cross-section
+sec:esc:cost,sec:esc:cost,paper,subsection,7.1,26,The deadweight cost of redistribution
+sec:esc:crossSection,sec:esc:crossSection,paper,subsection,7.3,31,Pension design on the OECD cross-section
 sec:esc:results,sec:esc:results,paper,subsection,7.2,29,Calibration and the determinants of the design
 sec:introduction,sec:introduction,paper,section,1,1,Introduction
 sec:model,sec:model,paper,section,2,6,The Model
 sec:model:Demo,sec:model:Demo,paper,subsection,2.1,6,"Demographics, Inequality, and Institutions"
-sec:model:equilibrium,sec:model:equilibrium,paper,subsection,2.6,9,Equilibrium
-sec:model:socialSecurity,sec:model:socialSecurity,paper,subsection,2.4,8,Social Security System
-sec:numerical,sec:numerical,paper,section,4,14,Numerical Methods
-sec:oecd,sec:oecd,paper,section,6,20,Social Security in Rich OECD Countries
-sec:quant:OECD,sec:quant:OECD,paper,section,6,20,Social Security in Rich OECD Countries
-table:Arg:Calib,table:Arg:Calib,paper,table,1,18,
-table:Argentina:Universal,table:Argentina:Universal,paper,table,2,18,
-table:OECD26:omega,table:OECD26:omega,paper,table,10,40,
+sec:model:equilibrium,sec:model:equilibrium,paper,subsection,2.6,10,Equilibrium
+sec:model:socialSecurity,sec:model:socialSecurity,paper,subsection,2.4,9,Social Security System
+sec:numerical,sec:numerical,paper,section,4,15,Numerical Methods
+sec:oecd,sec:oecd,paper,section,6,21,Social Security in Rich OECD Countries
+sec:quant:OECD,sec:quant:OECD,paper,section,6,21,Social Security in Rich OECD Countries
+table:Arg:Calib,table:Arg:Calib,paper,table,1,19,
+table:Argentina:Universal,table:Argentina:Universal,paper,table,2,19,
+table:OECD26:omega,table:OECD26:omega,paper,table,10,39,
 table:OECD26:slopes,table:OECD26:slopes,paper,table,5,33,
-table:OECD26:variants,table:OECD26:variants,paper,table,11,43,
-table:T:Horizon,table:T:Horizon,paper,table,6,29,
-table:T:Residuals,table:T:Residuals,paper,table,7,30,
-table:US:CalibUSFR,table:US:CalibUSFR,paper,table,3,22,
-table:US_ESC:calibration,table:US_ESC:calibration,paper,table,4,30,
-table:a_US:CalibFR,table:a_US:CalibFR,paper,table,9,36,
-table:a_US:CalibUS,table:a_US:CalibUS,paper,table,8,35,
+table:T:Horizon,table:T:Horizon,paper,table,6,27,
+table:T:Residuals,table:T:Residuals,paper,table,7,29,
+table:US:CalibUSFR,table:US:CalibUSFR,paper,table,3,23,
+table:US_ESC:calibration,table:US_ESC:calibration,paper,table,4,29,
+table:a_US:CalibFR,table:a_US:CalibFR,paper,table,9,35,
+table:a_US:CalibUS,table:a_US:CalibUS,paper,table,8,34,

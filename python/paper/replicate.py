@@ -13,7 +13,7 @@ Steps, with the cold run times measured on the authors' machine where they were:
   calibUS     stage (i), the U.S., France and the UK: runCalibrationUS.py --commonX             ~40 min
   shocksARG   stage (ii), Argentina: runShocks.py --commonX                                     ~1 h
   shocksUS    stage (ii), the U.S. arm, the endogenous design and the cross-section             ~3 h, + 1.5-6 h for
-              (runShocksUS.py)                                                                  appendix G's data variants
+              (runShocksUS.py)                                                                  page C4's data variants
   argEps0     the ε = 0 Argentine calibration (calibARG's sweep at ε = 0) and its reform
   argDiag     the reform's diagnostics at the headline calibration (reformDiagnostics.py)
   c5          the smaller U.S. numbers the text quotes (python/US/c5Numbers.py)               designCRRA ~1.5 h per ρ

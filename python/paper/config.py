@@ -298,9 +298,9 @@ US = {
     # `variants`: the runs stage (ii)'s entry 'oecd26' makes into results/oecd26/, one runOECD26.py command per retAge
     # of each (--theta US['theta'] --main --inSample), in this order (an anchor and layer 2 before the mean omega that
     # reads them); rows already current are reused, so a rerun costs seconds. They are the paper's specification with
-    # and without the cost, appendix G's population variants (`populationVariants`) and the supplemental appendix's
+    # and without the cost and the supplemental appendix's (page C4) population variants (`populationVariants`) and
     # readings (the last two entries, each the parts that differ from the paper's: Luxembourg left out, layer 1 at
-    # the U.S. omega). `thetaVariants`: appendix G's data variants, measures of data/oecd26_theta.csv (THETANAMES),
+    # the U.S. omega). `thetaVariants`: page C4's data variants, measures of data/oecd26_theta.csv (THETANAMES),
     # each run by stage (ii)'s entry 'oecd26Variants' at the paper's specification (a U.S. sweep at rho = 1, then the
     # cross-section) into its own results/oecd26_theta_<V>/.
     'oecd26': {
@@ -335,10 +335,33 @@ ISO3 = {'US': 'USA', 'FR': 'FRA', 'UK': 'GBR'}
 THETADEF = (r'the earnings-linked share of the least-squares line through the public pension at 0.5, 1 and 2 times '
             r'average earnings ($c/(a+c)$ of $p(y) = a + c\,y$), times one minus the share of public spending on '
             r'minimum top-ups and tested benefits')
-# The names the paper gives the measures of the design (US['theta'], the paper's, and appendix G's data variants
-# US['oecd26']['thetaVariants']) and the readings of nu (US['oecd26']['retAge'] and appendix G's population variants).
+# The names the paper and its supplemental appendix give the measures of the design (US['theta'], the paper's, and
+# page C4's data variants US['oecd26']['thetaVariants']) and the readings of nu (US['oecd26']['retAge'] and page C4's
+# population variants).
 THETANAMES = {'C': 'public tier', 'A': 'public tier, 23 countries', 'B': 'all mandatory tiers'}
-RETAGENAMES = {'nra': 'statutory age', 'none': 'uncorrected', 'exit': 'exit age'}
+RETAGENAMES = {'nra': 'normal age', 'none': 'uncorrected', 'exit': 'exit age'}
+
+# THE CROSS-SECTION'S MEASURE OF INCOME INEQUALITY: the regressor of every slope on inequality and the x-axis of every
+# panel on it (figure 1.1, sections 6 and 7, pages C4 and D1; the role 'inequality' of oecdFigure1 and tablesOECD26).
+# 'yHighOverLow' y_3/y_1, the relative income of the top of the three income groups over the bottom one, and 'Vtilde'
+# the model's dispersion sum_i gamma_i (y_i - 1)^2/y_i (Eq esc:budget's \tilde V), both of INCOMEGROUPS' rows of
+# data/oecd29_distribution.csv, the y_i the model is fed (python/US/oecd26.py DISTSOURCE, DISTCONV;
+# datasets.incomeGroups); 'gini' the WIID Gini of disposable income (data/oecdFigure1.csv), which page D1 sets
+# against the two.
+INEQUALITY = 'yHighOverLow'
+INCOMEGROUPS = {'role': 'data', 'source': 'oecd_earnings_men_ft', 'convention': 'usPct'}
+# Each measure's labels: `axis` a figure's axis (matplotlib mathtext, valid LaTeX too), `plain` the same as plain
+# unicode (a mark), `text` the measure in a row label or a note ("Pension spending on <text>"), `mark` and `fmt` a
+# mark's name for it and how it prints the value, `digits` those of a slope of the index on it (spending's take 2).
+INEQUALITYLABELS = {
+    'yHighOverLow': {'axis': r'High over low income, $y_3/y_1$', 'plain': 'High over low income, y₃/y₁',
+                     'text': 'high over low income', 'mark': 'high over low income', 'fmt': '{:.2f}', 'digits': 3},
+    'Vtilde':       {'axis': r"The model's dispersion, $\tilde V$", 'plain': "The model's dispersion, Ṽ",
+                     'text': r'the dispersion $\tilde V$', 'mark': 'dispersion Ṽ', 'fmt': '{:.3f}', 'digits': 2},
+    'gini':         {'axis': 'Gini, disposable income', 'plain': 'Gini, disposable income', 'text': 'the Gini',
+                     'mark': 'Gini', 'fmt': '{:.3f}', 'digits': 2}}
+if INEQUALITY not in INEQUALITYLABELS:
+    raise ValueError('config.INEQUALITY = {!r}: one of {}'.format(INEQUALITY, tuple(INEQUALITYLABELS)))
 
 
 def thetaFlags():
