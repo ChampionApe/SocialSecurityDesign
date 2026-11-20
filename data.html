@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>D1. The OECD cross-section – Social Security Design and Its Political Support</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./numerical.html" rel="next">
+<link href="./checks.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-e4a73ff8e77b797695ed0ddcd89879e2.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="assets/oa.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./checks.html">D. Data and computation</a></li><li class="breadcrumb-item"><a href="./data.html"><span class="chapter-title">D1. The OECD cross-section</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Social Security Design and Its Political Support</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/ChampionApe/SocialSecurityDesign" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The supplemental appendix</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./argentina.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A. Argentina</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./arg-designs.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">A1. How pension designs shape the equilibria</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./arg-ies.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">A2. The intertemporal elasticity of substitution</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./arg-leisure.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">A3. Identification of X</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./oecd.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">B. Rich OECD countries with the design given</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./oecd-ies.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">B1. Calibration</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./oecd-parameters.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">B2. Other parameters</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./oecd-leisure.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">B3. Identification of X</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./oecd-uk.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">B4. The UK</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./esc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">C. Endogenous design</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./esc-paths.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">C1. The path in levels</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./esc-costs.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">C2. The cost of redistribution</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./esc-parameters.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">C3. Other parameters</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./esc-oecd26.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">C4. The cross-country test</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./esc-countries.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">C5. The UK and France calibrated in full</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./checks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">D. Data and computation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">D1. The OECD cross-section</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./numerical.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">D2. Numerical checks</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./replication.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">D3. Replication</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul class="collapse">
+  <li><a href="#data-inequality" id="toc-data-inequality" class="nav-link active" data-scroll-target="#data-inequality">Inequality: the Gini and the model’s measures</a></li>
+  <li><a href="#data-outside" id="toc-data-outside" class="nav-link" data-scroll-target="#data-outside">The countries outside the figure</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./checks.html">D. Data and computation</a></li><li class="breadcrumb-item"><a href="./data.html"><span class="chapter-title">D1. The OECD cross-section</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="data" class="quarto-section-identifier"><span class="chapter-title">D1. The OECD cross-section</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Figure 1 of the paper sets pension spending and the Bismarckian index of the OECD countries against their population growth and their income inequality. The countries are the OECD members before 2000 in which informal employment is low and one public pay-as-you-go system pays the bulk of retirement benefits. The index is <span class="math inline">\(I = 1/(2-\theta)\)</span> of the design θ: the earnings-linked share of the least-squares line through the public pension across earnings levels, for men under the rules of 2020 (<em>Pensions at a Glance 2021</em>), times one minus the share of public pension spending on minimum top-ups and tested benefits. Appendix G.1 of the paper gives the rule and the measure. The cross-country test of section 7.3 runs on the same countries, Luxembourg, which has no CSES survey of the propensities to vote, at a flat profile (<a href="./esc-oecd26.html">C4</a>). The tabs below the figure give the values behind each marker with the year each refers to, the provider, dataset and series of every column with the date it was retrieved, and the pairwise correlations the paper’s introduction describes.</p>
+<p><span class="hidden"><span class="math inline">\(\cdot\)</span></span></p>
+<div class="oa-exhibit oa-figure" id="ex-OECDdata"><div class="oa-caption"><span class="oa-num">Figure D1.1.</span> Population growth, income inequality, pension spending and design <span class="oa-badge">Figure 1 in the paper</span></div><img src="_generated/figs/OECDdata.svg" alt="Population growth, income inequality, pension spending and design"><div class="oa-note"><em>Note:</em> 21 OECD countries, selected as in appendix G.1 of the paper. Pension spending is public cash spending on old age and survivors in 2020, in % of GDP; population growth is the population of 2020 relative to 1990; high over low income is <span class="math inline">\(y_3/y_1\)</span>, the relative earnings of the top of three income groups over those of the bottom one, as in the model. The Bismarckian index is <span class="math inline">\(I = 1/(2-\theta)\)</span>, with <span class="math inline">\(\theta\)</span> the earnings-linked share of the public pension net of minimum top-ups and tested benefits. Sources: OECD (SOCX, <em>Pensions at a Glance 2021</em> and population statistics), World Bank WDI and UNU-WIDER WIID.</div><div class="oa-links">Data: <a href="_generated/data/data/oecd26_sample.csv" download="">oecd26_sample.csv</a> · <a href="_generated/data/data/oecd26_theta.csv" download="">oecd26_theta.csv</a> · <a href="_generated/data/data/oecd29_distribution.csv" download="">oecd29_distribution.csv</a> · <a href="_generated/data/data/oecdFigure1.csv" download="">oecdFigure1.csv</a> · <details class="oa-source"><summary>Source</summary><p>Reads:</p><ul><li><code>data/oecd26_sample.csv</code></li><li><code>data/oecd26_theta.csv</code></li><li><code>data/oecd29_distribution.csv</code></li><li><code>data/oecdFigure1.csv</code></li></ul><p>Built by <code>oecdFigure1.figure</code> (<a href="https://github.com/ChampionApe/SocialSecurityDesign/tree/5fcff38/python/paper">python/paper</a>) at commit <code>5fcff38</code>. Rebuild: <code>python python/paper/build.py --no-copy --only OECDdata</code>.</p></details></div></div>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Countries</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Sources</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false" href="">Correlations</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<p><span class="hidden"><span class="math inline">\(\cdot\)</span></span></p>
+<div class="oa-exhibit oa-tablebox"><div class="oa-scroll"><table class="oa-table" id="ex-OECD_Countries">
+<caption><span class="oa-num">Table D1.1.</span> The cross-section of figure <a href="#ex-OECDdata">D1.1</a>, by country</caption>
+<thead>
+<tr><th class="oa-l" scope="col"><strong>Country</strong></th><th class="oa-c" scope="col"><strong>Pension spending, % of GDP</strong></th><th class="oa-c" scope="col"><strong>Year</strong></th><th class="oa-c" scope="col"><strong>Population 2020 / 1990</strong></th><th class="oa-c" scope="col"><strong>Bismarckian index</strong></th><th class="oa-c" scope="col"><strong>High over low income, <span class="math inline">\(y_3/y_1\)</span></strong></th><th class="oa-c" scope="col"><strong>Year</strong></th></tr>
+</thead>
+<tbody>
+<tr data-row="aut"><td class="oa-l">Austria</td><td class="oa-c">14.3</td><td class="oa-c">2020</td><td class="oa-c">1.161</td><td class="oa-c">0.791</td><td class="oa-c">2.53</td><td class="oa-c">2019</td></tr>
+<tr data-row="bel"><td class="oa-l">Belgium</td><td class="oa-c">11.5</td><td class="oa-c">2020</td><td class="oa-c">1.155</td><td class="oa-c">0.616</td><td class="oa-c">2.12</td><td class="oa-c">2019</td></tr>
+<tr data-row="can"><td class="oa-l">Canada</td><td class="oa-c">6.4</td><td class="oa-c">2020</td><td class="oa-c">1.373</td><td class="oa-c">0.595</td><td class="oa-c">2.57</td><td class="oa-c">2019</td></tr>
+<tr data-row="cze"><td class="oa-l">Czech Republic</td><td class="oa-c">8.6</td><td class="oa-c">2020</td><td class="oa-c">1.033</td><td class="oa-c">0.603</td><td class="oa-c">2.57</td><td class="oa-c">2019</td></tr>
+<tr data-row="fin"><td class="oa-l">Finland</td><td class="oa-c">12.6</td><td class="oa-c">2020</td><td class="oa-c">1.109</td><td class="oa-c">0.944</td><td class="oa-c">2.04</td><td class="oa-c">2019</td></tr>
+<tr data-row="fra"><td class="oa-l"><strong>France</strong></td><td class="oa-c">14.4</td><td class="oa-c">2020</td><td class="oa-c">1.192</td><td class="oa-c">0.849</td><td class="oa-c">2.46</td><td class="oa-c">2019</td></tr>
+<tr data-row="deu"><td class="oa-l">Germany</td><td class="oa-c">11.2</td><td class="oa-c">2020</td><td class="oa-c">1.047</td><td class="oa-c">0.778</td><td class="oa-c">2.42</td><td class="oa-c">2019</td></tr>
+<tr data-row="grc"><td class="oa-l">Greece</td><td class="oa-c">17.9</td><td class="oa-c">2020</td><td class="oa-c">1.049</td><td class="oa-c">0.857</td><td class="oa-c">2.95</td><td class="oa-c">2019</td></tr>
+<tr data-row="hun"><td class="oa-l">Hungary</td><td class="oa-c">7.7</td><td class="oa-c">2020</td><td class="oa-c">0.932</td><td class="oa-c">0.997</td><td class="oa-c">3.22</td><td class="oa-c">2019</td></tr>
+<tr data-row="irl"><td class="oa-l">Ireland</td><td class="oa-c">3.3</td><td class="oa-c">2020</td><td class="oa-c">1.435</td><td class="oa-c">0.500</td><td class="oa-c">3.07</td><td class="oa-c">2019</td></tr>
+<tr data-row="ita"><td class="oa-l">Italy</td><td class="oa-c">17.4</td><td class="oa-c">2020</td><td class="oa-c">1.048</td><td class="oa-c">0.956</td><td class="oa-c">2.35</td><td class="oa-c">2019</td></tr>
+<tr data-row="jpn"><td class="oa-l">Japan</td><td class="oa-c">9.6</td><td class="oa-c">2020</td><td class="oa-c">1.020</td><td class="oa-c">0.747</td><td class="oa-c">2.27</td><td class="oa-c">2019</td></tr>
+<tr data-row="lux"><td class="oa-l">Luxembourg</td><td class="oa-c">9.0</td><td class="oa-c">2020</td><td class="oa-c">1.651</td><td class="oa-c">0.848</td><td class="oa-c">2.71</td><td class="oa-c">2019</td></tr>
+<tr data-row="nzl"><td class="oa-l">New Zealand</td><td class="oa-c">5.1</td><td class="oa-c">2020</td><td class="oa-c">1.496</td><td class="oa-c">0.501</td><td class="oa-c">2.40</td><td class="oa-c">2019</td></tr>
+<tr data-row="nor"><td class="oa-l">Norway</td><td class="oa-c">7.6</td><td class="oa-c">2020</td><td class="oa-c">1.268</td><td class="oa-c">0.593</td><td class="oa-c">2.10</td><td class="oa-c">2019</td></tr>
+<tr data-row="pol"><td class="oa-l">Poland</td><td class="oa-c">11.4</td><td class="oa-c">2020</td><td class="oa-c">1.004</td><td class="oa-c">0.964</td><td class="oa-c">3.04</td><td class="oa-c">2018</td></tr>
+<tr data-row="prt"><td class="oa-l">Portugal</td><td class="oa-c">13.6</td><td class="oa-c">2020</td><td class="oa-c">1.040</td><td class="oa-c">0.892</td><td class="oa-c">3.14</td><td class="oa-c">2019</td></tr>
+<tr data-row="esp"><td class="oa-l">Spain</td><td class="oa-c">12.8</td><td class="oa-c">2020</td><td class="oa-c">1.218</td><td class="oa-c">0.877</td><td class="oa-c">2.68</td><td class="oa-c">2019</td></tr>
+<tr data-row="swe"><td class="oa-l">Sweden</td><td class="oa-c">8.5</td><td class="oa-c">2020</td><td class="oa-c">1.210</td><td class="oa-c">0.619</td><td class="oa-c">1.95</td><td class="oa-c">2019</td></tr>
+<tr data-row="gbr"><td class="oa-l">United Kingdom</td><td class="oa-c">7.8</td><td class="oa-c">2020</td><td class="oa-c">1.166</td><td class="oa-c">0.550</td><td class="oa-c">2.68</td><td class="oa-c">2019</td></tr>
+<tr data-row="usa"><td class="oa-l"><strong>United States</strong></td><td class="oa-c">7.4</td><td class="oa-c">2020</td><td class="oa-c">1.328</td><td class="oa-c">0.687</td><td class="oa-c">3.65</td><td class="oa-c">2019</td></tr>
+</tbody></table>
+<div class="oa-notes">
+<p><em>Note:</em> The 21 OECD members plotted in figure <a href="#ex-OECDdata">D1.1</a>; the Bismarckian index is <span class="math inline">\(1/(2-\theta)\)</span> of the measure of the design in its note. Each variable is read in 2020 or the nearest year within 2 years of it (the year columns); population growth is the population of 2020 over that of 1990. Sources in table <a href="#ex-OECD_Sources">D1.2</a>. In bold the economies the paper calibrates.</p>
+</div></div><div class="oa-links">Data: <a href="_generated/data/data/oecd26_theta.csv" download="">oecd26_theta.csv</a> · <a href="_generated/data/data/oecd29_distribution.csv" download="">oecd29_distribution.csv</a> · <a href="_generated/data/data/oecdFigure1.csv" download="">oecdFigure1.csv</a> · <details class="oa-source"><summary>Source</summary><p>Reads:</p><ul><li><code>data/oecd26_theta.csv</code></li><li><code>data/oecd29_distribution.csv</code></li><li><code>data/oecdFigure1.csv</code></li></ul><p>Built by <code>tablesOA.oecdCountries</code> (<a href="https://github.com/ChampionApe/SocialSecurityDesign/tree/5fcff38/python/paper">python/paper</a>) at commit <code>5fcff38</code>. Rebuild: <code>python python/paper/build.py --no-copy --only OECD_Countries</code>.</p></details></div></div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p><span class="hidden"><span class="math inline">\(\cdot\)</span></span></p>
+<div class="oa-exhibit oa-tablebox"><div class="oa-scroll"><table class="oa-table" id="ex-OECD_Sources">
+<caption><span class="oa-num">Table D1.2.</span> The sources of figure <a href="#ex-OECDdata">D1.1</a></caption>
+<thead>
+<tr><th class="oa-l" scope="col"><strong>Columns</strong></th><th class="oa-l" scope="col"><strong>Source</strong></th><th class="oa-l" scope="col"><strong>Series and years</strong></th><th class="oa-l" scope="col"><strong>Note</strong></th></tr>
+</thead>
+<tbody>
+<tr class="oa-grouprow"><th class="oa-l" colspan="4"><em>Plotted in the figure of the paper</em></th></tr>
+<tr data-row="pensionspending"><td class="oa-l">pensionSpending</td><td class="oa-l">OECD: Social Expenditure Database, OECD.ELS.SPD:DSD_SOCX_AGG@DF_SOCX_AGG(1.0); Data Explorer; retrieved 2026-09-30</td><td class="oa-l">public (ES10), old age and survivors (TP01), in cash (C), % of GDP. Years: 2020 (29 of 29)</td><td class="oa-l">The OECD’s ’pension spending’: cash expenditure on old-age and survivors pensions (Pensions at a Glance measure PEP to its rounding).</td></tr>
+<tr data-row="pop1990_oecd"><td class="oa-l">pop1990_oecd, pop2020_oecd, popGrowth</td><td class="oa-l">OECD: Historical population data, OECD.ELS.SAE:DSD_POPULATION@DF_POP_HIST(1.0); Data Explorer; retrieved 2026-09-30</td><td class="oa-l">POP, persons, both sexes, all ages, historical; popGrowth = pop2020/pop1990. Years: 1990 and 2020 (29 of 29)</td><td class="oa-l">France: the series adds the overseas departments from 1991, so its ratio (1.192) is not on a constant territory (World Bank 1.160).</td></tr>
+<tr data-row="yhighoverlow"><td class="oa-l">yHighOverLow, yHighOverLow_year</td><td class="oa-l">OECD: Earnings database, Decile ratios of gross earnings, OECD.ELS.SAE:DSD_EARNINGS@DEC_I(1.0); Data Explorer; retrieved 2026-10-23</td><td class="oa-l">y3/y1 of the three income groups at the U.S. population shares 0.582/0.176/0.242 (data/oecd29_distribution.csv, role data, source oecd_earnings_men_ft, convention usPct); men (SEX=M), full-time employees, D5_1 = P50/P10 and D9_5 = P90/P50; two-piece lognormal through them. Years: 2019 (20 of 21); 2018: POL</td><td class="oa-l">Not a column of data/oecdFigure1.csv: derived at build time from the income groups the model is fed (python/US/oecd26.py), sourced in data/oecd29_sources.csv.</td></tr>
+<tr class="oa-grouprow"><th class="oa-l" colspan="4"><em>Further concepts in data/oecdFigure1.csv</em></th></tr>
+<tr data-row="pensionspending_cashinkind"><td class="oa-l">pensionSpending_cashInKind</td><td class="oa-l">OECD: Social Expenditure Database, OECD.ELS.SPD:DSD_SOCX_AGG@DF_SOCX_AGG(1.0); Data Explorer; retrieved 2026-09-30</td><td class="oa-l">as pensionSpending, cash plus in kind (_T). Years: 2020 (29 of 29)</td><td class="oa-l">The in-kind part is services to the elderly (care, home help), largest in NOR 2.57, SWE 2.43, DNK 1.87, FIN 1.61.</td></tr>
+<tr data-row="pop1990_wb"><td class="oa-l">pop1990_wb, pop2020_wb, popGrowth_wb</td><td class="oa-l">World Bank: World Development Indicators; API lastupdated 2026-07-13; retrieved 2026-09-30</td><td class="oa-l">SP.POP.TOTL; popGrowth_wb = pop2020/pop1990. Years: 1990 and 2020 (29 of 29)</td><td class="oa-l">–</td></tr>
+<tr data-row="grr050_men"><td class="oa-l">grr050_men, grr100_men, grr050_women, grr100_women</td><td class="oa-l">OECD: Pensions at a Glance 2021, table 4.1; StatLink xlsx “Version 1 - Last updated: 08-Dec-2021”; retrieved 2026-09-30</td><td class="oa-l">gross pension replacement rate at 0.5 and 1.0 times average earnings, mandatory schemes, % of individual earnings, one decimal as published; women = men where the table gives none. Years: pension rules in 2020 (29 of 29)</td><td class="oa-l">The OECD Data Explorer dataflows DSD_PAG@DF_PRR and DSD_PAG@DF_PAG now hold only 2024 (Pensions at a Glance 2025); the publication StatLink still serves the 2020 vintage.</td></tr>
+<tr data-row="bbindex"><td class="oa-l">bbIndex</td><td class="oa-l">derived: Pensions at a Glance 2021, table 4.1</td><td class="oa-l">grr100_men / grr050_men. Years: 2020 (29 of 29)</td><td class="oa-l">Men: the table headline and the concept of section 6.</td></tr>
+<tr data-row="bbindex_women"><td class="oa-l">bbIndex_women</td><td class="oa-l">derived: Pensions at a Glance 2021, table 4.1</td><td class="oa-l">grr100_women / grr050_women. Years: 2020 (29 of 29)</td><td class="oa-l">–</td></tr>
+<tr data-row="bbindex_mean"><td class="oa-l">bbIndex_mean</td><td class="oa-l">derived: Pensions at a Glance 2021, table 4.1</td><td class="oa-l">(bbIndex + bbIndex_women) / 2. Years: 2020 (29 of 29)</td><td class="oa-l">–</td></tr>
+<tr data-row="gini"><td class="oa-l">gini, gini_year, gini_wiidId, gini_source</td><td class="oa-l">UNU-WIDER: World Income Inequality Database (WIID), version 8 September 2026, doi 10.35188/UNU-WIDER/WIID-080926; version 8 Sep 2026; retrieved 2026-09-30</td><td class="oa-l">the observation WIID flags for its Companion (wiidcompanion = Yes): disposable income, persons, per capita except where gini_source says otherwise; 0-1 scale. Years: 2020 (29 of 29)</td><td class="oa-l">gini_wiidId is the WIID row id.</td></tr>
+<tr data-row="gini_wiidmarket"><td class="oa-l">gini_wiidMarket, gini_wiidMarket_year</td><td class="oa-l">UNU-WIDER: WIID, version 8 September 2026; version 8 Sep 2026; retrieved 2026-09-30</td><td class="oa-l">source OECD.Stat (Income Distribution Database), market income, square-root scale, persons; 0-1 scale. Years: 2020 (22 of 29); 2018: JPN; 2019: DNK, FRA, DEU, CHE, TUR; none in 2018-2022: ISL</td><td class="oa-l">Before taxes and transfers; retirees without market income count at zero.</td></tr>
+<tr data-row="gini_widpretax"><td class="oa-l">gini_widPretax, gini_widPretax_year</td><td class="oa-l">World Inequality Lab: World Inequality Database (WID), bulk download; Last-Modified Wed, 09 Sep 2026 14:06:24 GMT; retrieved 2026-09-30</td><td class="oa-l">gptincj992, p0p100: Gini of pre-tax national income, equal-split adults (20+). Years: 2020 (29 of 29)</td><td class="oa-l">–</td></tr>
+</tbody></table>
+<div class="oa-notes">
+<p><em>Note:</em> The columns are those of data/oecdFigure1.csv, but for yHighOverLow, derived from the income groups of data/oecd29_distribution.csv; data/oecdFigure1_sources.csv and data/oecd29_sources.csv carry the URL of every source. The figure’s Bismarckian index, <span class="math inline">\(1/(2-\theta)\)</span>, is not among them: <span class="math inline">\(\theta\)</span> is from data/oecd26_theta.csv (data/README.md).</p>
+</div></div><div class="oa-links">Data: <a href="_generated/data/data/oecd26_theta.csv" download="">oecd26_theta.csv</a> · <a href="_generated/data/data/oecd29_distribution.csv" download="">oecd29_distribution.csv</a> · <a href="_generated/data/data/oecd29_sources.csv" download="">oecd29_sources.csv</a> · <a href="_generated/data/data/oecdFigure1.csv" download="">oecdFigure1.csv</a> · <a href="_generated/data/data/oecdFigure1_sources.csv" download="">oecdFigure1_sources.csv</a> · <details class="oa-source"><summary>Source</summary><p>Reads:</p><ul><li><code>data/oecd26_theta.csv</code></li><li><code>data/oecd29_distribution.csv</code></li><li><code>data/oecd29_sources.csv</code></li><li><code>data/oecdFigure1.csv</code></li><li><code>data/oecdFigure1_sources.csv</code></li></ul><p>Built by <code>tablesOA.oecdSources</code> (<a href="https://github.com/ChampionApe/SocialSecurityDesign/tree/5fcff38/python/paper">python/paper</a>) at commit <code>5fcff38</code>. Rebuild: <code>python python/paper/build.py --no-copy --only OECD_Sources</code>.</p></details></div></div>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<p><span class="hidden"><span class="math inline">\(\cdot\)</span></span></p>
+<div class="oa-exhibit oa-tablebox"><div class="oa-scroll"><table class="oa-table" id="ex-OECD_Correlations">
+<caption><span class="oa-num">Table D1.3.</span> Correlations in the cross-section of figure <a href="#ex-OECDdata">D1.1</a></caption>
+<thead>
+<tr><th class="oa-l" scope="col"><strong>Variables</strong></th><th class="oa-c" scope="col"><span class="math inline">\(n\)</span></th><th class="oa-c" scope="col"><strong>Pearson</strong> <span class="math inline">\(r\)</span></th><th class="oa-c" scope="col"><span class="math inline">\(p\)</span></th><th class="oa-c" scope="col"><strong>Spearman</strong></th><th class="oa-c" scope="col"><span class="math inline">\(p\)</span></th></tr>
+</thead>
+<tbody>
+<tr data-row="named_spending_growth"><td class="oa-l">Pension spending, % of GDP and Population 2020 / 1990</td><td class="oa-c">21</td><td class="oa-c">−0.52</td><td class="oa-c">0.016</td><td class="oa-c">−0.45</td><td class="oa-c">0.040</td></tr>
+<tr data-row="named_spending_index"><td class="oa-l">Pension spending, % of GDP and Bismarckian index</td><td class="oa-c">21</td><td class="oa-c">0.69</td><td class="oa-c">0.001</td><td class="oa-c">0.68</td><td class="oa-c">0.001</td></tr>
+<tr data-row="named_spending_inequality"><td class="oa-l">Pension spending, % of GDP and High over low income, <span class="math inline">\(y_3/y_1\)</span></td><td class="oa-c">21</td><td class="oa-c">−0.12</td><td class="oa-c">0.618</td><td class="oa-c">−0.13</td><td class="oa-c">0.563</td></tr>
+<tr data-row="named_growth_index"><td class="oa-l">Population 2020 / 1990 and Bismarckian index</td><td class="oa-c">21</td><td class="oa-c">−0.50</td><td class="oa-c">0.021</td><td class="oa-c">−0.58</td><td class="oa-c">0.005</td></tr>
+<tr data-row="named_growth_inequality"><td class="oa-l">Population 2020 / 1990 and High over low income, <span class="math inline">\(y_3/y_1\)</span></td><td class="oa-c">21</td><td class="oa-c">0.01</td><td class="oa-c">0.981</td><td class="oa-c">−0.04</td><td class="oa-c">0.845</td></tr>
+<tr data-row="named_index_inequality"><td class="oa-l">Bismarckian index and High over low income, <span class="math inline">\(y_3/y_1\)</span></td><td class="oa-c">21</td><td class="oa-c">0.20</td><td class="oa-c">0.377</td><td class="oa-c">0.20</td><td class="oa-c">0.379</td></tr>
+</tbody></table>
+<div class="oa-notes">
+<p><em>Note:</em> The concepts plotted in figure <a href="#ex-OECDdata">D1.1</a>. Pairwise complete observations; the <span class="math inline">\(p\)</span>-values are those of the two-sided tests of zero correlation. Variables as in table <a href="#ex-OECD_Countries">D1.1</a> and their sources in table <a href="#ex-OECD_Sources">D1.2</a>.</p>
+</div></div><div class="oa-links">Data: <a href="_generated/data/data/oecd26_theta.csv" download="">oecd26_theta.csv</a> · <a href="_generated/data/data/oecd29_distribution.csv" download="">oecd29_distribution.csv</a> · <a href="_generated/data/data/oecdFigure1.csv" download="">oecdFigure1.csv</a> · <a href="_generated/data/results/paper/oecdCorrelations.csv" download="">oecdCorrelations.csv</a> · <details class="oa-source"><summary>Source</summary><p>Reads:</p><ul><li><code>data/oecd26_theta.csv</code></li><li><code>data/oecd29_distribution.csv</code></li><li><code>data/oecdFigure1.csv</code></li><li><code>results/paper/oecdCorrelations.csv</code></li></ul><p>Built by <code>tablesOA.oecdCorrelations</code> (<a href="https://github.com/ChampionApe/SocialSecurityDesign/tree/5fcff38/python/paper">python/paper</a>) at commit <code>5fcff38</code>. Rebuild: <code>python python/paper/build.py --no-copy --only OECD_Correlations</code>.</p></details></div></div>
+</div>
+</div>
+</div>
+<section id="data-inequality" class="level2">
+<h2 class="anchored" data-anchor-id="data-inequality">Inequality: the Gini and the model’s measures</h2>
+<p>The paper measures income inequality as the model does. Each synthetic country of sections 6 and 7 carries three income groups, at the U.S. shares of the population, with the relative earnings <span class="math inline">\(y_i\)</span> of its men in full-time work, and the paper’s measure is high over low income, <span class="math inline">\(y_3/y_1\)</span>, the relative earnings of the top group over those of the bottom one. The model’s own summary of the same groups is the dispersion <span class="math inline">\(\tilde V = \sum_i \gamma_i (y_i - 1)^2/y_i\)</span>, which scales the share of revenue lost to the cost of redistribution in section 7. A more common measure is the Gini coefficient of disposable income, which covers all households and all incomes, and counts income after taxes and transfers, public pensions among them.</p>
+<p>Figure D1.2 sets the two model-based measures against the Gini, and table D1.4 gives their correlations. Figure D1.3 and table D1.5 redraw the inequality panels of figure 7 of the paper under each of the three measures, with the data and the model of the paper’s specification. The paper’s conclusion does not depend on the measure: under none of them is spending or the Bismarckian index significantly related to inequality, in the data or in the model.</p>
+<p><span class="hidden"><span class="math inline">\(\cdot\)</span></span></p>
+<div class="oa-exhibit oa-figure" id="ex-OECD_InequalityMeasures"><div class="oa-caption"><span class="oa-num">Figure D1.2.</span> The Gini and the model’s measures of income inequality</div><img src="_generated/figs/OECD_InequalityMeasures.svg" alt="The Gini and the model’s measures of income inequality"><div class="oa-note"><em>Note:</em> The 21 countries of figure <a href="#ex-OECDdata">D1.1</a>. The Gini is that of disposable income (WIID); high over low income, <span class="math inline">\(y_3/y_1\)</span>, and the dispersion <span class="math inline">\(\tilde V = \sum_i \gamma_i (y_i - 1)^2/y_i\)</span> are of the three income groups the model is fed, at the U.S. shares of the population (58%, 18%, 24%, from the bottom), in the gross earnings of men working full time (OECD). The solid line is the least-squares fit over all countries, the dashed one over all but the U.S.; each panel gives Pearson’s <span class="math inline">\(r\)</span> and Spearman’s rank correlation, with the U.S. and, in parentheses, without it (table <a href="#ex-OECD_InequalityCorrelations">D1.4</a>).</div><div class="oa-links">Data: <a href="_generated/data/data/oecd26_theta.csv" download="">oecd26_theta.csv</a> · <a href="_generated/data/data/oecd29_distribution.csv" download="">oecd29_distribution.csv</a> · <a href="_generated/data/data/oecdFigure1.csv" download="">oecdFigure1.csv</a> · <details class="oa-source"><summary>Source</summary><p>Reads:</p><ul><li><code>data/oecd26_theta.csv</code></li><li><code>data/oecd29_distribution.csv</code></li><li><code>data/oecdFigure1.csv</code></li></ul><p>Built by <code>figuresOA.oecdInequalityMeasures</code> (<a href="https://github.com/ChampionApe/SocialSecurityDesign/tree/5fcff38/python/paper">python/paper</a>) at commit <code>5fcff38</code>. Rebuild: <code>python python/paper/build.py --no-copy --only OECD_InequalityMeasures</code>.</p></details></div></div>
+<p><span class="hidden"><span class="math inline">\(\cdot\)</span></span></p>
+<div class="oa-exhibit oa-tablebox"><div class="oa-scroll"><table class="oa-table" id="ex-OECD_InequalityCorrelations">
+<caption><span class="oa-num">Table D1.4.</span> The Gini and the model’s measures of income inequality</caption>
+<thead>
+<tr><th class="oa-l" scope="col"><strong>Countries</strong></th><th class="oa-c" scope="col"><span class="math inline">\(n\)</span></th><th class="oa-c" scope="col"><strong>Pearson</strong> <span class="math inline">\(r\)</span></th><th class="oa-c" scope="col"><span class="math inline">\(p\)</span></th><th class="oa-c" scope="col"><strong>Spearman</strong></th><th class="oa-c" scope="col"><span class="math inline">\(p\)</span></th><th class="oa-c" scope="col"><strong>Slope on the Gini</strong></th></tr>
+</thead>
+<tbody>
+<tr class="oa-grouprow"><th class="oa-l" colspan="7"><em>High over low income, <span class="math inline">\(y_3/y_1\)</span></em></th></tr>
+<tr data-row="yhighoverlow_all"><td class="oa-l">All countries</td><td class="oa-c">21</td><td class="oa-c">0.53</td><td class="oa-c">0.014</td><td class="oa-c">0.33</td><td class="oa-c">0.149</td><td class="oa-c">6.70 <span class="math inline">\((2.47)\)</span></td></tr>
+<tr data-row="yhighoverlow_nousa"><td class="oa-l">Without the U.S.</td><td class="oa-c">20</td><td class="oa-c">0.26</td><td class="oa-c">0.268</td><td class="oa-c">0.22</td><td class="oa-c">0.352</td><td class="oa-c">3.76 <span class="math inline">\((3.29)\)</span></td></tr>
+<tr class="oa-grouprow"><th class="oa-l" colspan="7"><em>The model’s dispersion, <span class="math inline">\(\tilde V\)</span></em></th></tr>
+<tr data-row="vtilde_all"><td class="oa-l">All countries</td><td class="oa-c">21</td><td class="oa-c">0.53</td><td class="oa-c">0.014</td><td class="oa-c">0.33</td><td class="oa-c">0.143</td><td class="oa-c">0.984 <span class="math inline">\((0.365)\)</span></td></tr>
+<tr data-row="vtilde_nousa"><td class="oa-l">Without the U.S.</td><td class="oa-c">20</td><td class="oa-c">0.24</td><td class="oa-c">0.304</td><td class="oa-c">0.23</td><td class="oa-c">0.339</td><td class="oa-c">0.508 <span class="math inline">\((0.480)\)</span></td></tr>
+</tbody></table>
+<div class="oa-notes">
+<p><em>Note:</em> The countries of figure <a href="#ex-OECDdata">D1.1</a>. Correlations of the Gini of disposable income with each measure of the income groups the model is fed, at the U.S. shares of the population, and the least-squares slope of the measure on the Gini, its standard error in parentheses; the <span class="math inline">\(p\)</span>-values are those of the two-sided tests of zero correlation. The measures are those of the figure of the Gini against the model’s measures, above.</p>
+</div></div><div class="oa-links">Data: <a href="_generated/data/data/oecd26_theta.csv" download="">oecd26_theta.csv</a> · <a href="_generated/data/data/oecd29_distribution.csv" download="">oecd29_distribution.csv</a> · <a href="_generated/data/data/oecdFigure1.csv" download="">oecdFigure1.csv</a> · <a href="_generated/data/results/paper/oecdInequalityCorrelations.csv" download="">oecdInequalityCorrelations.csv</a> · <details class="oa-source"><summary>Source</summary><p>Reads:</p><ul><li><code>data/oecd26_theta.csv</code></li><li><code>data/oecd29_distribution.csv</code></li><li><code>data/oecdFigure1.csv</code></li><li><code>results/paper/oecdInequalityCorrelations.csv</code></li></ul><p>Built by <code>tablesOA.oecdInequalityCorrelations</code> (<a href="https://github.com/ChampionApe/SocialSecurityDesign/tree/5fcff38/python/paper">python/paper</a>) at commit <code>5fcff38</code>. Rebuild: <code>python python/paper/build.py --no-copy --only OECD_InequalityCorrelations</code>.</p></details></div></div>
+<p><span class="hidden"><span class="math inline">\(\cdot\)</span></span></p>
+<div class="oa-exhibit oa-figure" id="ex-OECD26_Layer1Inequality"><div class="oa-caption"><span class="oa-num">Figure D1.3.</span> The relations of figure 7 of the paper with income inequality, under three measures of it</div><img src="_generated/figs/OECD26_Layer1Inequality.svg" alt="The relations of figure fig:OECD26:layer1 with income inequality, under three measures of it"><div class="oa-note"><em>Note:</em> 21 countries, the data and the model of figure 7 of the paper: spending and the index against three measures of income inequality, the Gini of disposable income (WIID); high over low income, <span class="math inline">\(y_3/y_1\)</span>, the measure of figure 7 of the paper; and the dispersion <span class="math inline">\(\tilde V = \sum_i \gamma_i (y_i - 1)^2/y_i\)</span>, the last two of the income groups the model is fed. The lines are least-squares fits; table <a href="#ex-OECD26_Layer1InequalitySlopes">D1.5</a> reports their slopes.</div><div class="oa-links">Data: <a href="_generated/data/data/oecd26_sample.csv" download="">oecd26_sample.csv</a> · <a href="_generated/data/data/oecd26_theta.csv" download="">oecd26_theta.csv</a> · <a href="_generated/data/data/oecd29_distribution.csv" download="">oecd29_distribution.csv</a> · <a href="_generated/data/data/oecdFigure1.csv" download="">oecdFigure1.csv</a> · <a href="_generated/data/results/calibration/US_rhoGridCommonX.csv" download="">US_rhoGridCommonX.csv</a> · <a href="_generated/data/results/oecd26/anchor.csv" download="">anchor.csv</a> · <a href="_generated/data/results/oecd26/layer1.csv" download="">layer1.csv</a> · <details class="oa-source"><summary>Source</summary><p>Reads:</p><ul><li><code>data/oecd26_sample.csv</code></li><li><code>data/oecd26_theta.csv</code></li><li><code>data/oecd29_distribution.csv</code></li><li><code>data/oecdFigure1.csv</code></li><li><code>results/calibration/US_rhoGridCommonX.csv</code></li><li><code>results/oecd26/anchor.csv</code></li><li><code>results/oecd26/layer1.csv</code></li></ul><p>Built by <code>figuresOECD26.oecd26Layer1Inequality</code> (<a href="https://github.com/ChampionApe/SocialSecurityDesign/tree/5fcff38/python/paper">python/paper</a>) at commit <code>5fcff38</code>. Rebuild: <code>python python/paper/build.py --no-copy --only OECD26_Layer1Inequality</code>.</p></details></div></div>
+<p><span class="hidden"><span class="math inline">\(\cdot\)</span></span></p>
+<div class="oa-exhibit oa-tablebox"><div class="oa-scroll"><table class="oa-table" id="ex-OECD26_Layer1InequalitySlopes">
+<caption><span class="oa-num">Table D1.5.</span> Figure 7 of the paper’s relations with income inequality under three measures of it</caption>
+<thead>
+<tr><th class="oa-l" scope="col"></th><th class="oa-c" colspan="2" scope="col"><strong>Data</strong></th><th class="oa-c" colspan="2" scope="col"><strong>Model</strong></th></tr>
+<tr><th class="oa-l" scope="col"><strong>Relation</strong></th><th class="oa-c" scope="col">slope</th><th class="oa-c" scope="col"><span class="math inline">\(r\)</span></th><th class="oa-c" scope="col">slope</th><th class="oa-c" scope="col"><span class="math inline">\(r\)</span></th></tr>
+</thead>
+<tbody>
+<tr data-row="spending_gini"><td class="oa-l">Pension spending on the Gini</td><td class="oa-c">13.04 <span class="math inline">\((25.40)\)</span></td><td class="oa-c">0.12</td><td class="oa-c">−8.51 <span class="math inline">\((21.89)\)</span></td><td class="oa-c">−0.09</td></tr>
+<tr data-row="index_gini"><td class="oa-l">Bismarckian index on the Gini</td><td class="oa-c">0.879 <span class="math inline">\((1.064)\)</span></td><td class="oa-c">0.19</td><td class="oa-c">−0.180 <span class="math inline">\((0.706)\)</span></td><td class="oa-c">−0.06</td></tr>
+<tr data-row="spending_yhighoverlow"><td class="oa-l">Pension spending on high over low income<span class="math inline">\(^{\ast}\)</span></td><td class="oa-c">−1.02 <span class="math inline">\((2.00)\)</span></td><td class="oa-c">−0.12</td><td class="oa-c">0.45 <span class="math inline">\((1.73)\)</span></td><td class="oa-c">0.06</td></tr>
+<tr data-row="index_yhighoverlow"><td class="oa-l">Bismarckian index on high over low income<span class="math inline">\(^{\ast}\)</span></td><td class="oa-c">0.076 <span class="math inline">\((0.084)\)</span></td><td class="oa-c">0.20</td><td class="oa-c">0.004 <span class="math inline">\((0.056)\)</span></td><td class="oa-c">0.01</td></tr>
+<tr data-row="spending_vtilde"><td class="oa-l">Pension spending on the dispersion <span class="math inline">\(\tilde V\)</span></td><td class="oa-c">−7.43 <span class="math inline">\((13.58)\)</span></td><td class="oa-c">−0.12</td><td class="oa-c">2.91 <span class="math inline">\((11.74)\)</span></td><td class="oa-c">0.06</td></tr>
+<tr data-row="index_vtilde"><td class="oa-l">Bismarckian index on the dispersion <span class="math inline">\(\tilde V\)</span></td><td class="oa-c">0.501 <span class="math inline">\((0.568)\)</span></td><td class="oa-c">0.20</td><td class="oa-c">0.023 <span class="math inline">\((0.378)\)</span></td><td class="oa-c">0.01</td></tr>
+</tbody></table>
+<div class="oa-notes">
+<p><em>Note:</em> Least-squares slopes, standard errors in parentheses, and Pearson’s <span class="math inline">\(r\)</span>, 21 countries. The model as in figure 7 of the paper. The Gini is that of disposable income; high over low income, <span class="math inline">\(y_3/y_1\)</span>, and the dispersion <span class="math inline">\(\tilde V = \sum_i \gamma_i (y_i - 1)^2/y_i\)</span> are of the income groups the model is fed. <span class="math inline">\(^{\ast}\)</span>The measure of figure 7 of the paper and table 5 of the paper.</p>
+</div></div><div class="oa-links">Data: <a href="_generated/data/data/oecd26_sample.csv" download="">oecd26_sample.csv</a> · <a href="_generated/data/data/oecd26_theta.csv" download="">oecd26_theta.csv</a> · <a href="_generated/data/data/oecd29_distribution.csv" download="">oecd29_distribution.csv</a> · <a href="_generated/data/data/oecdFigure1.csv" download="">oecdFigure1.csv</a> · <a href="_generated/data/results/calibration/US_rhoGridCommonX.csv" download="">US_rhoGridCommonX.csv</a> · <a href="_generated/data/results/oecd26/anchor.csv" download="">anchor.csv</a> · <a href="_generated/data/results/oecd26/layer1.csv" download="">layer1.csv</a> · <a href="_generated/data/results/paper/oecd26Layer1InequalitySlopes.csv" download="">oecd26Layer1InequalitySlopes.csv</a> · <details class="oa-source"><summary>Source</summary><p>Reads:</p><ul><li><code>data/oecd26_sample.csv</code></li><li><code>data/oecd26_theta.csv</code></li><li><code>data/oecd29_distribution.csv</code></li><li><code>data/oecdFigure1.csv</code></li><li><code>results/calibration/US_rhoGridCommonX.csv</code></li><li><code>results/oecd26/anchor.csv</code></li><li><code>results/oecd26/layer1.csv</code></li><li><code>results/paper/oecd26Layer1InequalitySlopes.csv</code></li></ul><p>Built by <code>tablesOECD26.oecd26Layer1InequalitySlopes</code> (<a href="https://github.com/ChampionApe/SocialSecurityDesign/tree/5fcff38/python/paper">python/paper</a>) at commit <code>5fcff38</code>. Rebuild: <code>python python/paper/build.py --no-copy --only OECD26_Layer1InequalitySlopes</code>.</p></details></div></div>
+</section>
+<section id="data-outside" class="level2">
+<h2 class="anchored" data-anchor-id="data-outside">The countries outside the figure</h2>
+<p>Figure 1, and so the cross-country test, leaves out the OECD members before 2000 that the model does not represent. In Korea, Mexico and Turkey a large share of employment is informal, and the model of sections 6 and 7 has no informal households. In Australia, Denmark, Iceland, the Netherlands and Switzerland funded tiers pay a large share of mandatory benefits, or the public pension is tested against them, where the model has a single public pay-as-you-go system. Under the measure of the design over all mandatory tiers, <a href="./esc-oecd26.html#esc-oecd26-thetaB">C4</a> runs the test on the countries with funded tiers as well.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/championape\.github\.io\/SocialSecurityDesign");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./checks.html" class="pagination-link" aria-label="D. Data and computation">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">D. Data and computation</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./numerical.html" class="pagination-link" aria-label="D2. Numerical checks">
+        <span class="nav-page-text"><span class="chapter-title">D2. Numerical checks</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

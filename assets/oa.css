@@ -1,0 +1,77 @@
+/* The supplemental appendix's exhibits: static figures and tables, the interactive figures, their controls. */
+:root {
+  --oa-ink: #0b0b0b; --oa-ink2: #52514e; --oa-muted: #898781; --oa-grid: #e1e0d9; --oa-blue: #2a78d6;
+  --oa-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* An exhibit: number and caption above, the body, the note and the links below. */
+.oa-exhibit, .oa-explorer { margin: 1.6rem 0 2.2rem; font-family: var(--oa-sans); }
+.oa-figure { margin-left: 0; margin-right: 0; }
+.oa-caption, table.oa-table > caption {
+  caption-side: top; font-family: var(--oa-sans); font-size: .95rem; color: var(--oa-ink); line-height: 1.4;
+  padding: 0 0 .5rem; text-align: left;
+}
+.oa-num { font-weight: 650; margin-right: .15rem; }
+.oa-badge {
+  display: inline-block; margin-left: .45rem; padding: .05rem .45rem; border-radius: 3px; font-size: .74rem;
+  font-weight: 500; color: #1c5cab; background: #eaf2fc; vertical-align: .08em; white-space: nowrap;
+}
+.oa-figure img { display: block; width: 100%; height: auto; }
+.oa-note, .oa-notes, .oa-chartnote { font-size: .82rem; color: var(--oa-ink2); line-height: 1.45; margin-top: .5rem; }
+.oa-notes p { margin: .25rem 0 0; }
+.oa-links { font-size: .8rem; color: var(--oa-ink2); margin-top: .45rem; }
+.oa-links a { color: #1c5cab; }
+.oa-source { display: inline; }
+.oa-source summary { display: inline; cursor: pointer; color: #1c5cab; }
+.oa-source[open] { display: block; margin-top: .3rem; padding: .5rem .7rem; background: #f7f6f3; border-radius: 4px; }
+.oa-source ul { margin: .2rem 0 .3rem; padding-left: 1.2rem; }
+.oa-source p { margin: .2rem 0; }
+.oa-missing { color: #a33; font-family: var(--oa-sans); }
+
+/* Tables: booktabs. */
+.oa-scroll { overflow-x: auto; }
+table.oa-table { border-collapse: collapse; width: 100%; font-family: var(--oa-sans); font-size: .86rem;
+  font-variant-numeric: tabular-nums; border-top: 1.5px solid var(--oa-ink); border-bottom: 1.5px solid var(--oa-ink); }
+table.oa-table thead tr:last-child th { border-bottom: .8px solid var(--oa-ink); }
+table.oa-table th, table.oa-table td { padding: .32rem .55rem; vertical-align: top; }
+table.oa-table th { font-weight: 600; }
+table.oa-table .oa-l { text-align: left; } table.oa-table .oa-c { text-align: center; } table.oa-table .oa-r { text-align: right; }
+table.oa-table tr.oa-sep td { border-top: .6px solid var(--oa-grid); }
+table.oa-table tr.oa-grouprow th { font-weight: 400; font-style: italic; text-align: left; padding-top: .6rem; }
+table.oa-table--map { font-size: .8rem; }
+table.oa-table--map code { font-size: .78rem; background: none; }
+table.oa-table--map td { overflow-wrap: anywhere; }
+
+/* Interactive figures. */
+.oa-controls { display: flex; flex-wrap: wrap; gap: .4rem 1.6rem; align-items: center; margin: .3rem 0 .6rem;
+  font-family: var(--oa-sans); font-size: .86rem; }
+form.oa-control { margin: 0 0 .35rem; display: flex; flex-wrap: wrap; align-items: center; gap: .2rem .9rem;
+  font-family: var(--oa-sans); font-size: .86rem; max-width: none; }
+form.oa-control > label { font-weight: 600; color: var(--oa-ink2); width: auto; margin: 0 .2rem 0 0; }
+form.oa-control > div { display: flex; flex-wrap: wrap; gap: .2rem 1.1rem; align-items: center; width: auto; }
+form.oa-control > div > label { display: inline-flex; align-items: center; gap: .35rem; margin: 0; cursor: pointer; }
+form.oa-control input[type=radio], form.oa-control input[type=checkbox] { margin: 0; accent-color: var(--oa-blue); }
+form.oa-control select { font-size: .86rem; padding: .1rem .3rem; }
+form.oa-control input[type=number] { width: 4.2rem; }
+.oa-chart { font-family: var(--oa-sans); }
+.oa-chart svg { overflow: visible; }
+.oa-legend { display: flex; flex-wrap: wrap; gap: .3rem 1.1rem; font-size: .82rem; color: var(--oa-ink2); margin: .2rem 0 .4rem; }
+.oa-legend > span { display: inline-flex; align-items: center; gap: .35rem; }
+.oa-grid { display: grid; gap: .6rem 1.5rem; }
+.oa-panel-title { font-weight: 600; font-size: .9rem; margin: .2rem 0 0; }
+.oa-readout { font-size: .8rem; color: var(--oa-ink2); margin: .1rem 0 .4rem; }
+
+/* The facets of a counterfactual chart, stacked on one x axis. */
+.oa-facet-title { font-weight: 600; font-size: .9rem; margin: .9rem 0 0; }
+.oa-facet-title:first-child { margin-top: .3rem; }
+
+/* The front page's map. */
+.oa-map { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin: 1.2rem 0 1.6rem; }
+.oa-card { border: 1px solid var(--oa-grid); border-radius: 6px; padding: .9rem 1.1rem .8rem; font-family: var(--oa-sans); }
+.oa-card h3 { font-size: 1.02rem; margin: 0 0 .25rem; }
+.oa-card h3 a { text-decoration: none; color: var(--oa-ink); }
+.oa-card p { font-size: .86rem; color: var(--oa-ink2); margin: 0 0 .5rem; line-height: 1.4; }
+.oa-card ul { list-style: none; padding: 0; margin: 0; font-size: .86rem; line-height: 1.45; }
+.oa-card li { margin: .22rem 0; }
+.oa-card li span { color: var(--oa-muted); }
+.oa-version { font-size: .8rem; color: var(--oa-muted); font-family: var(--oa-sans); margin-top: 2rem; }
