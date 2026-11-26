@@ -42,12 +42,12 @@ PIRCOST = {'pi': r'$\lambda_{n,t} = \varepsilon\,\Pi_{n,t}/R_{n,t}$',
            'convex': r'$\lambda_{n,t} = 2\kappa\,\pi_{n,t}(1-\pi_{n,t})$, $\pi_{n,t} = \Pi_{n,t}/R_{n,t}$'}[CARRIER]
 PIRCOSTN = {'pi': r'$\lambda_n = \varepsilon\,\Pi_n/R_n$',
             'convex': r'$\lambda_n = 2\kappa\,\pi_n(1-\pi_n)$, $\pi_n = \Pi_n/R_n$'}[CARRIER]
-# Section 7's two costs by the power k of the tax rate in f (eq:esc:budget at k = 1, eq:esc:budgetSquared at k = 2), as
+# Section 7's two costs by the power k of the tax rate in f (eq:esc:budget, its tau^k at k = 1 and k = 2), as
 # the supplemental appendix names them: COSTKEYS the `cost` column of its datasets and the suffix of an output's k = 1
 # twin (costSuffix: '_linear'; k = 2's outputs carry none), COSTWORDS the prose, COSTEQ the paper's equation.
 COSTKEYS = {1: 'linear', 2: 'squared'}
 COSTWORDS = {1: 'the linear cost', 2: 'the squared cost'}
-COSTEQ = {1: 'eq:esc:budget', 2: 'eq:esc:budgetSquared'}
+COSTEQ = {1: 'eq:esc:budget', 2: 'eq:esc:fk'}
 
 
 def costSuffix(k):

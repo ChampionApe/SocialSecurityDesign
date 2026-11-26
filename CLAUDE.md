@@ -1,7 +1,7 @@
-# Social Security Design and Its Political Support: replication package
+# The Political Economy of Pension Design: replication package
 
-This repository reproduces every table and figure of Berg and Gonzalez-Eiras (2026), *Social Security Design and
-Its Political Support*, and of its supplemental appendix (https://championape.github.io/SocialSecurityDesign).
+This repository reproduces every table and figure of Berg and Gonzalez-Eiras (2026), *The Political Economy of
+Pension Design*, and of its supplemental appendix (https://championape.github.io/SocialSecurityDesign).
 The paper studies pension systems in an overlapping-generations economy with heterogeneous households. Each
 period, a government that cannot commit chooses the pension tax by probabilistic voting. In section 7 the
 electorate also chooses the design θ, the earnings link of benefits: θ = 1 is fully Bismarckian, θ = 0 fully

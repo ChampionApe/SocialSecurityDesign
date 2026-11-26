@@ -246,7 +246,7 @@ def oecd26Layer1Costs(layout = 'overlay'):
     if any(ω is None for ω in ωs.values()):
         raise ValueError(name + ": the note is written for omegaRule 'mean'")
     note = (r'\textit{Note:} ' + '{} countries'.format(n) + r', as in figure \ref{fig:OECD26:spending}, in the data '
-            r'and in the model under each cost of section \ref{sec:esc:crossSection}: every country at the U.S.\ $\beta$ '
+            r'and in the model under each cost of section \ref{sec:esc:cost}: every country at the U.S.\ $\beta$ '
             r'and at the mean of the political weights that match each country\textquotesingle s spending at its observed '
             r'design (appendix \ref{app:oecd26:layer2}), '
             + ' and '.join(r'$\omega = ' + C.num(ωs[k], 2) + '$ under ' + T.COSTTEX[k] for k in T.COSTS)

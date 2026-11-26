@@ -145,12 +145,40 @@ def _plottedColumns():
     return set(F1.PLOT.values())
 
 
+def _thetaSourceRow():
+    r""" OECD_Sources' row of the design θ and its index 1/(2 - θ): config.US['theta']'s measure, variant C of
+    data/oecd26_theta.csv (app:oecd26:data), its source, the earnings levels and the countries read off the data
+    (oecdFigure1.thetaSource). The two sentences the note types are checked: the sample rule against
+    oecd26Theta.PRIVMAX, the one exception against the measure's notes; another measure is a ValueError. """
+    from oecd26Theta import PRIVMAX
+    if C.US['theta'] != 'C' or PRIVMAX != 0.25:
+        raise ValueError('OECD_Sources describes variant C at PRIVMAX 0.25; config.US[\'theta\'] is {!r}, PRIVMAX {}'
+                         .format(C.US['theta'], PRIVMAX))
+    s = F1.thetaSource()
+    if set(s['inForce']) != {'GBR'}:
+        raise ValueError('OECD_Sources names the UK as the one θ not read off the benefit formula; the measure\'s notes '
+                         'name {}'.format(sorted(s['inForce'])))
+    names = D.oecdFigure1Data()['country']
+    low = ', '.join('{} at {:g}'.format(names[c], v) for c, v in s['low'].items())
+    source = (_tex(s['source']) + '; retrieved ' + _tex(s['retrieved']) + r'. Top-ups and tested benefits: OECD SOCX '
+              r'2020 and national sources (data/oecd26\_topups.csv; python/paper/oecd26Theta.py, S\_TOPUP)')
+    series = (r'$\theta$ is ' + C.THETADEF + r': the gross public pension of men with a full career under the rules '
+              r'of 2020' + (' (lowest earnings: ' + low + ')' if low else '') + ', public spending as pensionSpending. '
+              r'The index is $1/(2-\theta)$. Years: 2020 (' + '{n} of {n})'.format(n = s['n']))
+    note = (r'The paper\textquotesingle s measure (appendix \ref{app:oecd26:data}), variant C of '
+            r'data/oecd26\_theta.csv, on the ' + str(s['n']) + r' countries where funded tiers pay less than a '
+            r'quarter of mandatory benefits in 2020 and the public pension is not tested against them. The '
+            r'UK\textquotesingle s $\theta$ is not read off the benefit formula: it is the State Second '
+            r'Pension\textquotesingle s share of spending on the State Pensions and Pension Credit in 2019--20.')
+    return [r'$\theta$, the design, and its index', source, series, note]
+
+
 def oecdSources():
-    r""" The sources of figure 1's data, one row per entry of data/oecdFigure1_sources.csv and per column
-    oecdFigure1.plotted derives (oecdFigure1.derivedSources: config.INEQUALITY's measure of the model's income groups):
-    the columns it sources, provider and dataset with vintage and retrieval date, the series, the years and the note.
-    The entries whose columns figure 1 draws come first. URLs are in the csvs, not printed. Rows keyed on the entry's
-    first column. """
+    r""" The sources of figure 1's data, one row per entry of data/oecdFigure1_sources.csv, one for the design θ and
+    its index (_thetaSourceRow) and one per column oecdFigure1.plotted derives (oecdFigure1.derivedSources:
+    config.INEQUALITY's measure of the model's income groups): the columns it sources, provider and dataset with
+    vintage and retrieval date, the series, the years and the note. The entries whose columns figure 1 draws come
+    first. URLs are in the csvs, not printed. Rows keyed on the entry's first column, the design's `theta`. """
     import pandas as pd
     src = D.oecdFigure1Sources()
     src = src[[not all(c.strip().startswith('eps_') for c in s.split(',')) for s in src['column']]]
@@ -167,13 +195,7 @@ def oecdSources():
             continue
         lines.append(_title(_tex(title), 4))
         if title.startswith('Plotted'):
-            lines.append(_row([r'$\theta$, the design; the index is $1/(2-\theta)$',
-                               'derived: Pensions at a Glance 2021, table 4.2; OECD SOCX 2020 and national sources '
-                               'for the spending on top-ups and tested benefits',
-                               r'earnings-linked share of the gross public pension of men at 0.5, 1 and 2 times '
-                               r'average earnings, corrected for top-ups. Rules of 2020',
-                               r'The measure of appendix \ref{app:oecd26:data}, in data/oecd26\_theta.csv; the UK is '
-                               r'its exception.'], 'theta'))
+            lines.append(_row(_thetaSourceRow(), 'theta'))
         for _, r in sub.iterrows():
             source = '; '.join(_tex(x) for x in (r['provider'] + ': ' + r['dataset'], r['vintage'],
                                                   ('retrieved ' + r['retrieved']) if r['retrieved'] else '') if x)
@@ -181,15 +203,17 @@ def oecdSources():
             lines.append(_row([_tex(r['column']), source, series, _tex(_withoutEPS(r['note'])) or '--'],
                               _keyOf(first(r['column']))))
     extra = [first(c) for c in derived['column']]
-    note = (r'\textit{Note:} The columns are those of data/oecdFigure1.csv'
-            + (', but for ' + ', '.join(_tex(c) for c in extra) + r', derived from the income groups of '
+    note = (r'\textit{Note:} The columns are those of data/oecdFigure1.csv, but for $\theta$ and its index, from '
+            r'data/oecd26\_theta.csv (data/README.md)'
+            + (', and ' + ', '.join(_tex(c) for c in extra) + r', derived from the income groups of '
                r'data/oecd29\_distribution.csv' if extra else '')
-            + r'; data/oecdFigure1\_sources.csv' + (r' and data/oecd29\_sources.csv carry' if extra else ' carries')
-            + r' the URL of every source. The figure\textquotesingle s Bismarckian index, $1/(2-\theta)$, is '
-            r'not among those columns: $\theta$ is from data/oecd26\_theta.csv (data/README.md), and bbIndex is the '
-            r'ratio of replacement rates.')
+            + r'; data/oecdFigure1\_sources.csv, data/oecd26\_pensionTiers\_harmonised.csv'
+            + (r', data/oecd29\_sources.csv' if extra else '') + r' and the files the $\theta$ row names carry the URL '
+            r'of every source. bbIndex, the ratio of the replacement rates at average and at half of average '
+            r'earnings, is not the paper\textquotesingle s index.')
     rag = r'>{\raggedright\arraybackslash}'
-    text = _xwrap('OECD_Sources', 'data/oecdFigure1_sources.csv' + (', oecd29_sources.csv' if extra else ''),
+    text = _xwrap('OECD_Sources', 'data/oecdFigure1_sources.csv, data/oecd26_theta.csv, '
+                  'data/oecd26_pensionTiers_harmonised.csv' + (', data/oecd29_sources.csv' if extra else ''),
                   r'The sources of figure \ref{fig:US:OECDdata}',
                   _label('OECD_Sources'), rag + 'p{3.8cm}' + (rag + 'X')*3,
                   [r'\textbf{Columns}', r'\textbf{Source}', r'\textbf{Series and years}', r'\textbf{Note}'],
@@ -385,7 +409,7 @@ def escCostCalibration(k = 2):
     r""" C2.2: the costs of redistribution calibrated under log preferences (rho = 1, the only rho at which
     config.US['esc']['comparisonSpec'] is calibrated; escCalibration.csv of datasets.escDir(k) through
     datasets.escCalibrationLOG): the cost f = exp(-lambda tau^k Vtilde (1-theta)^2 / 2) with tau^k (k = 1
-    eq:esc:budget, k = 2 eq:esc:budgetSquared; config.COSTEQ) and the cost on the design f = phi + (1-phi) theta^p,
+    eq:esc:fk at k = 2; config.COSTEQ) and the cost on the design f = phi + (1-phi) theta^p,
     which does not depend on k, each with its parameter and the shares of revenue lost in 2020 at the observed design
     and at theta = 0 (datasets.escWedge), at the 2020 tax. At k = config.US['esc']['tauPower'] the first row prints as
     the rho = 1 row of table:US_ESC:calibration (lambda at two decimals, the shares at one; test_onlineAppendix compares

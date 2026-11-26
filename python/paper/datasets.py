@@ -704,6 +704,24 @@ def oecd26SampleOf(variant = None):
     return [c for c in oecdFigure1Data().index if c in t.index and bool(t.at[c, 'sample'])]
 
 
+# The pension tiers of the 26 (stage (0)'s oecd26PensionTiers.py), whose public tier the measure of the design reads.
+OECD26TIERS = os.path.join(C.DATA, 'oecd26_pensionTiers_harmonised.csv')
+
+
+def oecd26PublicTier(isos = None):
+    """ The rows of data/oecd26_pensionTiers_harmonised.csv that python/paper/oecd26Theta.py fits θ through: the gross
+    replacement rates of the public tier (item grr_tier, tier public_mandatory) of men under the rules of 2020, for the
+    countries `isos` (all when None), as text (a blank cell is ''): iso3, earnings_multiple, value, source, url,
+    retrieved, note. """
+    d = pd.read_csv(_need(OECD26TIERS), comment = '#', dtype = str, keep_default_na = False)
+    d = d[(d['item'] == 'grr_tier') & (d['tier'] == 'public_mandatory') & (d['sex'] == 'M') & (d['year'] == '2020')]
+    if isos is not None:
+        d = d[d['iso3'].isin(list(isos))]
+    if d.empty:
+        raise MissingInput('{} (no public-tier replacement rate of 2020)'.format(OECD26TIERS))
+    return d[['iso3', 'earnings_multiple', 'value', 'source', 'url', 'retrieved', 'note']]
+
+
 # The income groups the model is fed (python/US/oecd26.readData), the source of config.INEQUALITY's model measures.
 OECD29DIST    = os.path.join(C.DATA, 'oecd29_distribution.csv')
 OECD29SOURCES = os.path.join(C.DATA, 'oecd29_sources.csv')

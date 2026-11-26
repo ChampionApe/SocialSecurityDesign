@@ -260,7 +260,9 @@ def escCalibrationTable(spec = None):
         recs[ρ] = cal[(ρ, spec)]
     body, θ, V = _costRows(recs, spec)
     if spec == 'size':
-        form = (r'The cost is that of equation \eqref{eq:esc:budget}, with $\theta^{\ast} = ' + C.num(θ, 3)
+        cost = (r'the linear cost of equation \eqref{eq:esc:budget}' if k == 1
+                else r'the squared cost of section \ref{sec:esc:cost}, $\tau_t^2$ in place of $\tau_t$ in \eqref{eq:esc:budget}')
+        form = (r'The cost is ' + cost + r', with $\theta^{\ast} = ' + C.num(θ, 3)
                 + r'$ and $\tilde V = ' + C.num(V, 3) + r'$ at every $\rho$')
     else:
         form = (r'The cost is $f(\theta) = \phi + (1-\phi)\theta^{p}$ with $\phi = ' + C.num(C.US['esc']['phi'], 1)

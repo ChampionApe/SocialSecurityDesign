@@ -165,11 +165,7 @@ def _escCounterfactualsAt(k, ξ0):
     if left:
         _note('ESC_Counterfactuals ({}): no escExperiments.csv row for {} of (spec, rho, scenario, reading); left out'
               .format(cost, len(left)))
-    try:
-        xi = D.escXi(k = k)
-    except D.MissingInput as ex:
-        _note('ESC_Counterfactuals ({}): no Frisch-elasticity block ({})'.format(cost, ex))
-        return rows
+    xi = D.escXi(k = k)                     # required: page C3's prose states the xi results under both costs
     year0 = C.usCalendar()['year0']
     for ξ in sorted(xi['xi'].unique()):
         sub = xi[np.isclose(xi['xi'], ξ)]
@@ -189,9 +185,10 @@ def _escCounterfactualsAt(k, ξ0):
 def escCounterfactuals():
     """ ESC_Counterfactuals: section 7's counterfactuals on the U.S. under both cost specifications, each read
     with the design pinned and chosen, at the three rho of the paper ('main'); and acute ageing on the U.S. at
-    three Frisch elasticities, rho = 1 ('xi'; escXiRobustness.csv, whose baselines are its path rows in 2020), where
-    that csv holds rows at the θ variant (python/US/runESCxi.py, not a stage (ii) entry). Each under both of section 7's
-    costs (`cost`, ESCCOSTS); the cost on the design does not depend on k and is in both. The design is a level; the
+    three Frisch elasticities, rho = 1 ('xi'; escXiRobustness.csv, whose baselines are its path rows in 2020;
+    python/US/runESCxi.py, stage (ii)'s entry escXi, by hand under the linear cost). Each under both of section 7's
+    costs (`cost`, ESCCOSTS); the cost on the design does not depend on k and is in both. The xi block is required
+    under both (MissingInput otherwise): page C3 and the figure's note state its results. The design is a level; the
     tax rate, savings over GDP and the workweek are also changes against the baseline of the same reading. """
     ξ0 = _workbookXi()
     out = pd.DataFrame(sum((_escCounterfactualsAt(k, ξ0) for k in ESCCOSTS), []))
@@ -201,7 +198,8 @@ def escCounterfactuals():
         at = out[out['cost'] == C.COSTKEYS[k]]
         a = at[(at['source'] == 'xi') & np.isclose(at['xi'], ξ0)].set_index(key)[['level', 'baseline']]
         if a.empty:
-            continue
+            raise D.MissingInput('{}/escXiRobustness.csv (no rows at the workbook ξ = {})'
+                                 .format(os.path.basename(D.escDir(k)), ξ0))
         b = at[(at['source'] == 'main') & (at['host'] == 'US') & (at['spec'] == C.US['esc']['spec'])
                & np.isclose(at['rho'], 1.0)].set_index(key)[['level', 'baseline']].reindex(a.index)
         if not (a.notna().all().all() and b.notna().all().all()):
@@ -252,19 +250,17 @@ def _escPathsAt(k, years, ξ0):
             θStar = float(calib[(float(ρ), spec)]['θStar'])
             rows += _pathRows(D.escPath(ρ, spec = spec, k = k), 'main', cost, 'US', ('US', 'own'), spec, ρ, ξ0, θStar,
                               years)
-    try:
-        xi = D.escXi(k = k)
-    except D.MissingInput as ex:
-        _note('ESC_Paths ({}): no Frisch-elasticity block ({})'.format(cost, ex))
-        xi = pd.DataFrame(columns = ['xi', 'kind', 'pos'])
+    xi = D.escXi(k = k)                     # required: page C3's prose states the xi paths under both costs
     # A stale row (crossCuttingFindings #13): the workbook-xi path must be escPath.csv's rho = 1 path.
     own = xi[np.isclose(xi['xi'], ξ0) & (xi['kind'] == 'path')].sort_values('pos')
-    if not own.empty:
-        base = D.escPath(1.0, k = k)
-        for c in ('θ', 'τ', 'τExo'):
-            if len(own) != len(base) or not np.all(np.abs(own[c].values - base[c].values) <= 1e-8):
-                raise ValueError('{}/escXiRobustness.csv at the workbook ξ = {} does not reproduce escPath.csv ({}); '
-                                 're-run python/US/runESCxi.py'.format(os.path.basename(D.escDir(k)), ξ0, c))
+    if own.empty:
+        raise D.MissingInput('{}/escXiRobustness.csv (no path at the workbook ξ = {})'
+                             .format(os.path.basename(D.escDir(k)), ξ0))
+    base = D.escPath(1.0, k = k)
+    for c in ('θ', 'τ', 'τExo'):
+        if len(own) != len(base) or not np.all(np.abs(own[c].values - base[c].values) <= 1e-8):
+            raise ValueError('{}/escXiRobustness.csv at the workbook ξ = {} does not reproduce escPath.csv ({}); '
+                             're-run python/US/runESCxi.py'.format(os.path.basename(D.escDir(k)), ξ0, c))
     for ξ in sorted(xi['xi'].unique()):
         sub = xi[np.isclose(xi['xi'], ξ)]
         θStar = float(sub[sub['kind'] == 'calibration'].iloc[0]['θStar'])
@@ -280,8 +276,8 @@ def _escPathsAt(k, years, ξ0):
 def escPaths():
     """ ESC_Paths: the baseline path with the design chosen and with it pinned at the observed design. The
     U.S. at the three rho of the paper under the cost and under the comparison cost where it is calibrated
-    (rho = 1; 'main') and at three Frisch elasticities, rho = 1 ('xi', where escXiRobustness.csv holds rows at the θ
-    variant); the UK and France at rho = 1 under the U.S. cost parameter and under their own where they have one
+    (rho = 1; 'main') and at three Frisch elasticities, rho = 1 ('xi', escXiRobustness.csv, required as in
+    escCounterfactuals); the UK and France at rho = 1 under the U.S. cost parameter and under their own where they have one
     ('host'; escPathHost.csv). Each under both of section 7's costs (`cost`, ESCCOSTS). The U.S. rows go under both
     wedgeFrom labels, its own parameter being the U.S. one. Under CRRA the pinned workweek is not stored
     (escPathCRRA.csv): NaN. """

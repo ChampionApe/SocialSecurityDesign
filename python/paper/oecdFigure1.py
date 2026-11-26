@@ -323,7 +323,7 @@ def sources(df, retrieved, wbUpdated, usRange, widModified):
          'The OECD Data Explorer dataflows DSD_PAG@DF_PRR and DSD_PAG@DF_PAG now hold only 2024 (Pensions at '
          'a Glance 2025); the publication StatLink still serves the 2020 vintage.'),
         ('bbIndex', 'derived', 'Pensions at a Glance 2021, table 4.1', 'grr100_men / grr050_men', '',
-         _both(df, ['bbIndex'], '2020'), URL['pag'], 'Men: the replacement-rate ratio of the table headline, not the index of section 6. Misses the EPS: '
+         _both(df, ['bbIndex'], '2020'), URL['pag'], 'Men: the replacement-rate ratio of the table headline, not the paper\'s Bismarckian index (data/oecd26_theta.csv). Misses the EPS: '
          + _gaps(df, 'bbIndex', 'eps_bbIndex', 5e-4) + '.'),
         ('bbIndex_women', 'derived', 'Pensions at a Glance 2021, table 4.1', 'grr100_women / grr050_women', '',
          _both(df, ['bbIndex_women'], '2020'), URL['pag'], ''),
@@ -547,6 +547,32 @@ def inequalityNote(isos, measure = None):
                       r'of three income groups'}[measure]
     return (what + r', the groups at the U.S.\ shares of the population (' + shares + r', from the bottom), in the gross '
             r'earnings of men working full time (OECD), ' + _yearsShort(g['year']) + ', as in the model')
+
+
+def thetaSource(isos = None):
+    """ What OECD_Sources prints for the design's index (THETAINDEX, config.US['theta']'s measure of data/oecd26_theta.csv)
+    on `isos` (the figure's countries when None), read off the data: `source`, `url` and `retrieved` of the public
+    tier's replacement rates θ is fitted through (datasets.oecd26PublicTier; one value each, else ValueError); `low`,
+    the countries whose lowest earnings level is not 0.5 of average earnings (ISO3 -> level, from those rows' notes);
+    `inForce`, the countries whose θ is not read off the benefit formula (ISO3 -> the measure's `note`); `n`. """
+    isos = D.oecd26SampleOf() if isos is None else list(isos)
+    t = D.oecd26PublicTier(isos)
+    missing = [c for c in isos if c not in set(t['iso3'])]
+    if missing:
+        raise ValueError('{}: no public-tier replacement rate for {}'.format(os.path.relpath(D.OECD26TIERS, C.REPO),
+                                                                             ', '.join(missing)))
+    out = {'n': len(isos)}
+    for c in ('source', 'url', 'retrieved'):
+        v = sorted(set(t[c]))
+        if len(v) != 1:
+            raise ValueError('{}: {} values of {} on the public tier'.format(os.path.relpath(D.OECD26TIERS, C.REPO),
+                                                                            len(v), c))
+        out[c] = v[0]
+    out['low'] = {r['iso3']: float(m.group(1)) for _, r in t.iterrows()
+                  for m in [re.search(r'low earner at ([0-9.]+) AW', r['note'])] if m}
+    notes = D.thetaVariant().loc[isos, 'note']
+    out['inForce'] = {c: str(n) for c, n in notes.items() if isinstance(n, str) and n.strip()}
+    return out
 
 
 def derivedSources(isos = None):
