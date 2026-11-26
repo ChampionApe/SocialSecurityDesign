@@ -8,7 +8,7 @@ Run:  .venv\Scripts\python.exe -I python\paper\oecd26Theta.py [--force]
 
 Variants (1 - θ is the share of spending not linked to own earnings; θ the slope of relative benefits on
 relative earnings):
-  paper   the earlier replacement-rate index, not the paper's measure (figure 1.1 plots 1/(2 - θ_C)):
+  paper   the earlier replacement-rate index, not the paper's measure (figure 1 plots 1/(2 - θ_C)):
           θ = 2 - 1/I, I = RR(1 AW)/RR(0.5 AW), mandatory schemes, clipped to [0, 1]
   A       public tier: the least-squares slope c/(a+c) of the pension a + c·y on y at 0.5, 1, 2 AW (PaG 2021
           table 4.2, men; NZL's low earner at 0.6 AW, the table's footnote) times (1 - s); GBR in force
@@ -17,7 +17,7 @@ relative earnings):
   C       A, with inSample False where funded tiers pay at least a quarter of mandatory benefits in 2020
           (privShare) or A's slope is negative (a public pension tested against the private one)
 θ outside [0, 1] is NaN in `theta` (thetaRaw keeps it), except B, clipped to 1 (SWE's occupational tier above
-the public ceiling), and paper, clipped to [0, 1]. Spending S is SOCX public old-age and survivors cash 2020 (figure 1.1's), τ = S/(1 - α).
+the public ceiling), and paper, clipped to [0, 1]. Spending S is SOCX public old-age and survivors cash 2020 (figure 1's), τ = S/(1 - α).
 
 s (S_TOPUP) is 2020 spending on minimum-pension top-ups and tested benefits that PaG's full-career worker at
 0.5 AW does not reach, and that SOCX books inside public old-age and survivors cash, over S. Values in % of

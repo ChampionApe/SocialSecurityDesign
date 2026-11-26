@@ -13,9 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.14'
           cache: pip
@@ -43,7 +43,11 @@ jobs:
           sys.path.insert(0, 'python/paper')
           import pandas as pd, compareResults as CR
           p = 'results/esc/escTauTheta.csv'
-          r = CR.compare(CR.committed('HEAD', p), pd.read_csv(p), 1e-6, p)
+          new = pd.read_csv(p)
+          old = CR.committed('HEAD', p)
+          # the csv keeps rows of earlier spending targets beside the current ones; the re-solve writes only the current
+          old = old[old['spendingTarget'].isin(new['spendingTarget'].dropna().unique())]
+          r = CR.compare(old, new, 1e-6, p)
           print(r)
           bad = r['how'] == 'unaligned' or r['diffs'] or r.get('onlyOld') or r.get('onlyNew')
           sys.exit(1 if bad else 0)

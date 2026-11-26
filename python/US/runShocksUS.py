@@ -16,7 +16,7 @@ baseline path):
     ageing   mild (nu -> (1+nu)/2) and acute (nu -> 1), throughout
     french   France's income distribution, leisure preferences, voting, and all three at once
 
-Read by the paper's figure 6.1 (python/paper/figuresUS.usOverview) and the supplemental appendix's counterfactuals
+Read by the paper's figure 4 (python/paper/figuresUS.usOverview) and the supplemental appendix's counterfactuals
 (python/paper/siteData.oecdCounterfactuals), which also carries the economic-equilibrium effect.
 
 The income-distribution scenario holds theta at the US design, so that row is about inequality alone and the

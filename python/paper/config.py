@@ -382,7 +382,7 @@ THETANAMES = {'C': 'public tier', 'A': 'public tier, 23 countries', 'B': 'all ma
 RETAGENAMES = {'nra': 'normal age', 'none': 'uncorrected', 'exit': 'exit age'}
 
 # THE CROSS-SECTION'S MEASURE OF INCOME INEQUALITY: the regressor of every slope on inequality and the x-axis of every
-# panel on it (figure 1.1, sections 6 and 7, pages C4 and D1; the role 'inequality' of oecdFigure1 and tablesOECD26).
+# panel on it (figure 1, sections 6 and 7, pages C4 and D1; the role 'inequality' of oecdFigure1 and tablesOECD26).
 # 'yHighOverLow' y_3/y_1, the relative income of the top of the three income groups over the bottom one, and 'Vtilde'
 # the model's dispersion sum_i gamma_i (y_i - 1)^2/y_i (Eq esc:budget's \tilde V), both of INCOMEGROUPS' rows of
 # data/oecd29_distribution.csv, the y_i the model is fed (python/US/oecd26.py DISTSOURCE, DISTCONV;

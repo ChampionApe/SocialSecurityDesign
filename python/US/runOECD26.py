@@ -1,5 +1,5 @@
 r""" The cross-country test of section 7's model: the log model with a cost of Eq esc:AB, or none, built from each
-OECD country's data (oecd26.py), its predicted 2020 tax and design set against figure 1.1's relations.
+OECD country's data (oecd26.py), its predicted 2020 tax and design set against figure 1's relations.
 
 Run:  .venv\Scripts\python.exe python\US\runOECD26.py                       every stage, at the paper's variant
       ... --stage anchor layer1 layer2
@@ -19,7 +19,7 @@ Run:  .venv\Scripts\python.exe python\US\runOECD26.py                       ever
       ... --outdir DIR                                                      default results/oecd26
       ... --coarse                                                          small grids, for a quick check
 
-`--theta` other than 'index' (figure 1.1's index, oecd26.countryInputs): every country's θ is the variant's row of
+`--theta` other than 'index' (figure 1's index, oecd26.countryInputs): every country's θ is the variant's row of
 data/oecd26_theta.csv, the outdir defaults to results/oecd26_theta_<variant>/ (oecd26.thetaDir; results/oecd26/ is
 refused), and β and the anchor's ω seed are read off the variant's own U.S. sweep, <outdir>/calibration/
 US_rhoGridCommonX.csv (calibrateRhoGrid.py --theta: the U.S. at θ0 = the variant's U.S. θ; refused while absent or at
@@ -609,7 +609,7 @@ def main():
                    help = "the β rules of the layers, each in turn (default: config.US['oecd26']['betaRule'])")
     p.add_argument('--countries', nargs = '*', default = None, help = 'ISO3 codes (default: the 29)')
     p.add_argument('--theta', default = oecd26.INDEX,
-                   help = "θ: 'index' (figure 1.1's) or a variant of data/oecd26_theta.csv")
+                   help = "θ: 'index' (figure 1's) or a variant of data/oecd26_theta.csv")
     p.add_argument('--inSample', action = 'store_true',
                    help = "of the countries, those with inSample True under --theta's variant, and the U.S.")
     p.add_argument('--force', action = 'store_true', help = 'recompute rows already on disk')

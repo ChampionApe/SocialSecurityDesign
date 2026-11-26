@@ -7,7 +7,7 @@ results/paper/Data/<name>.csv (kind 'data', ONLINE_ONLY) and `build.py --site` c
 Units are the paper's: tax and savings rates in percent and their changes in percentage points, savings over
 GDP, the workweek in hours, the design theta and workers per retiree as levels. A change is against the
 baseline of the same economy, rho and xi; with the design chosen, against the baseline of the same reading,
-pinned against pinned and chosen against chosen (figure 7.1). Time paths run from the reform year (Argentina) or
+pinned against pinned and chosen against chosen (figure 6). Time paths run from the reform year (Argentina) or
 from one period before the calibration year (the U.S., the UK, France) to the last dated period of the
 calendar: the first period, the steady-state tail and the terminal period are left out.
 """

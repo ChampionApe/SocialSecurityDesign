@@ -17,7 +17,7 @@ Four stages, each writing its own csv under results/esc/:
            fStar = f(theta*, tau0), f0 = f(0, tau0) and tau0 (wedgeReadout), which the paper's calibration
            table prints; under 'size' the 'p' column IS lambda and 'phi' is the dummy 0.5.
   path     the equilibrium path of theta_t under the calibrated wedge, with the choice binding from the
-           first period -- the ageing prediction, and the closest thing the model has to figure 1.1's
+           first period -- the ageing prediction, and the closest thing the model has to figure 1's
            cross-section.
   shocks   the counterfactuals of shocks.py (ageing, French income distribution / leisure / voting, and
            all three at once), plus a France reference row, each run twice: theta PINNED at the shocked
@@ -632,7 +632,7 @@ def shockIncomeAndVoting(mt0, d):
     Neither shocks.py nor the paper runs the pair, and the pair is what the cross-section actually
     confronts: the two move in OPPOSITE directions for the design (more equality pushes theta up, a
     flatter voting profile pushes it down), so whether the model implies a theta-inequality relation at
-    all depends on their net effect -- the question figure 1.1 poses.
+    all depends on their net effect -- the question figure 1 poses.
 
     theta is re-installed after both, for the reason shocks.shockFrenchAll gives: shockVoting's
     updateAuxPars re-derives it from France's eta and would undo the income shock's pin. """

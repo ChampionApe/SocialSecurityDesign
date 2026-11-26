@@ -1,4 +1,4 @@
-r""" Figure 1.1's panels with the model beside the data (python/US/runOECD26.py, results/oecd26/): the data's
+r""" Figure 1's panels with the model beside the data (python/US/runOECD26.py, results/oecd26/): the data's
 countries and fitted line in the first series colour, the model's in the second, one panel per relation of
 tablesOECD26.RELATIONS. Layer 1 draws all five panels; layer 2 draws the two panels of the index. The arguments
 (turnout, sample, reading, spec, betaRule, spending, omegaRule, retAge, theta) are tablesOECD26's, each None for the
@@ -45,12 +45,12 @@ def _note(name, src, text):
 
 def oecd26Figure(layer = 1, turnout = None, sample = None, reading = None, spec = None, betaRule = None,
                  spending = None, omegaRule = None, retAge = None, theta = None, slopesTable = True):
-    r""" OECD26_Layer1 (layer 1) or its layer-2 counterpart OECD26_Layer2: 2x3 as figure 1.1, the legend in
+    r""" OECD26_Layer1 (layer 1) or its layer-2 counterpart OECD26_Layer2: 2x3 as figure 1, the legend in
     the sixth cell (layer 1), or 1x3 with the index panels (layer 2). Every dot and line is a mark; a dot is
     linked to its country's row of OECD26_Omega (lowercase ISO3), a line carries its slope and, `slopesTable`, the row
     of the variant's OECD26_Slopes (False where that table is not built). Layer 1 also writes its note
     (`OECD26_Layer1<suffix>_note.tex`): the sample, the model's index and spending, its values, the turnout; it names
-    no layer and, at the paper's variant, not own ω either (figure 7.3 defines it). """
+    no layer and, at the paper's variant, not own ω either (figure 8 defines it). """
     v = variant(turnout, sample, reading, spec, betaRule, spending, omegaRule, retAge, theta)
     p = panelData(layer, **v)
     sfx = suffix(**v)
@@ -137,7 +137,7 @@ def oecd26Figure(layer = 1, turnout = None, sample = None, reading = None, spec 
     return out + [_note(name, _src(T._thetaSource(v)), note)]
 
 
-# Figure 7.2 (OECD26_Layer1 at the paper's variant): the model under both costs of tablesOECD26.COSTS.
+# Figure 7 (OECD26_Layer1 at the paper's variant): the model under both costs of tablesOECD26.COSTS.
 COSTSTYLE = {1: (SERIES[1], 'D', 3.6), 2: (SERIES3, 's', 3.1)}             # colour, marker, marker size
 CELLS = [(0, 0, 'spending', 'growth'), (0, 1, 'spending', 'inequality'), (0, 2, 'spending', 'index'),
          (1, 0, 'index', 'growth'), (1, 1, 'index', 'inequality')]
@@ -183,8 +183,8 @@ def _handle(colour, marker, ms = 3.6):
 
 
 def oecd26Layer1Costs(layout = 'overlay'):
-    r""" Figure 7.2 at the paper's variant, the data beside the model under each cost of tablesOECD26.COSTS (each its
-    own anchor and mean ω, costKw). `layout` 'overlay' (OECD26_Layer1, the paper's): figure 1.1's five panels, three
+    r""" Figure 7 at the paper's variant, the data beside the model under each cost of tablesOECD26.COSTS (each its
+    own anchor and mean ω, costKw). `layout` 'overlay' (OECD26_Layer1, the paper's): figure 1's five panels, three
     series each. 'grid' (OECD26_Layer1Grid, built, not input): one row per relation, one column per cost, the data
     repeated. Both write the same note; a line's mark carries table 5's row. """
     if layout not in ('overlay', 'grid'):
@@ -310,7 +310,7 @@ def oecd26Spending(turnout = None, sample = None):
     v = variant(turnout, sample, None, spec, 'common', 'observed')
     a = D.oecd26Anchor(v['turnout'], spec)
     ω = T.layer1Omega(v)
-    # the mean ω here is that of the weights calibrated without the cost (section 6), not figure 7.2's
+    # the mean ω here is that of the weights calibrated without the cost (section 6), not figure 7's
     weight = (r'$ and at $\omega = ' + C.num(ω, 2) + r'$, the mean of the political weights that reproduce each '
               r'country\textquotesingle s spending without the cost' if ω is not None
               else r'$ and $\omega = ' + C.num(float(a['ω']), 2) + '$, without the cost')
@@ -322,7 +322,7 @@ def oecd26Spending(turnout = None, sample = None):
 
 
 # ---------------------------------------------------------------------------------------------------
-# Page D1's section on inequality: figure 7.2's panels on inequality under each measure of tablesOECD26.INEQUALITYROWS.
+# Page D1's section on inequality: figure 7's panels on inequality under each measure of tablesOECD26.INEQUALITYROWS.
 INEQUALITYSOURCE = {'gini': 'WIID', 'yHighOverLow': 'OECD earnings, men full-time',
                     'Vtilde': 'OECD earnings, men full-time'}
 
@@ -336,7 +336,7 @@ def yearsText(s):
 
 
 def oecd26Layer1Inequality():
-    r""" OECD26_Layer1Inequality (page D1, ONLINE_ONLY): figure 7.2's spending and index panels on income inequality,
+    r""" OECD26_Layer1Inequality (page D1, ONLINE_ONLY): figure 7's spending and index panels on income inequality,
     one row per measure of tablesOECD26.INEQUALITYROWS (the Gini, y_3/y_1, Ṽ), the data and the model at the paper's
     variant, the least-squares line of each, and in each panel the data's and the model's slope (s.e.) and Pearson r.
     Writes results/paper/oecd26Layer1InequalitySlopes.csv (tablesOECD26.inequalitySlopes, which
@@ -533,7 +533,7 @@ def _fitPanel(ax, f, name, part, units, lim, ms = 3.6, msUS = 5.2):
 def oecd26ThetaFit(units = 'theta'):
     r""" OECD26_ThetaFit (section 7.3; `units` 'index': OECD26_ThetaFitIndex, built, not input): the design each
     country's model predicts, in force in 2020, against the observed one, one panel per cost of tablesOECD26.COSTS
-    (the model of figure 7.2 under each, costKw); the 45-degree line, the fitted line over the countries other than
+    (the model of figure 7 under each, costKw); the 45-degree line, the fitted line over the countries other than
     the U.S., the U.S. open (the anchor of each cost, off the line since every country takes the mean ω), ISO labels,
     and r and the RMSE with that of predicting the sample mean, the U.S. left out (tablesOECD26.thetaFit). Writes its
     note; the statistics are on the panels. Own ω (layer 2) is on page C4 (oecd26ThetaFitRows). """

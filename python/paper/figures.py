@@ -21,7 +21,7 @@ import config as C
 import datasets as D
 
 SERIES = ('#2a78d6', '#eb6834')     # categorical slots 1 and 2, in fixed order
-SERIES3 = '#00a888'                # slot 3, only where a figure has three series (figure 7.2); with its own marker
+SERIES3 = '#00a888'                # slot 3, only where a figure has three series (figure 7); with its own marker
 INK    = {'primary': '#0b0b0b', 'secondary': '#52514e', 'muted': '#898781', 'grid': '#e1e0d9'}
 LW, MS = 2.0, 5.0
 

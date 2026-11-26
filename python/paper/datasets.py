@@ -684,7 +684,7 @@ def oecd26Sample():
 
 def thetaVariant(variant = None):
     """ data/oecd26_theta.csv under `variant` (config.US['theta'] by default), indexed on ISO3: `theta`, `inSample`
-    (bool), `spending`, and `index` = 1/(2 - θ), the design on figure 1.1's scale (NaN where θ is). `sample` is the
+    (bool), `spending`, and `index` = 1/(2 - θ), the design on figure 1's scale (NaN where θ is). `sample` is the
     variant's sample: inSample and a finite θ. """
     variant = C.US['theta'] if variant is None else variant
     d = pd.read_csv(_need(C.THETAFILE), dtype = {'iso3': str, 'variant': str}, float_precision = 'round_trip')
@@ -699,7 +699,7 @@ def thetaVariant(variant = None):
 
 
 def oecd26SampleOf(variant = None):
-    """ The cross-section's countries under the θ variant, in figure 1.1's order: thetaVariant's `sample`. """
+    """ The cross-section's countries under the θ variant, in figure 1's order: thetaVariant's `sample`. """
     t = thetaVariant(variant)
     return [c for c in oecdFigure1Data().index if c in t.index and bool(t.at[c, 'sample'])]
 
@@ -768,7 +768,7 @@ def oecd29Sources():
 
 def oecd26Dir(theta = None, root = None):
     """ Where the cross-section's rows of thetaSource `theta` (config.US['theta'] by default) are: results/oecd26/ for
-    the main variant and for 'index' (the rows of figure 1.1's index, the paper's measure before the variant),
+    the main variant and for 'index' (the rows of figure 1's index, the paper's measure before the variant),
     results/oecd26_theta_<theta>/ for a data variant (python/US/runOECD26.py --theta without --main); `root`, a
     directory, overrides both. """
     if root is not None:
@@ -854,7 +854,7 @@ def oecd26Anchor(turnout = None, spec = None, theta = None, root = None, carrier
     `inputsKey` and `grid`. Refused unless it was solved on the fine grid and at the β the U.S. calibration without
     the cost has now at ρ = 1 at that θ (usSweep for the main variant, the variant's own sweep in oecd26Dir(theta)/
     calibration/ for a robustness one): an anchor computed before a recalibration of the U.S. is stale, and so is
-    everything layered on it (#13): StaleInput. The 'index' rows (figure 1.1's index) have no live sweep since the
+    everything layered on it (#13): StaleInput. The 'index' rows (figure 1's index) have no live sweep since the
     main variant replaced it in results/calibration/; their β is not checked. `root`: oecd26Dir's (a directory run on
     the main variant's sweep: the stylized readings). `carrier`: the carrier the anchor must carry, config.CARRIER where
     None (another for a directory of another cost, config.US['tau1']). """

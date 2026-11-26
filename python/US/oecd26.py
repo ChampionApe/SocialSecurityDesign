@@ -22,14 +22,14 @@ Inputs per country (`countryInputs`):
           (model.initProductivity_commonX), so Base.hηRatio = y_i and Base.Vtilde (Eq esc:Vtilde) is the
           file's Vtilde_usPct.
   θ       thetaSource 'index' (the default): eq calibration:thetaSimple of writing/US, θ = 2 - 1/I, with I =
-          grr100_men/grr050_men (figure 1.1's index, PaG 2021), clipped to [0, 1] (`thetaFromIndex`; its inverse
+          grr100_men/grr050_men (figure 1's index, PaG 2021), clipped to [0, 1] (`thetaFromIndex`; its inverse
           I = 1/(2 - θ) is exact under the benefit formula and any proportional cost, archive/notes/reviewResponse_2026-10/theory_closedForm.md section 2). Not getθ on the
           group means (eq calibration:theta): ModelOECD.getθ re-derives the same value at every refresh, so no
           updateAuxPars can undo it (crossCuttingFindings #9).
           thetaSource a variant name: θ is the variant's row of data/oecd26_theta.csv (columns iso3, variant,
           theta, inSample, spending; `thetaFromFile`), the datum I = 1/(2 - θ), so that getθ returns θ to rounding,
           and θRaw = θ. A missing row, or θ NaN or outside [0, 1], raises NoTheta.
-  τ0      spending over the labour share, spending/100/(1 - α): under 'index' figure 1.1's cash pension spending
+  τ0      spending over the labour share, spending/100/(1 - α): under 'index' figure 1's cash pension spending
           (pensionSpending); under a variant the file's `spending` column (`spendingFromFile`), which for the
           variants of SPENDINGASFIGURE must equal pensionSpending to 1e-9 (ValueError otherwise); B's is public plus
           mandatory and quasi-mandatory private spending.
@@ -88,8 +88,8 @@ def shown(path):
 USSWEEP = os.path.join(REPO, 'results', 'calibration', 'US_rhoGridCommonX.csv')
 RESULTS = os.path.join(REPO, 'results')
 PAPERCONFIG = os.path.join(REPO, 'python', 'paper', 'config.py')
-INDEX = 'index'                           # thetaSource of figure 1.1's index; reserved, no variant of the file
-SPENDINGASFIGURE = ('paper', 'A', 'A2pt', 'C')     # variants whose `spending` is figure 1.1's pensionSpending
+INDEX = 'index'                           # thetaSource of figure 1's index; reserved, no variant of the file
+SPENDINGASFIGURE = ('paper', 'A', 'A2pt', 'C')     # variants whose `spending` is figure 1's pensionSpending
 SPENDINGTOL = 1e-9
 ISO3 = {'US': 'USA', 'FR': 'FRA', 'UK': 'GBR'}     # the workbooks' countries in data/oecd26_theta.csv
 
@@ -134,7 +134,7 @@ def readTheta(path = None):
     d['theta'] = pd.to_numeric(d['theta'], errors = 'coerce')
     d['inSample'] = d['inSample'].astype(str).str.strip().str.lower().isin(('true', '1', '1.0'))
     if (d['variant'] == INDEX).any():
-        raise ValueError("{}: the variant name {!r} is reserved for figure 1.1's index".format(path, INDEX))
+        raise ValueError("{}: the variant name {!r} is reserved for figure 1's index".format(path, INDEX))
     dup = d[d.duplicated(['iso3', 'variant'], keep = False)]
     if len(dup):
         raise ValueError('{}: duplicate rows {}'.format(path, sorted(set(zip(dup['iso3'], dup['variant'])))))
@@ -223,7 +223,7 @@ def underResults(path):
 
 
 def indexTheta(theta, paths, driver):
-    """ A U.S. driver's --theta where it may mean the index θ (the workbooks' RR0, figure 1.1's index): returns None
+    """ A U.S. driver's --theta where it may mean the index θ (the workbooks' RR0, figure 1's index): returns None
     for None and INDEX (the driver's no-variant path), any other value unchanged. Without --theta (None) a run that
     would write any of `paths` under results/ exits: the standard paths hold the pipeline's main variant
     (--theta config.US['theta'] --main), and --theta index writes the index θ there on purpose. """
@@ -267,7 +267,7 @@ def thetaFromIndex(I):
 
 
 def indexFromTheta(θ):
-    """ I = 1/(2 - θ): a design on the scale of figure 1.1's index. """
+    """ I = 1/(2 - θ): a design on the scale of figure 1's index. """
     return 1./(2. - np.asarray(θ, dtype = float))
 
 
@@ -346,7 +346,7 @@ def pooledProfile(thetaSource = INDEX, data = None):
 
 def countryInputs(iso3, turnout, data = None, thetaSource = INDEX, retAge = 'none'):
     """ One country's inputs (module docstring) as a dict; `data` a readData() triple to reuse. thetaSource
-    'index' (figure 1.1's index) or a variant of data/oecd26_theta.csv (NoTheta where it has no θ). turnout one of
+    'index' (figure 1's index) or a variant of data/oecd26_theta.csv (NoTheta where it has no θ). turnout one of
     TURNOUTS; under 'pooled' μ depends on thetaSource's sample (pooledProfile). retAge one of RETAGES (ν's
     correction, retAgeNu). """
     if turnout not in TURNOUTS:
@@ -378,7 +378,7 @@ def countryInputs(iso3, turnout, data = None, thetaSource = INDEX, retAge = 'non
         index = float(indexFromTheta(θRaw))
         sFile = spendingFromFile(iso3, thetaSource)
         if thetaSource in SPENDINGASFIGURE and not abs(sFile - spending) <= SPENDINGTOL:
-            raise ValueError('{}: spending {!r} under variant {!r} is not figure 1.1\'s pensionSpending {!r}'.format(
+            raise ValueError('{}: spending {!r} under variant {!r} is not figure 1\'s pensionSpending {!r}'.format(
                 iso3, sFile, thetaSource, spending))
         spending = sFile
     inp = inputsFrom(iso3, d['country'], nuPath(nu4), γ, y, μ, spending, index,
@@ -430,7 +430,7 @@ def usBeta(path = USSWEEP, ρ = 1.0, thetaSource = INDEX):
 
 
 class ModelOECD(ModelESC):
-    """ ModelESC on one country's OECD inputs: θ from the datum RR0 = I (figure 1.1's index, or 1/(2 - θ) of a θ
+    """ ModelESC on one country's OECD inputs: θ from the datum RR0 = I (figure 1's index, or 1/(2 - θ) of a θ
     variant), never from db['θ0'] (ModelUS.θOverride), which getθ refuses. The cost must be proportional ('size',
     'sizePiR' or 'scale', or none), under which it cancels from the replacement-rate ratio and I = 1/(2 - θ)
     holds; under 'flat' it does not.

@@ -23,7 +23,7 @@ omega) at escModel's.
               critical turnout-weight ratio mu_H/mu_L at which the Beveridgean corner first fails, for weights
               mu_i = y_i^k and mu_i = (mu_i^CPS)^m, and the pairwise bound (D_H/D_L)^{1/rho} at theta_t = 0.
               -> C5_criticalTurnout.csv
-  a9          every counterfactual of figure 6.1 (tax rate, full effect, p.p.) at every rho on file, ranked by
+  a9          every counterfactual of figure 4 (tax rate, full effect, p.p.) at every rho on file, ranked by
               size: results/shocks/US_shocksCommonX.csv and, where present, results/numerical/
               C5_US_shocksRhoGridCommonX.csv (runShocksUS.py --out, for other rho of the sweep; no pipeline entry
               writes it). -> C5_ranking.csv
@@ -596,7 +596,7 @@ def index(a):
         src = _src('escPath.csv') if ρ == 1 else _src('escPathCRRA.csv')
         for d in (2050, 2080, 2110):
             add(f'design path 2020 -> {d}', ρ, float(s[2020]), float(s[d]), src)
-    # figure 7.1 and the A8 costs: theta_2020 chosen, against the chosen baseline of the same rho
+    # figure 6 and the A8 costs: theta_2020 chosen, against the chosen baseline of the same rho
     x = _readESC(os.path.join(ESC,'escExperiments.csv'))
     x = x[(x.spec == 'size') & x.commonX.astype(bool) & ((x.preferences == 'LOG') | (x.method == 'exact'))
           & ~x['θpinned'].astype(bool)]
@@ -620,7 +620,7 @@ def index(a):
             _src('escCountry.csv'), 'chosen')
         add(f"{r['country']} under the U.S. lambda vs U.S. design", 1.0, θStar(), float(r['choice']),
             _src('escCountry.csv'), 'chosen')
-    # data: the U.S., the UK and France observed, and the cross-section's range (figure 1.1's index, theta = 2 - 1/I,
+    # data: the U.S., the UK and France observed, and the cross-section's range (figure 1's index, theta = 2 - 1/I,
     # without a variant; the variant's rows of data/oecd26_theta.csv, its inSample countries, with one)
     if THETA['variant'] is None:
         f1 = pd.read_csv(os.path.join(REPO, 'data', 'oecdFigure1.csv')).set_index('iso3')['bbIndex']

@@ -1,5 +1,5 @@
 r""" The cross-country test of section 7's model (python/US/runOECD26.py, results/oecd26/): the panel data shared
-with figuresOECD26, the slopes of figure 1.1's relations in the data and in the model (all five, OECD26_Slopes; the
+with figuresOECD26, the slopes of figure 1's relations in the data and in the model (all five, OECD26_Slopes; the
 two of section 6's spending test at the observed designs without the cost, spendingSlopes), the calibrated political
 weights (OECD26_Omega), the five slopes under the supplemental appendix's population and data variants (OECD26_Variants,
 page C4), and the predicted against the observed design (thetaFit, figuresOECD26's OECD26_ThetaFit*).
@@ -10,7 +10,7 @@ shows the model alone (table 5); own ω's slopes there are OECD26_Variants' star
 
 THE DESIGN'S MEASURE (`theta`, config.US['theta'] by default): the data side's index is I = 1/(2 - θ) of that variant
 of data/oecd26_theta.csv and its spending the variant's, on its countries (datasets.oecd26SampleOf: inSample and a
-finite θ); the model's rows are the variant's (datasets.oecd26Dir). `theta` 'paper' is figure 1.1's index on
+finite θ); the model's rows are the variant's (datasets.oecd26Dir). `theta` 'paper' is figure 1's index on
 data/oecd26_sample.csv's sample26, with the 'index' rows of results/oecd26/.
 
 Every builder takes
@@ -36,9 +36,9 @@ each None for the paper's variant, PAPER, which is config.US['oecd26']'s (sample
 carry the parts that differ from the paper's variant (`suffix`: '_cses', '_omegaUS', '_nuNone', '_thetaB', ...). The
 model's design enters every regression on the index's scale, I = 1/(2 - θ),
 the inverse of the loader's θ = 2 - 1/I; spending is 100 τ (1 - α), % of GDP, the inverse of the calibration's τ0. Both
-sides of every slope use figure 1.1's regressors (OECD population growth 2020/1990, the measure of income inequality
+sides of every slope use figure 1's regressors (OECD population growth 2020/1990, the measure of income inequality
 config.INEQUALITY, the role 'inequality': y_3/y_1 of the income groups the model is fed, datasets.incomeGroups) and the
-same countries. Page D1's inequalitySlopes set figure 7.2's panels on inequality on the Gini and both model measures.
+same countries. Page D1's inequalitySlopes set figure 7's panels on inequality on the Gini and both model measures.
 """
 import os, re
 import numpy as np, pandas as pd
@@ -49,7 +49,7 @@ import oecdFigure1 as F1
 from tables import rowKey, keyed
 from tablesUS import _xwrap
 
-# Figure 1.1's relations, (y role, x role), in the order the tables print them: the four on the exogenous
+# Figure 1's relations, (y role, x role), in the order the tables print them: the four on the exogenous
 # dimensions first, spending on the index last. The x role 'index' is the design on the index scale.
 RELATIONS = (('spending', 'growth'), ('spending', 'inequality'), ('index', 'growth'), ('index', 'inequality'),
              ('spending', 'index'))
@@ -74,7 +74,7 @@ XTEX = {'growth': 'population growth', 'inequality': C.INEQUALITYLABELS[C.INEQUA
 # Page D1's measures of income inequality, in the order inequalitySlopes and figuresOECD26.oecd26Layer1Inequality
 # print them: the Gini first, the comparison, then the model's measures (panelData's columns of the same names).
 INEQUALITYROWS = ('gini', 'yHighOverLow', 'Vtilde')
-# The data files every slope reads, for the banners: figure 1.1's, the design's measure and the income groups.
+# The data files every slope reads, for the banners: figure 1's, the design's measure and the income groups.
 DATASRC = 'data/oecdFigure1.csv, oecd26_theta.csv, oecd29_distribution.csv'
 # What a caption adds for a cost, β rule, turnout or spending other than the paper's.
 SPECCAPTION = {'size': r'the U.S.\ $\lambda$ in every country',
@@ -139,7 +139,7 @@ def turnoutNote(turnout):
     """ The notes' sentence on the propensities to vote by income group under `turnout`. """
     return TURNOUTNOTE[turnout]
 COSTSYMBOL = {'size': r'$\lambda$', 'sizePiR': '$' + C.PIRSYMBOL + '$'}         # the anchor's `p` (config.CARRIER)
-# The design's measure as the notes state it: config.US['theta']'s (config.THETADEF), and the index on figure 1.1's
+# The design's measure as the notes state it: config.US['theta']'s (config.THETADEF), and the index on figure 1's
 # scale.
 MEASURENOTE = r'$\theta$, ' + C.THETADEF + r', and $I = 1/(2-\theta)$, the Bismarckian index.'
 
@@ -193,7 +193,7 @@ def variantCaption(turnout = None, sample = None, reading = None, spec = None, b
 
 
 def _thetaSource(v):
-    """ The thetaSource of the variant's model rows: 'index' for figure 1.1's index ('paper'), else the measure. """
+    """ The thetaSource of the variant's model rows: 'index' for figure 1's index ('paper'), else the measure. """
     return 'index' if v['theta'] == 'paper' else v['theta']
 
 
@@ -238,7 +238,7 @@ def dataSide(theta = None):
 def panelData(layer, turnout = None, sample = None, reading = None, spec = None, betaRule = None, theta = None,
               spending = None, omegaRule = None, root = None, retAge = None, inequality = None, usInput = None,
               carrier = None):
-    r""" One row per country of the sample with a model row: figure 1.1's x variables (`growth`, `inequality` = the
+    r""" One row per country of the sample with a model row: figure 1's x variables (`growth`, `inequality` = the
     measure `inequality` of INEQUALITYROWS, config.INEQUALITY's where None), every measure of INEQUALITYROWS (`gini`,
     `yHighOverLow`, `Vtilde`), the data's
     `spendingData`, `indexData` and `θData` = 2 - 1/I under the design's measure `theta` (dataSide), and the model's
@@ -435,7 +435,7 @@ def _dashNote(body):
 
 
 def _names(isos):
-    """ ISO3 codes as figure 1.1's country names, joined by commas and 'and'. """
+    """ ISO3 codes as figure 1's country names, joined by commas and 'and'. """
     names = [str(D.oecdFigure1Data().at[c, 'country']) for c in isos]
     return names[0] if len(names) == 1 else ', '.join(names[:-1]) + ' and ' + names[-1]
 
@@ -491,7 +491,7 @@ def _layersText(a, v, matches = True, layers = (1, 2), ω = None):
 
 def specText(a, v, matches = True, layers = (1, 2)):
     r""" The notes' account of the model, own ω (where `layers` holds 2) and the turnout. The paper's variant points to
-    figure 7.2 (`OECD26_Layer1`), whose note and section 7.3 define the model, and to figure 7.3 (`OECD26_ThetaFit`),
+    figure 7 (`OECD26_Layer1`), whose note and section 7.3 define the model, and to figure 8 (`OECD26_ThetaFit`),
     whose note defines own ω (notes/paper_styleGuide.md, "What a note holds"); a variant states them in full, since
     they differ from figures 7.2's and 7.3's. """
     if suffix(**v) == '':
@@ -541,7 +541,7 @@ def slopesLayers(v):
 
 def oecd26Slopes(turnout = None, sample = None, reading = None, spec = None, betaRule = None, spending = None,
                  omegaRule = None, retAge = None, theta = None):
-    r""" The slopes of figure 1.1's relations: the data on the sample and the model (layer 1: the U.S. cost and one
+    r""" The slopes of figure 1's relations: the data on the sample and the model (layer 1: the U.S. cost and one
     political weight, the mean of the countries' own or the U.S. one), and at a variant other than the paper's also
     with each country's own political weight (own ω, layer 2; slopesLayers). """
     v = variant(turnout, sample, reading, spec, betaRule, spending, omegaRule, retAge, theta)
@@ -575,7 +575,7 @@ def oecd26Omega(turnout = None, sample = None, reading = None, spec = None, beta
                 theta = None):
     r""" Own ω (layer 2) by country: the inputs that differ across countries (workers per retiree in 2020, the
     dispersion of relative incomes, spending, the index and the design it implies), the calibrated political weight and
-    the design predicted at the U.S. cost, in the order of figure 1.1's footnote. The model's ω rule is no part of it. """
+    the design predicted at the U.S. cost, in the order of figure 1's footnote. The model's ω rule is no part of it. """
     v = variant(turnout, sample, reading, spec, betaRule, retAge = retAge, theta = theta)
     _check(v)
     p = panelData(2, **v)
@@ -668,7 +668,7 @@ def _variantSlopes(paper = False, **kw):
 
 
 def oecd26Variants():
-    r""" The slopes of figure 1.1's relations (OECD26_Slopes's five) under page C4's variants, one column per
+    r""" The slopes of figure 1's relations (OECD26_Slopes's five) under page C4's variants, one column per
     relation; the supplemental appendix's alone, so its label, table:OECD26:variants, resolves on the site only. Panel A, the population data: the data (the same at every ν) and the model and own ω (layers 1 and 2,
     rows `Model`, `Own $\omega$`) at each reading of ν (populationRows, the paper's starred), then the uncorrected ν
     without Luxembourg (turnout 'cses'), with its own data on its 20 countries. Panel B, the measure of the design: per
@@ -905,7 +905,7 @@ def oecd26SlopesTau1():
 
 
 # ---------------------------------------------------------------------------------------------------
-# Page D1's section on inequality (OECD26_Layer1Inequality, ONLINE_ONLY): figure 7.2's spending and index on each
+# Page D1's section on inequality (OECD26_Layer1Inequality, ONLINE_ONLY): figure 7's spending and index on each
 # measure of INEQUALITYROWS, the data and the model at the paper's variant.
 
 
@@ -923,7 +923,7 @@ def inequalitySlopes(p = None):
 
 
 def oecd26Layer1InequalitySlopes():
-    r""" OECD26_Layer1InequalitySlopes (page D1): the slopes of figure 7.2's panels on inequality on the Gini and on the
+    r""" OECD26_Layer1InequalitySlopes (page D1): the slopes of figure 7's panels on inequality on the Gini and on the
     model's two measures, the data and the model at the paper's variant, with Pearson's r (results/paper/
     oecd26Layer1InequalitySlopes.csv, written by the OECD26_Layer1Inequality build). Rows keyed `<y>_<measure>`. The
     csv is checked against the current results (inequalitySlopes): one of other rows or data is StaleInput. """

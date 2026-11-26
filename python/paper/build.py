@@ -97,13 +97,13 @@ OUTPUTS = {
     # config.US['oecd26']['spendingReading']), the slopes of the data and the model, and each country's own omega,
     # at the design in force in 2020; the predicted against the observed design, the model and own omega
     # (OECD26_ThetaFit, section 7.3, where own omega is defined). Each figure writes its note (Figs/<name>_note.tex).
-    # The index version of figure 7.3 is built for discussion, not input. The variants are page C4's (below). Inputs:
+    # The index version of figure 8 is built for discussion, not input. The variants are page C4's (below). Inputs:
     # python/US/runOECD26.py (results/oecd26/, results/oecd26_theta_<V>/), data/oecd26_theta.csv and stage (0)'s
     # oecd26Sample.py.
     'OECD26_Spending':        ('figure', figuresOECD26.oecd26Spending, 'Figs/OECD26_Spending.pdf'),
     'OECD26_Layer1':          ('figure', figuresOECD26.oecd26Figure,  'Figs/OECD26_Layer1.pdf'),
-    # Figure 7.2, table 5 and figure 7.3 show the model under both costs (tablesOECD26.COSTS: results/oecd26_tau1/
-    # beside results/oecd26/). OECD26_Layer1Grid is figure 7.2 with one row per relation and one column per cost,
+    # Figure 7, table 5 and figure 8 show the model under both costs (tablesOECD26.COSTS: results/oecd26_tau1/
+    # beside results/oecd26/). OECD26_Layer1Grid is figure 7 with one row per relation and one column per cost,
     # built for discussion, not input.
     'OECD26_Layer1Grid':      ('figure', partial(figuresOECD26.oecd26Layer1Costs, 'grid'), 'Figs/OECD26_Layer1Grid.pdf'),
     'OECD26_Slopes':          ('table', tablesOECD26.oecd26Slopes,    'Tables/OECD26_Slopes.tex'),
@@ -122,7 +122,7 @@ OUTPUTS = {
     'OECD_Countries':         ('table', tablesOA.oecdCountries,       'Tables/OECD_Countries.tex'),
     'OECD_Sources':           ('table', tablesOA.oecdSources,         'Tables/OECD_Sources.tex'),
     'OECD_Correlations':      ('table', tablesOA.oecdCorrelations,    'Tables/OECD_Correlations.tex'),
-    # Page D1's section on inequality: the Gini against the model's measures of income inequality, and figure 7.2's
+    # Page D1's section on inequality: the Gini against the model's measures of income inequality, and figure 7's
     # panels on inequality under the three; each table after the figure whose build writes its csv.
     'OECD_InequalityMeasures': ('figure', figuresOA.oecdInequalityMeasures, 'Figs/OECD_InequalityMeasures.pdf'),
     'OECD_InequalityCorrelations': ('table', tablesOA.oecdInequalityCorrelations,
@@ -147,8 +147,8 @@ OUTPUTS = {
     # Page C4, the cross-country test: the slopes of the paper's specification beside its population and data variants
     # (OECD26_Variants, whose starred own-omega rows are the paper's only own-omega slopes) and the predicted design
     # under each (OECD26_ThetaFitPopulation, OECD26_ThetaFitMeasure, each writing its note); each variant in full
-    # (figure 7.2 and table 10 at each population and data variant; their slopes are OECD26_Variants's), Luxembourg
-    # left out and the model at the U.S. omega (figure 7.2 and table 5 at each). Names: the builder's output name,
+    # (figure 7 and table 10 at each population and data variant; their slopes are OECD26_Variants's), Luxembourg
+    # left out and the model at the U.S. omega (figure 7 and table 5 at each). Names: the builder's output name,
     # OECD26_<base> + tablesOECD26.suffix.
     'OECD26_Variants':        ('table', tablesOECD26.oecd26Variants,  'Tables/OECD26_Variants.tex'),
     'OECD26_ThetaFitPopulation': ('figure', partial(figuresOECD26.oecd26ThetaFitRows, 'population'),
