@@ -1,0 +1,3 @@
+kind,ρ,case,experiment,θ2020,τ2020,π2020,gap,passes,θ2050,nEqθMax,nFallbackθ,spendingTarget,tauPower,carrier,thetaSource,θ0
+choice,2.0,"FR, cost at the U.S. size (pi = (tau^US/tau)^k)",X1,0.8536686469315796,0.10016531045719071,1.0648964893416166,0.0008198330997804822,2,0.8955087900572621,1,0,net,1.0,pi,C,0.544496
+choice,2.0,"FR, cost at the U.S. size and dispersion",X2,0.9154847523858078,0.1001642502714875,2.123908900327811,0.0002968293522464549,3,0.9328679909755427,1,0,net,1.0,pi,C,0.544496

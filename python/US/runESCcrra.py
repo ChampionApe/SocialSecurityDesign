@@ -62,6 +62,17 @@ DIR/esc/ (results/ under --main, the pipeline's main variant), every row carryin
 (solverColumns); a path or shocks stage reads only a converged calibration row at the same three (readCalibratedP).
 --theta index: the workbook's θ into results/esc/; without --theta the run is refused (oecd26.indexTheta).
 
+--spendingTarget gross|net (runESC.SPENDING): the calibrations' spending target under a cost, a key column of the three
+csvs (blank = 'gross'); readCalibratedP reads only the run's. targetDrift's 'τ' (τDrift) is the drift of the targeted
+quantity, tau f under 'net'; the calib row's τ0/fStar are at the calibrated tax (ModelESC.calibratedTax0); path rows
+carry τNet, shocks rows τNet_t0, τNet_t1 (benefits paid over labour income, ModelESC.netTax).
+
+--outdir DIR: the csvs' directory instead of the one above (runESC.py's --outdir); every csv this driver reads is one
+it writes there (escCalibrationCRRA{host}{tag}.csv: a path stage's cost, the exact scan's narrowed bracket, the untagged
+fallback), the sweeps stay --theta's. The cost of results/esc/ is runESC.PAPERCOST: a run under another SSD_TAUPOWER or
+SSD_CARRIER is refused there (runESC.refuseCost), and its rows carry tauPower and carrier (solverColumns). --bracket
+is in the run's λ units, which scale by about τ0^(1-k) (BRACKET_CRRA's default carries TAU_SCALE).
+
 A stage that reads its cost from file (no calib stage in the run) under --exact needs an exact row: with only a
 path-iteration row at that (rho, spec, phi) the combination is a recorded failure, unless --allowPathP lets the path p
 stand in (a smoke run). Failures a run survives (a calibration, a path or a scenario that raised) are printed, the run
@@ -98,9 +109,10 @@ BRACKET_CRRA = {'scale': (0.01, 3.0), 'flat': (0.01, 3.0), 'size': (0.25*TAU_SCA
 # Row-identity keys, rho-indexed counterparts of runESC's. commonX is in all three -- see mergeWrite.
 # method too: an exact row and a path row answer the same question by different solvers and must not
 # overwrite each other (the pipeline selects by method).
-KEYCAL = ['ρ', 'spec', 'phi', 'commonX', 'method']
-KEYPATH = ['ρ', 'spec', 'phi', 'commonX', 'method', 'pos']
-KEYSHK = ['ρ', 'spec', 'phi', 'commonX', 'method', 'scenario', 'θpinned']
+# spendingTarget too, blank at 'gross' (runESC.spendingColumns, runESC.mergeWrite).
+KEYCAL = ['ρ', 'spec', 'phi', 'commonX', 'method', 'spendingTarget']
+KEYPATH = ['ρ', 'spec', 'phi', 'commonX', 'method', 'spendingTarget', 'pos']
+KEYSHK = ['ρ', 'spec', 'phi', 'commonX', 'method', 'spendingTarget', 'scenario', 'θpinned']
 
 
 def buildUS(ρ, wedge = None, nθCandCRRA = 13, commonX = False, gs = None, nθCand2D = 21, designRule = 'root',
@@ -119,7 +131,7 @@ def buildUS(ρ, wedge = None, nθCandCRRA = 13, commonX = False, gs = None, nθC
     m = ModelESC(pars = testmod.pars | {'ρ': float(ρ), 'β': float(row['β']), 'ω': float(row['ω'])}
                  | ({} if θ0 is None else {'θ0': float(θ0)}),
                  wedge = wedge, nθCandCRRA = nθCandCRRA, nθCand2D = nθCand2D, commonX = commonX,
-                 designRule = designRule, Ma = Ma, **testmod.kwargs)
+                 designRule = designRule, Ma = Ma, spendingTarget = runESC.SPENDING['target'], **testmod.kwargs)
     m.db['dates'], m.db['workweek'] = testmod.dates, testmod.workweek
     m.CRRA.initGS(gs)
     m.LOG.initGS({k: v for k, v in gs.items() if k != 'ns'})
@@ -159,7 +171,15 @@ def franceRowCRRA(m, ρ, spec, phi, p, hbarRef, commonX = False, gs = None):
             'θpinned': True,
             'θ_tm1': float(θ[pos-1]), 'θ_t0': float(θ[pos]), 'θ_t1': float(θ[pos+1]),
             'τ_t0': r0['τ'], 'sr_t0': r0['sr'], 'ww_t0': r0['workweek'],
-            'τ_t1': r1['τ'], 'sr_t1': r1['sr'], 'ww_t1': r1['workweek'], 'multiplicity': out.get('multiplicity')}
+            'τ_t1': r1['τ'], 'sr_t1': r1['sr'], 'ww_t1': r1['workweek']} | netColumns(mFR, out['τ'], θ, pos) | {
+            'multiplicity': out.get('multiplicity')}
+
+
+def netColumns(m, τ, θ, pos):
+    """ {'τNet_t0', 'τNet_t1'}: benefits paid over labour income at positions pos and pos+1 of a solved path
+    (ModelESC.netTax at db's pi, the solve's own; tau itself without a cost). τ, θ: the path's (T,). """
+    τ, θ = np.asarray(τ, dtype = float), np.asarray(θ, dtype = float)
+    return {f'τNet_t{k}': float(m.netTax(float(τ[pos+k]), float(θ[pos+k]), m.db['t'][pos+k])) for k in (0, 1)}
 
 
 def stageSequential(ρs, out, commonX = False, gs = None, nθ = 201):
@@ -195,7 +215,7 @@ def readCalibratedP(fCal, ρ, spec, phi, commonX, method, fallback = False):
     when nothing matches. """
     if not os.path.exists(fCal):
         return np.nan, None
-    hit = pd.read_csv(fCal)
+    hit = runESC.atSpending(pd.read_csv(fCal))          # the run's spending target only
     hit = hit[(hit['ρ'] == ρ) & (hit['spec'] == spec) & (hit['phi'] == phi)]
     if 'converged' in hit.columns:
         hit = hit[hit['converged'].fillna(False).astype(bool)]
@@ -221,9 +241,10 @@ def solverColumns(designRule, Ma, mult):
     """ The non-key columns every row of this driver carries: the run's design-layer settings (designRule,
     Ma; LeadedCRRA2D under --exact) and the counts of the solve behind the row (policy.multiplicityColumns:
     nEqMax, nCandMax, nFallback for the tax rule, nEqθMax, nBrθMax, nFallbackθ for the root design layer,
-    -1 where that solve counted nothing), and under a θ variant runESC.thetaColumns. Never part of a merge key
-    (finding #13). """
-    return {'designRule': designRule, 'Ma': int(Ma)} | multiplicityColumns(mult, design = True) | runESC.thetaColumns()
+    -1 where that solve counted nothing; nRootsSMax the state fixed point's root count), and runESC.tagColumns (the
+    θ variant's, the spending target and the cost where not the defaults). Never part of a merge key (finding #13)
+    but for spendingTarget (KEYCAL). """
+    return {'designRule': designRule, 'Ma': int(Ma)} | multiplicityColumns(mult, design = True) | runESC.tagColumns()
 
 
 def multiplicityOf(led):
@@ -247,11 +268,13 @@ def pathRowsFrom(m, led, base, ρ, spec, phi, pCal, commonX, method, designRule 
                        led['out']['report'] if 'out' in led else led['report'],
                        float(m.db['workweek']), hbarRef, pos = pos)
         rb = sh.readout(m, base['τ'], base['report'], float(m.db['workweek']), hbarRef, pos = pos)
+        τLed = led['out']['τ'] if 'out' in led else led['τ']
         rows.append({'ρ': ρ, 'spec': spec, 'phi': phi, 'commonX': commonX, 'method': method,
                      'p': pCal, 'pos': pos,
                      'date': dates[pos] if pos < len(dates) else np.nan,
                      'ν': float(m.db['ν'].xs(t)), 'θ': float(led['θ'].xs(t)),
                      'τ': r['τ'], 'sr': r['sr'], 'workweek': r['workweek'],
+                     'τNet': float(m.netTax(float(τLed.xs(t)), float(led['θ'].xs(t)), t)),
                      'τExo': rb['τ'], 'srExo': rb['sr'],
                      'converged': led.get('converged', True), 'step': led.get('step', np.nan),
                      'τDrift': led['targetDrift']['τ'], 'RDrift': led['targetDrift']['R']}
@@ -315,11 +338,20 @@ def main():
     p.add_argument('--root', default = None, help = "the variant's directory (default results/oecd26_theta_<variant>)")
     p.add_argument('--main', action = 'store_true',
                    help = "with --theta config.US['theta']: read results/calibration/, write results/esc/")
+    p.add_argument('--spendingTarget', default = 'gross', choices = runESC.SPENDING_TARGETS,
+                   help = "runESC.py's: 'net' calibrates every cost to the benefits paid, tau_t0 f = tau0 "
+                          "(targetDrift then the drift of tau f); a key column, blank at 'gross'")
+    p.add_argument('--outdir', default = None,
+                   help = "the csvs' directory (read and written) instead of --theta's (results/esc/ under --main); the "
+                          "sweeps are still --theta's. A relative path is the working directory's.")
     a = p.parse_args()
     a.root = None if a.root is None else os.path.abspath(os.path.join(CWD, a.root))
+    runESC.setSpendingTarget(a.spendingTarget)
     if a.host != 'US' and set(a.stage) != {'calib'}:
         p.error('--host {} runs the calib stage only (--stage calib)'.format(a.host))
     OUTDIR = setThetaCRRA(a)
+    OUTDIR = OUTDIR if a.outdir is None else os.path.abspath(os.path.join(CWD, a.outdir))
+    runESC.refuseCost(OUTDIR)
     os.makedirs(OUTDIR, exist_ok = True)
     hs = '' if a.host == 'US' else a.host
     fCal = os.path.join(OUTDIR, f'escCalibrationCRRA{hs}{a.tag}.csv')
@@ -378,9 +410,10 @@ def main():
                                                beforeScan = lambda: m.CRRA.initGS(gsScan),
                                                beforeRefine = lambda: m.CRRA.initGS(gs))
                         pCal = rec['p']
-                        # the wedge read at the calibrated point: tau0 is the calibration target, which
-                        # the path stage's targetDrift measures the solved path against
-                        wr = (wedgeReadout(m, float(m.db['τ0'])) if rec['converged']
+                        # the wedge read at the calibrated point's tax: tau0, the calibration target, which
+                        # the path stage's targetDrift measures the solved path against (under 'net' the tax
+                        # whose benefits paid are tau0, ModelESC.calibratedTax0)
+                        wr = (wedgeReadout(m, m.calibratedTax0()) if rec['converged']
                               else {'Vtilde': float(m.B.Vtilde(m.t0Year))})
                         calRows.append({'ρ': ρ, 'spec': spec, 'phi': phi, 'commonX': a.commonX, 'host': a.host,
                                         'method': method, 'p': rec['p'],
@@ -505,6 +538,7 @@ def main():
                                                 'θ_t1': float(θPath.iloc[pos0+1]),
                                                 'τ_t0': r0['τ'], 'sr_t0': r0['sr'], 'ww_t0': r0['workweek'],
                                                 'τ_t1': r1['τ'], 'sr_t1': r1['sr'], 'ww_t1': r1['workweek']}
+                                               | netColumns(mt, out['τ'], θPath, pos0)
                                                | piColumn(mt, mt.t0Year) | solverColumns(a.designRule, a.Ma, mult))
                                 print('  {:<9} pin={:<5} θ_t0={:.4f}  τ_t0={:.4f} sr_t0={:.4f} '
                                       'ww_t0={:.2f}  (θ_t1={:.4f}, {:.0f}s)'.format(

@@ -60,9 +60,20 @@ successive differences are discrete selection changes (finding #5); their size a
 whether the residuals see them.
 
 Writes results/numerical/US_horizon.csv (stages horizon, log; key block, preferences, rho, terminal, tss,
-date), US_horizonDesign.csv (stage design), US_residuals.csv, US_jumps.csv, US_derivativeScheme.csv. Every
-horizon row carries the counts of its solve (policy.multiplicityColumns; the design rows also the design
+spendingTarget, date), US_horizonDesign.csv (stage design), US_residuals.csv, US_jumps.csv, US_derivativeScheme.csv.
+Every horizon row carries the counts of its solve (policy.multiplicityColumns; the design rows also the design
 layer's).
+
+SPENDING TARGET. --spendingTarget gross|net (runESC.SPENDING): the cost of stages log and design calibrated to the gross
+tax or to the benefits paid (ModelESC.spendingTarget), lambda and the self-check's design path read at that target
+(_atTarget), and every row of stages horizon, log and design written with it (spendingColumns: blank at 'gross'; a key
+column), so a csv holds both targets' rows and python/paper reads its own.
+
+DIRECTORIES. --escdir DIR reads the ESC csvs of stages log and design (ESCDIR: escCalibration{,CRRA}.csv,
+escPath{,CRRA}.csv) in DIR instead of results/esc/, --outdir DIR2 writes every csv (OUTDIR) in DIR2 instead of
+results/numerical/; relative paths are the working directory's. Both defaults hold the cost runESC.PAPERCOST (k = 2, carrier 'convex'): a run under
+another SSD_TAUPOWER or SSD_CARRIER is refused into results/numerical/ and, in stages log and design, from results/esc/
+(runESC.refuseCost); the rows of stages log and design carry its tauPower and carrier (runESC.costColumns).
 """
 import os, sys, argparse, time
 from contextlib import contextmanager
@@ -70,6 +81,7 @@ import numpy as np, pandas as pd
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, '..', '..'))
+CWD = os.getcwd()                 # where a relative --escdir/--outdir points: the chdir below moves to HERE
 sys.stdout.reconfigure(encoding = 'utf-8', line_buffering = True)
 sys.path.insert(0, HERE)
 os.chdir(HERE)
@@ -77,26 +89,42 @@ os.chdir(HERE)
 import test as testmod
 import shocks as sh
 import oecd26
+import runESC
 from model import ModelUS
 from modelESC import ModelESC
 from policy import multiplicityColumns
 
-OUTDIR = os.path.join(REPO, 'results', 'numerical')
+OUTDIR = NUMMAIN = os.path.join(REPO, 'results', 'numerical')     # OUTDIR: main's --outdir, NUMMAIN the default
 CALDIR = os.path.join(REPO, 'results', 'calibration')
-ESCDIR = os.path.join(REPO, 'results', 'esc')
+ESCDIR = ESCMAIN = os.path.join(REPO, 'results', 'esc')           # ESCDIR: main's --escdir, ESCMAIN the default
+ESCSTAGES = ('log', 'design')                  # the stages that read ESCDIR
 GS = {'n': 101, 'ns': 150, 'smoothKnots': 4, 'interpKind': 'linear'}   # runShocksUS.py's / runESCcrra.GSC
 BASE_TSS = 3                    # test.py's t_ss: the paper's horizon, T = 2200
 HORIZONS = (1, 3, 6)            # T = 2140, 2200, 2290
-KEY = ['block', 'preferences', 'ρ', 'terminal', 'tss', 'date']
+KEY = ['block', 'preferences', 'ρ', 'terminal', 'tss', 'spendingTarget', 'date']
 WEDGE = {'spec': 'size', 'phi': 0.5}           # the paper's cost (config.US['esc'])
 N_CAND_2D = 41                                 # config.US['esc']['nCand2D']
 # The run's theta variant (main's --theta V --main): theta0 imposed on every model, rows read and written at it.
 THETA = {'variant': None, 'θ0': None}
+# The run's spending target under the cost (main's --spendingTarget; ModelESC.spendingTarget).
+SPENDING = {'target': 'gross'}
 
 
 def _at(df):
     """ The rows of df at the run's theta (oecd26.rowsAtTheta at THETA's variant and θ0). """
     return oecd26.rowsAtTheta(df, THETA['variant'], THETA['θ0'])
+
+
+def _atTarget(df):
+    """ The rows of an ESC or horizon csv at the run's spending target (SPENDING; no spendingTarget, or a blank cell,
+    is 'gross', runESC.atSpending). """
+    st = df['spendingTarget'].fillna('gross') if 'spendingTarget' in df.columns else pd.Series('gross', index = df.index)
+    return df[st == SPENDING['target']]
+
+
+def spendingColumns():
+    """ {'spendingTarget': target} under a target other than 'gross', {} otherwise (runESC.spendingColumns). """
+    return {} if SPENDING['target'] == 'gross' else {'spendingTarget': SPENDING['target']}
 
 
 def _tag():
@@ -215,7 +243,13 @@ def mergeWrite(path, rows, key):
             keep = _at(old)
             if len(keep) < len(old):
                 print(f'  {os.path.relpath(path, REPO)}: {len(old) - len(keep)} rows at another θ dropped')
-            k = lambda df: df[key].astype(str).agg('|'.join, axis = 1)
+            key = [c for c in key if c in new.columns or c in keep.columns]
+            for c in key:                       # a key column one side lacks (spendingTarget at 'gross') is blank
+                if c not in keep.columns:
+                    keep = keep.assign(**{c: np.nan})
+                if c not in new.columns:
+                    new = new.assign(**{c: np.nan})
+            k = lambda df: df[key].astype(object).where(df[key].notna(), '__na__').astype(str).agg('|'.join, axis = 1)
             new = pd.concat([keep[~k(keep).isin(set(k(new)))], new], ignore_index = True)
         new.to_csv(path, index = False)
 
@@ -242,7 +276,7 @@ def stageHorizon(ρs, kSS, out, gs = GS):
                                    f'recorded {float(row["τ"]):.8f}: not the published solve.')
             gap = statGap(m, outp['sols'], outp['report'], testmod.TLog + BASE_TSS - 1) if terminal == 'steadyState' else np.nan
             ids = {'block': 'tax', 'preferences': 'CRRA', 'ρ': ρ, 'terminal': terminal, 'tss': tss,
-                   'T': int(m.db['dates'][-1]), 'ns': gs['ns']}
+                   'T': int(m.db['dates'][-1]), 'ns': gs['ns']} | spendingColumns()
             rows += readRows(m, τ, outp['report'], m.db['θ'].values, ids,
                              {'statGap': gap, 'seconds': time.time() - tic} | multiplicityColumns(outp['multiplicity']))
             print(f'  ρ={ρ} {terminal:<11} T={ids["T"]}: τ_2020={τ[2]:.6f} τ_2050={τ[3]:.6f}  '
@@ -253,13 +287,13 @@ def stageHorizon(ρs, kSS, out, gs = GS):
 
 def escLambda(ρ, method):
     """ The converged calibrated cost lambda of the paper's spec, common X: LOG from escCalibration.csv, the exact
-    CRRA recursion's from escCalibrationCRRA.csv (method = 'exact'). """
+    CRRA recursion's from escCalibrationCRRA.csv (method = 'exact'), at the run's spending target (_atTarget). """
     if method == 'LOG':
-        df = _at(pd.read_csv(os.path.join(ESCDIR, 'escCalibration.csv')))
+        df = _atTarget(_at(pd.read_csv(os.path.join(ESCDIR, 'escCalibration.csv'))))
         hit = df[(df['spec'] == WEDGE['spec']) & (df['phi'] == WEDGE['phi']) & df['commonX'].astype(bool)
                  & df['converged'].astype(bool)]
     else:
-        df = _at(pd.read_csv(os.path.join(ESCDIR, 'escCalibrationCRRA.csv')))
+        df = _atTarget(_at(pd.read_csv(os.path.join(ESCDIR, 'escCalibrationCRRA.csv'))))
         hit = df[(df['spec'] == WEDGE['spec']) & (df['phi'] == WEDGE['phi']) & df['commonX'].astype(bool)
                  & df['converged'].astype(bool) & ((df['ρ'] - ρ).abs() < 1e-9) & (df['method'] == method)]
     if hit.empty:
@@ -270,7 +304,7 @@ def escLambda(ρ, method):
 def escPathRow(ρ, method):
     """ The published design path's 2020 row (escPath.csv / escPathCRRA.csv), for the self-check. """
     f = 'escPath.csv' if method == 'LOG' else 'escPathCRRA.csv'
-    df = _at(pd.read_csv(os.path.join(ESCDIR, f)))
+    df = _atTarget(_at(pd.read_csv(os.path.join(ESCDIR, f))))
     hit = df[(df['spec'] == WEDGE['spec']) & (df['phi'] == WEDGE['phi']) & df['commonX'].astype(bool) & (df['pos'] == 2)]
     if method != 'LOG':
         hit = hit[((hit['ρ'] - ρ).abs() < 1e-9) & (hit['method'] == method)]
@@ -283,7 +317,8 @@ def stageDesign(ρs, kSS, out, gs = GS, only = None):
     for ρ in ρs:
         cal = escLambda(ρ, 'exact')
         λ = float(cal['p'])
-        kw = dict(wedge = WEDGE | {'p': λ}, nθCandCRRA = 13, nθCand2D = N_CAND_2D, designRule = 'root', Ma = 5)
+        kw = dict(wedge = WEDGE | {'p': λ}, nθCandCRRA = 13, nθCand2D = N_CAND_2D, designRule = 'root', Ma = 5,
+                  spendingTarget = SPENDING['target'])
         tic = time.time()
         mB = build(ρ, cal['β'], cal['ω'], sweepRow(ρ)['X'], BASE_TSS, gs, cls = ModelESC, **kw)
         mB.calibrate()
@@ -306,7 +341,8 @@ def stageDesign(ρs, kSS, out, gs = GS, only = None):
                 if d > 1e-4:
                     raise RuntimeError(f'ρ={ρ}: the 2200 design path does not reproduce the published one ({d:.1e}).')
             ids = {'block': 'design', 'preferences': 'CRRA', 'ρ': ρ, 'terminal': terminal, 'tss': tss,
-                   'T': int(m.db['dates'][-1]), 'ns': gs['ns'], 'spec': WEDGE['spec'], 'p': λ}
+                   'T': int(m.db['dates'][-1]), 'ns': gs['ns'], 'spec': WEDGE['spec'], 'p': λ} | spendingColumns() \
+                  | runESC.costColumns()
             rows += readRows(m, τ, led['report'], θ, ids,
                              {'seconds': time.time() - tic} | multiplicityColumns(led['multiplicity'], design = True))
             print(f'  ρ={ρ} {terminal:<11} T={ids["T"]}: θ_2020={θ[2]:.6f} θ_2050={θ[3]:.6f} τ_2020={τ[2]:.6f} '
@@ -320,7 +356,8 @@ def stageLog(kSS, out, gs = GS):
     row = sweepRow(1.0)
     cal = escLambda(1.0, 'LOG')
     λ = float(cal['p'])
-    mB = build(1.0, cal['β'], cal['ω'], row['X'], BASE_TSS, gs, cls = ModelESC, wedge = WEDGE | {'p': λ})
+    mB = build(1.0, cal['β'], cal['ω'], row['X'], BASE_TSS, gs, cls = ModelESC, wedge = WEDGE | {'p': λ},
+               spendingTarget = SPENDING['target'])
     mB.calibrate()
     β, ω, X = mB.simpleβinv(), float(mB.db['ω'].iloc[0]), commonX(mB)
     ref = escPathRow(1.0, 'LOG')
@@ -333,12 +370,13 @@ def stageLog(kSS, out, gs = GS):
         if (terminal, tss) == ('finite', BASE_TSS) and abs(τ[2] - float(row['τ'])) > 1e-6:
             raise RuntimeError(f'ρ=1: τ_2020={τ[2]:.8f}, the sweep recorded {float(row["τ"]):.8f}.')
         ids = {'block': 'tax', 'preferences': 'LOG', 'ρ': 1.0, 'terminal': terminal, 'tss': tss,
-               'T': int(m.db['dates'][-1])}
+               'T': int(m.db['dates'][-1])} | spendingColumns() | runESC.costColumns()
         rows += readRows(m, τ, outp['report'], m.db['θ'].values, ids,
                          {'seconds': time.time() - tic} | multiplicityColumns(outp['multiplicity']))
         tic = time.time()
         mE = mB if (terminal, tss) == ('finite', BASE_TSS) else build(1.0, β, ω, X, tss, gs, cls = ModelESC,
-                                                                      wedge = WEDGE | {'p': λ})
+                                                                      wedge = WEDGE | {'p': λ},
+                                                                      spendingTarget = SPENDING['target'])
         led = mE.solveLeaded(pinAtT0 = False)
         τE, θE = led['τ'].values, led['θ'].values
         if (terminal, tss) == ('finite', BASE_TSS):
@@ -516,11 +554,30 @@ def main():
     p.add_argument('--theta', default = None,
                    help = "the pipeline's main θ variant, config.US['theta'] (with --main); 'index' the workbook's θ")
     p.add_argument('--main', action = 'store_true', help = "with --theta config.US['theta']")
+    p.add_argument('--spendingTarget', default = 'gross', choices = ('gross', 'net'),
+                   help = "stages log and design: the cost calibrated to 'gross' tau_t0 or 'net' benefits paid "
+                          "(runESC.py's); stages horizon, log, design: a key column of the rows (blank = 'gross')")
+    p.add_argument('--escdir', default = None,
+                   help = 'stages log and design: the ESC csvs read from this directory instead of results/esc/')
+    p.add_argument('--outdir', default = None, help = 'every csv written into this directory instead of results/numerical/')
     a = p.parse_args()
+    global ESCDIR, OUTDIR
+    if a.escdir is not None:
+        ESCDIR = os.path.abspath(os.path.join(CWD, a.escdir))
+    if a.outdir is not None:
+        OUTDIR = os.path.abspath(os.path.join(CWD, a.outdir))
+    for path, dft, flag, need in ((ESCDIR, ESCMAIN, '--escdir', set(a.stage) & set(ESCSTAGES)),
+                                  (OUTDIR, NUMMAIN, '--outdir', True)):
+        try:
+            if need:
+                runESC.refuseCost(path, dft)
+        except SystemExit as e:
+            raise SystemExit(f'{e}; runHorizon.py takes it as {flag} DIR') from None
+    SPENDING['target'] = a.spendingTarget
     if a.theta in (None, oecd26.INDEX) and not a.main:
         a.theta = oecd26.indexTheta(a.theta, [OUTDIR], 'runHorizon.py')
     setTheta(a.theta, a.main)
-    print(f"θ variant {THETA['variant']!r}: θ0 = {THETA['θ0']!r}")
+    print(f"θ variant {THETA['variant']!r}: θ0 = {THETA['θ0']!r}, spending target {SPENDING['target']!r}")
     for st in a.stage:
         tic = time.time()
         print(f'\n=== stage {st} ===')

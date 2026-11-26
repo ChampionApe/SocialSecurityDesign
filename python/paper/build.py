@@ -68,13 +68,25 @@ OUTPUTS = {
     # C5_criticalTurnout.csv), the two costs calibrated under log, the 2020 tax against a design pinned on the whole
     # path, with and without the cost (the figure writes its note, US_ESC_TauTheta_note.tex), and the decompositions
     # section 7 and appendix C.2 state (c5Numbers.py design, designCRRA, lambda).
+    # Each of these but ESC_Timing (no cost) is under the squared cost (results/esc/, results/numerical/) and has a twin
+    # `<name>_linear` under the cost linear in the tax (config.costSuffix; results/esc_tau1/, results/numerical_tau1/),
+    # which the pages show in a tab beside it.
     'UK_ESC_Calibration':     ('table', tablesUS.ukEscCalibrationTable, 'Tables/UK_ESC_Calibration.tex'),
+    'UK_ESC_Calibration_linear': ('table', partial(tablesUS.ukEscCalibrationTable, k = 1),
+                                  'Tables/UK_ESC_Calibration_linear.tex'),
     'US_ESC_Country':         ('table', tablesUS.escCountryTable,     'Tables/US_ESC_Country.tex'),
+    'US_ESC_Country_linear':  ('table', partial(tablesUS.escCountryTable, k = 1), 'Tables/US_ESC_Country_linear.tex'),
     'US_ESC_Path':            ('figure', figuresOA.escPathPaper,      'Figs/US_ESC_Path.pdf'),
+    'US_ESC_Path_linear':     ('figure', partial(figuresOA.escPathPaper, k = 1), 'Figs/US_ESC_Path_linear.pdf'),
     'ESC_CostCalibration':    ('table', tablesOA.escCostCalibration,  'Tables/ESC_CostCalibration.tex'),
+    'ESC_CostCalibration_linear': ('table', partial(tablesOA.escCostCalibration, k = 1),
+                                   'Tables/ESC_CostCalibration_linear.tex'),
     'US_ESC_TauTheta':        ('figure', figuresOA.escTauTheta,       'Figs/US_ESC_TauTheta.pdf'),
+    'US_ESC_TauTheta_linear': ('figure', partial(figuresOA.escTauTheta, k = 1), 'Figs/US_ESC_TauTheta_linear.pdf'),
     'ESC_Timing':             ('table', tablesOA.escTiming,           'Tables/ESC_Timing.tex'),
     'ESC_Decompositions':     ('table', tablesOA.escDecompositions,   'Tables/ESC_Decompositions.tex'),
+    'ESC_Decompositions_linear': ('table', partial(tablesOA.escDecompositions, k = 1),
+                                  'Tables/ESC_Decompositions_linear.tex'),
     # Figure 1 (fig:US:OECDdata) from stage (0)'s data/oecdFigure1.csv; also writes oecdCorrelations.csv.
     'OECDdata':               ('figure', oecdFigure1.figure,          'Figs/OECDdata.pdf'),
     # The cross-country test at config.US['oecd26']'s variant (own turnout, Luxembourg flat; the model, layer 1, at
@@ -90,6 +102,10 @@ OUTPUTS = {
     # oecd26Sample.py.
     'OECD26_Spending':        ('figure', figuresOECD26.oecd26Spending, 'Figs/OECD26_Spending.pdf'),
     'OECD26_Layer1':          ('figure', figuresOECD26.oecd26Figure,  'Figs/OECD26_Layer1.pdf'),
+    # Figure 7.2, table 5 and figure 7.3 show the model under both costs (tablesOECD26.COSTS: results/oecd26_tau1/
+    # beside results/oecd26/). OECD26_Layer1Grid is figure 7.2 with one row per relation and one column per cost,
+    # built for discussion, not input.
+    'OECD26_Layer1Grid':      ('figure', partial(figuresOECD26.oecd26Layer1Costs, 'grid'), 'Figs/OECD26_Layer1Grid.pdf'),
     'OECD26_Slopes':          ('table', tablesOECD26.oecd26Slopes,    'Tables/OECD26_Slopes.tex'),
     'OECD26_Omega':           ('table', tablesOECD26.oecd26Omega,     'Tables/OECD26_Omega.tex'),
     'OECD26_ThetaFit':        ('figure', figuresOECD26.oecd26ThetaFit, 'Figs/OECD26_ThetaFit.pdf'),
@@ -157,6 +173,18 @@ OUTPUTS = {
                                'Figs/OECD26_Layer1_omegaUS.pdf'),
     'OECD26_Slopes_omegaUS':  ('table', partial(tablesOECD26.oecd26Slopes, omegaRule = 'anchor'),
                                'Tables/OECD26_Slopes_omegaUS.tex'),
+    # Page C4's further readings (tablesOECD26): section 6's test with the design given, alone and with population
+    # growth as a control; the model with one input at its U.S. value (python/US/runOECD26.py --usInput); table 5
+    # without the U.S.; table 5 under the cost linear in the tax (config.US['tau1'], results/oecd26_tau1/).
+    'OECD26_GivenDesign':     ('table', tablesOECD26.oecd26GivenDesign, 'Tables/OECD26_GivenDesign.tex'),
+    'OECD26_USInputs':        ('table', tablesOECD26.oecd26USInputs,  'Tables/OECD26_USInputs.tex'),
+    'OECD26_USInputs_linear': ('table', partial(tablesOECD26.oecd26USInputs, k = 1), 'Tables/OECD26_USInputs_linear.tex'),
+    'OECD26_SlopesNoUS':      ('table', tablesOECD26.oecd26SlopesNoUS, 'Tables/OECD26_SlopesNoUS.tex'),
+    'OECD26_SlopesTau1':      ('table', tablesOECD26.oecd26SlopesTau1, 'Tables/OECD26_SlopesTau1.tex'),
+    # Page C2: the U.S. under the cost linear in the tax beside the paper's (results/esc_tau1/); page A1: Argentina's
+    # reform under three readings of the pre-reform economy (config.ARG['spendingBaseline'], results/arg_spending052/).
+    'ESC_TauPower':           ('table', tablesOA.escTauPower,         'Tables/ESC_TauPower.tex'),
+    'ARG_SpendingBaseline':   ('table', tablesOA.argSpendingBaseline, 'Tables/ARG_SpendingBaseline.tex'),
     # The datasets of the supplemental appendix's interactive figures (siteData), csv in results/paper/Data.
     'ARG_ReformPaths':        ('data', siteData.argReformPaths,       'Data/ARG_ReformPaths.csv'),
     'OECD_Counterfactuals':   ('data', siteData.oecdCounterfactuals,  'Data/OECD_Counterfactuals.csv'),
@@ -174,8 +202,11 @@ ONLINE_ONLY = ({'OECD_Countries', 'OECD_Sources', 'OECD_Correlations', 'OECD_Ine
                 'US_TaxState', 'US_Strategic', 'NUM_HorizonPaths', 'NUM_Selection',
                 'NUM_SelectionFiles', 'OECD_Calibration', 'UK_householdheterogeneity', 'UK_ESC_Calibration',
                 'US_ESC_Country', 'US_ESC_Path', 'US_ESC_TauTheta', 'ESC_CostCalibration', 'ESC_Timing',
-                'ESC_Decompositions', 'OECD26_Variants', 'OECD26_ThetaFitPopulation', 'OECD26_ThetaFitMeasure'}
+                'ESC_Decompositions', 'OECD26_Variants', 'OECD26_ThetaFitPopulation', 'OECD26_ThetaFitMeasure',
+                'OECD26_GivenDesign', 'OECD26_USInputs', 'OECD26_SlopesNoUS', 'OECD26_SlopesTau1', 'ESC_TauPower',
+                'ARG_SpendingBaseline'}
                | {n for n in OUTPUTS if n.startswith(('OECD26_Layer1_', 'OECD26_Omega_', 'OECD26_Slopes_'))}
+               | {n for n in OUTPUTS if n.endswith(C.costSuffix(1))}
                | {n for n, e in OUTPUTS.items() if e[0] == 'data'})
 
 

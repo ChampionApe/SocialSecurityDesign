@@ -42,7 +42,8 @@ import time
 import numpy as np, pandas as pd
 from scipy import optimize
 from gridsearch import roots1d, CartesianGrid, griddedInterp1D, griddedSmooth1D
-from policy import CRRA, multiplicitySummary, mergeMultiplicity, DESIGN_KEYS, DESIGN_NAMES, requireZeroMass
+from policy import (CRRA, multiplicitySummary, mergeMultiplicity, rootSummary, DESIGN_KEYS, DESIGN_NAMES,
+                    requireZeroMass)
 
 # What a candidate's equilibrium solve raises when it fails, and the grid searches over candidate designs
 # catch: non-convergence (model._checkConverged, brentq; RuntimeError), a bracket without a sign change or
@@ -938,7 +939,7 @@ class LeadedCRRA2D(CRRA, LeadedBase):
             tChoose = time.perf_counter() - tic
             extra = {'τStar3': ch['τStar'], 'W': ch['W'], 'atBoundτ': ch['atBoundτ'],
                      'atBoundθ': ch['atBoundθ'].T, 'nEqτ': ch['nEqτ'], 'nCandτ': ch['nCandτ'],
-                     'fallbackτ': ch['fallbackτ']}
+                     'fallbackτ': ch['fallbackτ'], 'nRootsMax': int(np.max(core['nRoots']))}
             extra |= {k: v for k, v in ch.items() if k not in self._CHOICE_KEYS}
             extra |= {'tCore': tCore, 'tChoose': tChoose}
             return self._handBack(core, ch['θNext'], ch['τSel'], choose, extra)
@@ -1261,11 +1262,12 @@ class LeadedCRRA2D(CRRA, LeadedBase):
     def multiplicity(sols):
         """ The tax rule's counts (nEqτ, nCandτ, fallbackτ, summarised as nEqMax, nCandMax, ...) and the root
         design layer's (policy.DESIGN_KEYS as policy.DESIGN_NAMES: nEqθMax, nBrθMax, nStatesMultipleθ,
-        nFallbackθ) over a solution, in one dict. A set no period counted is -1: the design counts under
-        'legacy', the tax counts where every choosing period ran the root layer without a fallback and no
-        period was pinned. """
+        nFallbackθ) over a solution, in one dict, with the state fixed point's root count (policy.rootSummary
+        of each period's 'nRootsMax'). A set no period counted is -1: the design counts under 'legacy', the
+        tax counts where every choosing period ran the root layer without a fallback and no period was
+        pinned. """
         return (multiplicitySummary(sols, keys = ('nEqτ', 'nCandτ', 'fallbackτ'))
-                | multiplicitySummary(sols, keys = DESIGN_KEYS, names = DESIGN_NAMES))
+                | multiplicitySummary(sols, keys = DESIGN_KEYS, names = DESIGN_NAMES) | rootSummary(sols))
 
     # ------------------------------------------------------------------ forward simulation
     def s0FixedPoint(self, sols, θ0):

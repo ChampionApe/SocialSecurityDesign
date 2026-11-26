@@ -132,7 +132,7 @@ def argentinaUniversal(commonX = None):
             ['Full effect',          C.pct(ref['τ_reform']), C.pct(srRef),  C.num(C.workweekHours(ref['h_reform'], hRef)), chg(bRef)]]
     note = (r'\textit{Note:} The reform of section \ref{sec:argentina}, $\rho = ' + C.num(ρ, 0) + r'$. Economic '
             r'equilibrium: the new $\epsilon$ with taxes as in the baseline; full effect: taxes set in '
-            r'politico-economic equilibrium. The savings rate is savings relative to GDP, formal plus informal output; '
+            r'politico-economic equilibrium. The savings rate is formal savings relative to GDP, formal plus informal output; '
             r'formal benefits are the change in the benefit of every formal retiree against the baseline.'
             + C.variantNote(commonX, arm = 'ARG'))
     return _wrap('ArgentinaUniversal' + sfx, 'results/shocks/{eeOnly,universal}_match_rho%.4f%s.csv' % (ρ, C.argVariantTag(commonX)),

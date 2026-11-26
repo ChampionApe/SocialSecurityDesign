@@ -45,7 +45,9 @@ def multiplicitySummary(sols, keys = ('nEq', 'nCand', 'fallback'), names = SUMMA
 def mergeMultiplicity(summaries, names = SUMMARY_NAMES):
     """ One multiplicitySummary over several solves (a grid of candidate designs, a choice and the
     equilibrium at it): the largest of the two maxima, the sums of the two state counts, the periods
-    concatenated. Summaries that are None or did not count (-1) are skipped; -1 where none counted. """
+    concatenated. Summaries that are None or did not count (-1) are skipped; -1 where none counted.
+    ROOTS_NAME (rootSummary's) is merged on its own, as the largest non-negative value, under the default
+    names only. """
     nEqM, nCandM, nMult, nFb, pMult, pFb = names
     out = {nEqM: -1, nCandM: -1, nMult: -1, nFb: -1, pMult: [], pFb: []}
     for s in summaries:
@@ -58,14 +60,32 @@ def mergeMultiplicity(summaries, names = SUMMARY_NAMES):
         out[nFb] += int(s[nFb])
         out[pMult] += list(s.get(pMult, []))
         out[pFb] += list(s.get(pFb, []))
+    roots = [int(s[ROOTS_NAME]) for s in summaries if s and s.get(ROOTS_NAME, -1) >= 0]
+    if roots and names == SUMMARY_NAMES:
+        out[ROOTS_NAME] = max(roots)
     return out
 
 
+# The count of solutions of the fixed point for next period's state (docs eq:stateResidual; CRRA._rootS), its
+# maximum over states and periods: per period the CRRA recursion keeps the counts on its (τ, s_) grid ('nRoots'),
+# LeadedCRRA2D the maximum over its (τ, s_, θ1) grid ('nRootsMax'). Under log no such fixed point is solved.
+ROOTS_NAME = 'nRootsSMax'
+
+
+def rootSummary(sols, keys = ('nRoots', 'nRootsMax')):
+    """ {ROOTS_NAME: the largest root count of the state's fixed point over the periods of a {t: period dict}
+    solution and their states} from whichever of `keys` a period carries; {} where no period carries one. """
+    counts = [int(np.max(rep[k])) for rep in sols.values() if isinstance(rep, dict)
+              for k in keys if rep.get(k) is not None and np.size(rep[k])]
+    return {ROOTS_NAME: max(counts)} if counts else {}
+
+
 def multiplicityColumns(mult, design = False):
-    """ A multiplicity summary as csv columns: nEqMax, nCandMax, nFallback (the tax rule) and, with
-    design, nEqθMax, nBrθMax, nFallbackθ (LeadedCRRA2D's root layer); -1 where the summary is None or
-    carries no such count (the solve did not count). """
-    cols = ('nEqMax', 'nCandMax', 'nFallback') + (('nEqθMax', 'nBrθMax', 'nFallbackθ') if design else ())
+    """ A multiplicity summary as csv columns: nEqMax, nCandMax, nFallback (the tax rule), nRootsSMax (the
+    state's fixed point, ROOTS_NAME) and, with design, nEqθMax, nBrθMax, nFallbackθ (LeadedCRRA2D's root
+    layer); -1 where the summary is None or carries no such count (the solve did not count, or under log
+    solved no state fixed point). """
+    cols = ('nEqMax', 'nCandMax', 'nFallback', ROOTS_NAME) + (('nEqθMax', 'nBrθMax', 'nFallbackθ') if design else ())
     mult = mult or {}
     return {k: int(mult.get(k, -1)) for k in cols}
 
@@ -937,5 +957,5 @@ class CRRA(LOG):
             t1 = tIdx[pos + 1]
             sols[t] = self.solveBackward_t(sols[t1], t, tLag, t1, θ[pos], θ[pos+1], ε[pos], ε[pos+1],
                                            sGrid, sCandGrid, tol = tol, smooth = smooth)
-        self.lastMultiplicity = multiplicitySummary(sols)   # read by model.solvePEE_CRRA; per state in sols
+        self.lastMultiplicity = multiplicitySummary(sols) | rootSummary(sols)   # read by model.solvePEE_CRRA
         return sols

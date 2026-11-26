@@ -3,14 +3,26 @@ from gridsearch import (roots1d, CartesianGrid, griddedInterp1D, griddedInterp2D
                         griddedSmooth1D, griddedGradient1D)
 
 
+# The counts of solutions of the fixed points for next period's states, their maxima over states and periods
+# (multiplicitySummary, multiplicityColumns): s_t of docs eq:stateResidual (CRRA, per period 'nRootsS'; under log
+# no s fixed point is solved) and ι_t of eq:stateResidualLOG (per period 'nRoots' under log, 'nRootsι' under CRRA).
+# -1 where no period solves it.
+ROOTS = {'nRootsSMax': ('nRootsS',), 'nRootsιMax': ('nRoots', 'nRootsι')}
+
+
 def multiplicitySummary(sols, keys = ('nEq', 'nCand', 'fallback')):
     """ One dict over a {t: period dict} solution: the largest number of equilibria at any state, the
     largest candidate count, the number of states where more than one equilibrium passed the test and
     where none did (num_robustroot.tex, eq:equilibriumTest), and the periods concerned. `keys` names the
-    per-period entries. Periods without them and -1 entries (the legacy rule) are skipped. """
+    per-period entries. Periods without them and -1 entries (the legacy rule) are skipped. Also the
+    largest root counts of the state fixed points (ROOTS), -1 where no period carries one. """
     kEq, kCand, kFb = keys
     out = {'nEqMax': 0, 'nCandMax': 0, 'nStatesMultiple': 0, 'nFallback': 0,
            'periodsMultiple': [], 'periodsFallback': []}
+    for name, per in ROOTS.items():
+        counts = [int(np.max(rep[k])) for rep in sols.values() if isinstance(rep, dict)
+                  for k in per if rep.get(k) is not None and np.size(rep[k])]
+        out[name] = max(counts) if counts else -1
     for t, rep in sols.items():
         if not isinstance(rep, dict) or rep.get(kEq) is None:
             continue
@@ -31,15 +43,18 @@ def multiplicitySummary(sols, keys = ('nEq', 'nCand', 'fallback')):
 
 
 def multiplicityColumns(*summaries):
-    """ The csv columns {'nEqMax', 'nCandMax', 'nFallback'} over the political solves behind one row of a
-    driver's output: the largest equilibrium and candidate counts and the total number of fallback states
-    across the multiplicitySummary dicts passed. -1 in all three when no summary is passed or any is None
-    (a solve that ran no selection rule). Non-key columns: they describe a row, never identify it (#13). """
+    """ The csv columns {'nEqMax', 'nCandMax', 'nFallback', 'nRootsSMax', 'nRootsιMax'} over the political
+    solves behind one row of a driver's output: the largest equilibrium and candidate counts, the total
+    number of fallback states, and the largest root counts of the state fixed points (ROOTS; -1 where no
+    summary carries one) across the multiplicitySummary dicts passed. -1 in all five when no summary is
+    passed or any is None (a solve that ran no selection rule). Non-key columns: they describe a row, never
+    identify it (#13). """
     if not summaries or any(s is None for s in summaries):
-        return {'nEqMax': -1, 'nCandMax': -1, 'nFallback': -1}
-    return {'nEqMax': max(int(s['nEqMax']) for s in summaries),
-            'nCandMax': max(int(s['nCandMax']) for s in summaries),
-            'nFallback': sum(int(s['nFallback']) for s in summaries)}
+        return {'nEqMax': -1, 'nCandMax': -1, 'nFallback': -1} | dict.fromkeys(ROOTS, -1)
+    return ({'nEqMax': max(int(s['nEqMax']) for s in summaries),
+             'nCandMax': max(int(s['nCandMax']) for s in summaries),
+             'nFallback': sum(int(s['nFallback']) for s in summaries)}
+            | {k: max(int(s.get(k, -1)) for s in summaries) for k in ROOTS})
 
 
 def _interpAtCand(x, Y, cand):

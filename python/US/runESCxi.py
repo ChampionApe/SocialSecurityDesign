@@ -4,12 +4,13 @@ the model recalibrated at each xi.
 Run:  .venv\Scripts\python.exe python\US\runESCxi.py --theta C --main      # xi = 0.3 and the self-check, then 0.2, 0.4
       ... --theta C --main --xi 0.2 0.4 --stage calib path acute      # no self-check
       ... --theta C --main --xi 0.3 --stage check                     # the self-check on the rows on disk
+      SSD_TAUPOWER=1 SSD_CARRIER=pi ... --theta C --main --spendingTarget net --outdir results\esc_tau1   # k = 1
 
 xi is the workbook's 'Labor supply elasticity' (data/USMain_test.xlsx, 0.3), replaced in the parameters the
 model is built from (buildUSxi); the workbook is never written. The cost is Eq (esc:AB) of
-writing/US/model_esc.tex, f = exp(-lambda tau Vtilde (1-theta)^2 / 2) with Vtilde of Eq (esc:Vtilde), lambda in
-the 'p' slot and column, phi the dummy 0.5; the calibration variant is config.US['commonX'] (common X by
-default, --no-commonX for vector X). Stages, per xi:
+writing/US/model_esc.tex, f = exp(-lambda tau^k Vtilde (1-theta)^2 / 2) (k = SSD_TAUPOWER, 2 by default) with
+Vtilde of Eq (esc:Vtilde), lambda in the 'p' slot and column, phi the dummy 0.5; the calibration variant is
+config.US['commonX'] (common X by default, --no-commonX for vector X). Stages, per xi:
 
   calib   lambda such that the design in force in 2020 on the freely simulated leaded path is theta*
           (Eq esc:calibration of num_esc.tex; ModelESC.calibrateWedge -> leadedDesignAtT0: a log-grid scan of
@@ -25,9 +26,9 @@ default, --no-commonX for vector X). Stages, per xi:
   acute   nu_t = 1 over the whole horizon (shocks.shockAgeing), a new equilibrium path read at 2020
           (runESC.leadedNewPath, as runESC.stageShocks): theta pinned at theta*, and chosen.
   check   the rows at the workbook xi against the published ones (escCalibration.csv, escPath.csv,
-          escExperiments.csv; read only), CHECK_TOL relative for lambda, absolute otherwise. With the workbook
-          xi in --xi it runs first and a failure stops the run before any other xi: rows from a code path that
-          does not reproduce the headline are not comparable with it.
+          escExperiments.csv of the run's ESC directory, publishedIn; read only), CHECK_TOL relative for lambda,
+          absolute otherwise. With the workbook xi in --xi it runs first and a failure stops the run before any
+          other xi: rows from a code path that does not reproduce the headline are not comparable with it.
 
 --theta VARIANT --main are required (runESC.setTheta; VARIANT = python/paper/config.py's US['theta']): every U.S.
 model imposes theta = the variant's U.S. row of data/oecd26_theta.csv as db['θ0'], seeded off results/calibration/'s
@@ -35,7 +36,17 @@ sweep at that θ0, so theta* is the same at every xi; the published rows the sel
 escPath.csv, escExperiments.csv) and the rows of this file are kept at that thetaSource and θ0 (oecd26.rowsAtTheta), and
 every row written carries thetaSource, θ0 and grid (runESC.thetaColumns).
 
-Writes results/esc/escXiRobustness.csv, long format, merged through runESC.mergeWrite on KEYXI after dropping the rows
+--spendingTarget gross|net (runESC.SPENDING): the calibrations' spending target, a key column (blank = 'gross'); the
+self-check and the stages read the rows at the run's; path and acute rows carry τNet (ModelESC.netTax).
+
+--outdir DIR (runESC.py's --outdir): the run's ESC directory instead of results/esc/; escXiRobustness.csv is written
+there and the self-check reads its published csvs there. --out FILE writes the csv elsewhere, the published csvs read
+in results/esc/; --out with --outdir is refused. results/esc/ holds the cost runESC.PAPERCOST (k = 2, carrier
+'convex'): a run under another SSD_TAUPOWER or SSD_CARRIER is refused into it (the default --out included) and, with
+the check stage, from it (runESC.refuseCost); its rows carry tauPower and carrier (runESC.tagColumns). --bracket is in
+the run's λ units; the default ModelESC.WEDGE_BRACKET['size'] carries TAU_SCALE = τ0^(1-k).
+
+Writes escXiRobustness.csv, long format, merged through runESC.mergeWrite on KEYXI after dropping the rows
 on file at another thetaSource or θ0 (a csv holds one θ): per xi one
 'calibration' row and one 'acute pinned' and one 'acute chosen' row at 2020, and one 'path' row per date.
 The path and acute stages read lambda from the calibration row on disk when calib is not run with them;
@@ -49,7 +60,7 @@ import numpy as np, pandas as pd
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, '..', '..'))
-CWD = os.getcwd()                     # --out resolves against the caller's directory, not HERE
+CWD = os.getcwd()                     # --out, --outdir resolve against the caller's directory, not HERE
 sys.stdout.reconfigure(encoding = 'utf-8', line_buffering = True)
 sys.path.insert(0, HERE)
 os.chdir(HERE)
@@ -60,13 +71,21 @@ import runESC
 from policy import multiplicityColumns
 
 ESCDIR = os.path.join(REPO, 'results', 'esc')
-OUT = os.path.join(ESCDIR, 'escXiRobustness.csv')
-PUBLISHED = {'calib': os.path.join(ESCDIR, 'escCalibration.csv'),
-             'path': os.path.join(ESCDIR, 'escPath.csv'),
-             'experiments': os.path.join(ESCDIR, 'escExperiments.csv')}
+OUTNAME = 'escXiRobustness.csv'
+OUT = os.path.join(ESCDIR, OUTNAME)
+
+
+def publishedIn(escdir):
+    """ The self-check's published csvs in ESC directory `escdir`: {'calib', 'path', 'experiments'} -> path. """
+    return {'calib': os.path.join(escdir, 'escCalibration.csv'),
+            'path': os.path.join(escdir, 'escPath.csv'),
+            'experiments': os.path.join(escdir, 'escExperiments.csv')}
+
+
+PUBLISHED = publishedIn(ESCDIR)       # selfCheck's default
 XI0 = float(testmod.pars['ξ'])        # the workbook's value
 SPEC, PHI = 'size', 0.5               # the paper's cost; phi is a dummy key under 'size'
-KEYXI = ['xi', 'spec', 'phi', 'commonX', 'kind', 'pos']
+KEYXI = ['xi', 'spec', 'phi', 'commonX', 'spendingTarget', 'kind', 'pos']    # spendingTarget blank at 'gross'
 THETA_TOL = 1e-10                     # theta* at xi against the workbook-xi model
 CHECK_TOL = 1e-6
 
@@ -103,19 +122,22 @@ def _assertθ(θ, θ0, ξ, where):
 
 def _ids(ξ, commonX, kind, pos, date, λ):
     return {'xi': ξ, 'spec': SPEC, 'phi': PHI, 'commonX': commonX, 'kind': kind, 'pos': int(pos),
-            'date': date, 'p': λ} | runESC.thetaColumns()
+            'date': date, 'p': λ} | runESC.tagColumns()
 
 
-def atθ(df):
-    """ The rows of csv frame `df` at the run's θ (oecd26.rowsAtTheta at runESC.THETA's variant and θ0). """
-    return oecd26.rowsAtTheta(df, runESC.THETA['variant'], runESC.THETA['θ0'])
+def atθ(df, spending = True):
+    """ The rows of csv frame `df` at the run's θ (oecd26.rowsAtTheta at runESC.THETA's variant and θ0) and, with
+    `spending`, at its spending target (runESC.atSpending). """
+    d = oecd26.rowsAtTheta(df, runESC.THETA['variant'], runESC.THETA['θ0'])
+    return runESC.atSpending(d) if spending else d
 
 
 def write(out, rows):
-    """ runESC.mergeWrite on KEYXI, after the rows of `out` at another thetaSource or θ0 than the run's are dropped. """
+    """ runESC.mergeWrite on KEYXI, after the rows of `out` at another thetaSource or θ0 than the run's are dropped
+    (rows at the other spending target are kept, keyed apart). """
     if os.path.exists(out):
         old = pd.read_csv(out, float_precision = 'round_trip')
-        keep = atθ(old)
+        keep = atθ(old, spending = False)
         if len(keep) < len(old):
             print(f'  {os.path.relpath(out, REPO)}: {len(old) - len(keep)} rows at another θ dropped')
             runESC.writeCsv(keep, out)
@@ -181,6 +203,7 @@ def stagePath(ξ, λ, out, commonX):
         rows.append(_ids(ξ, commonX, 'path', pos, dates[pos] if pos < len(dates) else np.nan, λ) | {
             'ν': float(m.db['ν'].xs(t)), 'θ': float(led['θ'].xs(t)), 'τ': r['τ'], 'sr': r['sr'],
             'workweek': r['workweek'], 'R': r['R'],
+            'τNet': float(m.netTax(float(led['τ'].xs(t)), float(led['θ'].xs(t)), t)),
             'τExo': rb['τ'], 'srExo': rb['sr'], 'workweekExo': rb['workweek']} | multiplicityColumns(led['multiplicity']))
     write(out, rows)
     print('[ξ={}] θ path: {}   τ path: {}  ({:.0f}s)'.format(
@@ -204,7 +227,8 @@ def stageAcute(ξ, λ, out, commonX):
             'ν': float(mt.db['ν'].xs(mt.db['t'][pos])), 'θ': r['θ0'], 'τ': r['t0']['τ'],
             'sr': r['t0']['sr'], 'workweek': r['t0']['workweek'], 'R': r['t0']['R'],
             'θ_tm1': r['θ_'], 'θ_t1': r['θ1'], 'τ_t1': r['t1']['τ'], 'sr_t1': r['t1']['sr'],
-            'ww_t1': r['t1']['workweek']} | multiplicityColumns(r['multiplicity']))
+            'ww_t1': r['t1']['workweek'], 'τNet': r['τNet0'], 'τNet_t1': r['τNet1']}
+            | multiplicityColumns(r['multiplicity']))
         print('[ξ={}] acute {:<6}: θ_t0={:.4f}  τ_t0={:.4f} sr_t0={:.4f} ww_t0={:.2f}  (θ_t1={:.4f})'.format(
             ξ, 'pinned' if pin else 'chosen', r['θ0'], r['t0']['τ'], r['t0']['sr'], r['t0']['workweek'], r['θ1']))
     write(out, rows)
@@ -228,15 +252,17 @@ def calibrationRow(out, ξ, commonX):
     return None if d.empty else d.iloc[0].to_dict()
 
 
-def selfCheck(out, commonX, tol = CHECK_TOL):
-    """ The workbook-ξ rows of `out` against the published ones, both at the run's θ (atθ). True iff at least one
-    pair was compared and every gap is within tol (relative for λ, absolute otherwise). Pairs whose rows are
-    missing on either side are listed, not failed. """
+def selfCheck(out, commonX, tol = CHECK_TOL, published = None):
+    """ The workbook-ξ rows of `out` against the published ones (`published`, publishedIn's dict; PUBLISHED, i.e.
+    results/esc/, when None), both at the run's θ (atθ). True iff at least one pair was compared and every gap is
+    within tol (relative for λ, absolute otherwise). Pairs whose rows are missing on either side are listed, not
+    failed. """
+    files = PUBLISHED if published is None else published
     d = _rows(out, XI0, commonX)
-    cal = runESC.pickCalib(atθ(pd.read_csv(PUBLISHED['calib'])), SPEC, PHI, commonX)
-    path = atθ(pd.read_csv(PUBLISHED['path']))
+    cal = runESC.pickCalib(atθ(pd.read_csv(files['calib'])), SPEC, PHI, commonX)
+    path = atθ(pd.read_csv(files['path']))
     path = path[(path['spec'] == SPEC) & np.isclose(path['phi'], PHI) & (path['commonX'].astype(bool) == bool(commonX))]
-    exp = atθ(pd.read_csv(PUBLISHED['experiments']))
+    exp = atθ(pd.read_csv(files['experiments']))
     exp = exp[np.isclose(exp['ρ'], 1.0) & (exp['preferences'] == 'LOG') & (exp['spec'] == SPEC)
               & np.isclose(exp['phi'], PHI) & (exp['commonX'].astype(bool) == bool(commonX))
               & (exp['scenario'] == 'acute')]
@@ -266,7 +292,8 @@ def selfCheck(out, commonX, tol = CHECK_TOL):
         for k, kp in (('θ', 'θ_t0'), ('τ', 'τ_t0')):
             pair(f'{kind} {k} 2020', mine[k] if len(mine) else [], pub[kp] if len(pub) else [])
 
-    print(f'\nSELF-CHECK at the workbook ξ = {XI0} against results/esc/escCalibration, escPath, escExperiments '
+    where = os.path.relpath(os.path.dirname(files['calib']), REPO).replace(os.sep, '/')
+    print(f'\nSELF-CHECK at the workbook ξ = {XI0} against {where}/escCalibration, escPath, escExperiments '
           f'(tol {tol:g}):')
     for label, a, b, gap, good in pairs:
         print('  {:<24} {:>18.12f} {:>18.12f}  gap {:+.2e}  {}'.format(label, a, b, gap, 'ok' if good else 'FAIL'))
@@ -324,15 +351,40 @@ def main():
                     help = "the calibration variant, config.US['commonX'] (common X, the headline); part of the "
                            "merge key")
     ap.add_argument('--bracket', type = float, nargs = 2, default = None,
-                    help = "the λ scan bracket; default ModelESC.WEDGE_BRACKET['size']")
-    ap.add_argument('--out', default = OUT)
+                    help = "the λ scan bracket in the run's λ units; default ModelESC.WEDGE_BRACKET['size'] (scaled to "
+                           "SSD_TAUPOWER by TAU_SCALE)")
+    ap.add_argument('--out', default = None,
+                    help = 'the csv written instead of results/esc/' + OUTNAME + ' (the published csvs still read '
+                           'in results/esc/); not with --outdir. A relative path is the working directory\'s.')
+    ap.add_argument('--outdir', default = None,
+                    help = "the run's ESC directory instead of results/esc/ (runESC.py's --outdir): " + OUTNAME +
+                           " written there, the self-check's escCalibration, escPath, escExperiments read there; "
+                           "required under a cost other than runESC.PAPERCOST (e.g. results/esc_tau1). A relative "
+                           "path is the working directory's.")
     ap.add_argument('--theta', default = None, help = "the pipeline's main θ variant, config.US['theta'] (with --main)")
-    ap.add_argument('--main', action = 'store_true', help = "with --theta: read and write results/esc/")
+    ap.add_argument('--main', action = 'store_true',
+                    help = "with --theta: read and write results/esc/ (or --outdir's), the U.S. sweep "
+                           "results/calibration/'s")
+    ap.add_argument('--spendingTarget', default = 'gross', choices = runESC.SPENDING_TARGETS,
+                    help = "runESC.py's: 'net' calibrates lambda and (beta, omega) to the benefits paid, tau_t0 f = "
+                           "tau0; a key column (blank = 'gross'), and the self-check reads the published rows at it")
     a = ap.parse_args()
-    a.out = os.path.abspath(os.path.join(CWD, a.out))
+    if a.out is not None and a.outdir is not None:
+        raise SystemExit('--out and --outdir are exclusive: --outdir DIR writes DIR/{} and reads the self-check\'s '
+                         'published csvs in DIR'.format(OUTNAME))
+    escdir = ESCDIR if a.outdir is None else os.path.abspath(os.path.join(CWD, a.outdir))
+    a.out = os.path.join(escdir, OUTNAME) if a.out is None else os.path.abspath(os.path.join(CWD, a.out))
     if a.theta is None or not a.main:
         raise SystemExit('--theta VARIANT --main are required: the rows are at config.US[\'theta\'], the design the '
                          'paper reads')
+    runESC.refuseCost(os.path.dirname(a.out))
+    if 'check' in a.stage:
+        try:
+            runESC.refuseCost(escdir)
+        except SystemExit as e:
+            raise SystemExit(f"{e}; runESCxi.py's self-check reads its published csvs there: --outdir DIR, or no "
+                             f"check stage") from None
+    runESC.setSpendingTarget(a.spendingTarget)
     runESC.setTheta(a.theta, None, ('calib',), False, a.commonX, 1.0, True)
     xis = [round(float(x), 10) for x in a.xi]
     xis = [x for x in xis if np.isclose(x, XI0)][:1] + [x for x in dict.fromkeys(xis) if not np.isclose(x, XI0)]
@@ -340,6 +392,10 @@ def main():
     os.makedirs(os.path.dirname(a.out), exist_ok = True)
     print('runESCxi: ξ = {}, stages {}, commonX = {}, -> {}'.format(xis, a.stage, a.commonX,
                                                                   os.path.relpath(a.out, REPO)))
+    if runESC.costColumns():
+        print('  cost k = {tauPower:g}, carrier {carrier!r}; the self-check reads {d}'.format(
+            d = os.path.relpath(escdir, REPO), **runESC.costColumns()))
+    published = publishedIn(escdir)
     θ0 = θStarAt(XI0, a.commonX)
     for ξ in xis:
         cal = None
@@ -355,7 +411,7 @@ def main():
             if 'acute' in run:
                 stageAcute(ξ, float(cal['p']), a.out, a.commonX)
         if 'check' in a.stage and np.isclose(ξ, XI0):
-            if not selfCheck(a.out, a.commonX):
+            if not selfCheck(a.out, a.commonX, published = published):
                 summary(a.out, xis, a.commonX)
                 print('DONE (self-check failed)')
                 raise SystemExit(f'self-check FAILED at ξ = {XI0}: stopped before {xis[1:]}.')

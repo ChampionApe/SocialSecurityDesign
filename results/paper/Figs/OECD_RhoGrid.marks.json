@@ -66,7 +66,7 @@
    "label": "ρ = 0.5",
    "series": "UK",
    "panel": "Political weight of the old ω",
-   "value": 1.2416579746736198,
+   "value": 1.2424086203587754,
    "text": "1.242",
    "table": null,
    "row": null
@@ -76,7 +76,7 @@
    "label": "ρ = 1.0",
    "series": "UK",
    "panel": "Political weight of the old ω",
-   "value": 1.0416207830422035,
+   "value": 1.0423391187292257,
    "text": "1.042",
    "table": null,
    "row": null
@@ -86,8 +86,8 @@
    "label": "ρ = 2.0",
    "series": "UK",
    "panel": "Political weight of the old ω",
-   "value": 1.009046368041714,
-   "text": "1.009",
+   "value": 1.0097701164713415,
+   "text": "1.010",
    "table": null,
    "row": null
   },
@@ -96,7 +96,7 @@
    "label": "ρ = 0.5",
    "series": "France",
    "panel": "Political weight of the old ω",
-   "value": 2.05520239435976,
+   "value": 2.0547811177689472,
    "text": "2.055",
    "table": null,
    "row": null
@@ -106,7 +106,7 @@
    "label": "ρ = 1.0",
    "series": "France",
    "panel": "Political weight of the old ω",
-   "value": 1.3922987272017686,
+   "value": 1.3921772590232764,
    "text": "1.392",
    "table": null,
    "row": null
@@ -116,7 +116,7 @@
    "label": "ρ = 2.0",
    "series": "France",
    "panel": "Political weight of the old ω",
-   "value": 1.178583180712428,
+   "value": 1.1786054230698706,
    "text": "1.179",
    "table": null,
    "row": null
@@ -156,7 +156,7 @@
    "label": "ρ = 0.5",
    "series": "UK",
    "panel": "Taste for leisure X",
-   "value": 7.947715473146744,
+   "value": 7.947692602675171,
    "text": "7.95",
    "table": null,
    "row": null
@@ -166,7 +166,7 @@
    "label": "ρ = 1.0",
    "series": "UK",
    "panel": "Taste for leisure X",
-   "value": 7.66859145449842,
+   "value": 7.668581368478406,
    "text": "7.67",
    "table": null,
    "row": null
@@ -176,7 +176,7 @@
    "label": "ρ = 2.0",
    "series": "UK",
    "panel": "Taste for leisure X",
-   "value": 7.468774198054343,
+   "value": 7.468777685532953,
    "text": "7.47",
    "table": null,
    "row": null
@@ -186,7 +186,7 @@
    "label": "ρ = 0.5",
    "series": "France",
    "panel": "Taste for leisure X",
-   "value": 6.512586525984848,
+   "value": 6.512585638629432,
    "text": "6.51",
    "table": null,
    "row": null
@@ -196,7 +196,7 @@
    "label": "ρ = 1.0",
    "series": "France",
    "panel": "Taste for leisure X",
-   "value": 6.484075060636789,
+   "value": 6.484074437586398,
    "text": "6.48",
    "table": null,
    "row": null
@@ -206,7 +206,7 @@
    "label": "ρ = 2.0",
    "series": "France",
    "panel": "Taste for leisure X",
-   "value": 6.455523930650541,
+   "value": 6.455523395624707,
    "text": "6.46",
    "table": null,
    "row": null
@@ -246,7 +246,7 @@
    "label": "ρ = 0.5",
    "series": "UK",
    "panel": "Interest factor R, 30 years",
-   "value": 2.0642381820376934,
+   "value": 2.0642488804534307,
    "text": "2.064",
    "table": null,
    "row": null
@@ -256,7 +256,7 @@
    "label": "ρ = 1.0",
    "series": "UK",
    "panel": "Interest factor R, 30 years",
-   "value": 2.196016050361501,
+   "value": 2.196021664572681,
    "text": "2.196",
    "table": null,
    "row": null
@@ -266,7 +266,7 @@
    "label": "ρ = 2.0",
    "series": "UK",
    "panel": "Interest factor R, 30 years",
-   "value": 2.297874571329031,
+   "value": 2.297872926304377,
    "text": "2.298",
    "table": null,
    "row": null
@@ -276,7 +276,7 @@
    "label": "ρ = 0.5",
    "series": "France",
    "panel": "Interest factor R, 30 years",
-   "value": 2.4206678597516094,
+   "value": 2.4206679562295594,
    "text": "2.421",
    "table": null,
    "row": null
@@ -286,7 +286,7 @@
    "label": "ρ = 1.0",
    "series": "France",
    "panel": "Interest factor R, 30 years",
-   "value": 2.427186885290842,
+   "value": 2.4271872114662347,
    "text": "2.427",
    "table": null,
    "row": null
@@ -296,7 +296,7 @@
    "label": "ρ = 2.0",
    "series": "France",
    "panel": "Interest factor R, 30 years",
-   "value": 2.4333638474282417,
+   "value": 2.433364046786141,
    "text": "2.433",
    "table": null,
    "row": null
@@ -336,7 +336,7 @@
    "label": "ρ = 0.5",
    "series": "UK",
    "panel": "Savings rate 2020, % of GDP",
-   "value": 17.09963218305711,
+   "value": 17.0996144527697,
    "text": "17.10%",
    "table": null,
    "row": null
@@ -346,7 +346,7 @@
    "label": "ρ = 1.0",
    "series": "UK",
    "panel": "Savings rate 2020, % of GDP",
-   "value": 15.96296588474321,
+   "value": 15.962947730182462,
    "text": "15.96%",
    "table": null,
    "row": null
@@ -356,7 +356,7 @@
    "label": "ρ = 2.0",
    "series": "UK",
    "panel": "Savings rate 2020, % of GDP",
-   "value": 15.09507396051889,
+   "value": 15.095062992205149,
    "text": "15.10%",
    "table": null,
    "row": null
@@ -366,7 +366,7 @@
    "label": "ρ = 0.5",
    "series": "France",
    "panel": "Savings rate 2020, % of GDP",
-   "value": 12.60496706578636,
+   "value": 12.6049725866701,
    "text": "12.60%",
    "table": null,
    "row": null
@@ -376,7 +376,7 @@
    "label": "ρ = 1.0",
    "series": "France",
    "panel": "Savings rate 2020, % of GDP",
-   "value": 12.38823788013528,
+   "value": 12.38823870382924,
    "text": "12.39%",
    "table": null,
    "row": null
@@ -386,7 +386,7 @@
    "label": "ρ = 2.0",
    "series": "France",
    "panel": "Savings rate 2020, % of GDP",
-   "value": 12.20885814424823,
+   "value": 12.2088594046028,
    "text": "12.21%",
    "table": null,
    "row": null

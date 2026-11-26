@@ -6,9 +6,16 @@ Run:  .venv\Scripts\python.exe python\US\collectESCexperiments.py --theta V
                          index keeps those), which the merged csv then carries (atTheta). Without it the run is
                          refused, since results/esc/ holds the main variant's rows (oecd26.underResults); an ESC
                          directory outside results/ merges every row, as written.
+      ... --spendingTarget gross|net   only the rows at that target (atSpending; 'gross', the default, the rows
+                         without the column); the merged csv keeps the rows on file at the other target beside them
+                         (withOtherTargets), and a reader selects its own.
+      ... --outdir DIR   both merges read their inputs and write their csv in DIR instead of results/esc/ (runESC.py's
+                         --outdir). results/esc/ holds runESC.PAPERCOST's rows: a run under another SSD_TAUPOWER or
+                         SSD_CARRIER is refused there (runESC.refuseCost); the rows keep their tauPower and carrier.
 
 Inputs (results/esc/): escShocks.csv (rho = 1, LOG, runESC.py) and escShocksCRRA.csv (rho != 1, CRRA,
-runESCcrra.py --stage shocks). Writes results/esc/escExperiments.csv (long form, one row per
+runESCcrra.py --stage shocks), both required (SystemExit naming the missing one). Writes
+results/esc/escExperiments.csv (long form, one row per
 (rho, spec, method, scenario, reading)) and prints a per-spec pivot at t0 (2020): the design in force
 (theta_t0) and the tax/savings outcomes there, chosen vs pinned. Reported at t0 because every scenario
 is a new equilibrium path whose political choice binds from the first period, so 2020's design is an
@@ -29,7 +36,8 @@ REPO = os.path.abspath(os.path.join(HERE, '..', '..'))
 ESC = os.path.join(REPO, 'results', 'esc')
 
 COLUMNS = ('ρ', 'preferences', 'spec', 'phi', 'commonX', 'method', 'p', 'scenario', 'θpinned',
-           'θ_tm1', 'θ_t0', 'θ_t1', 'τ_t0', 'sr_t0', 'ww_t0', 'τ_t1', 'sr_t1', 'ww_t1', 'thetaSource', 'θ0')
+           'θ_tm1', 'θ_t0', 'θ_t1', 'τ_t0', 'sr_t0', 'ww_t0', 'τ_t1', 'sr_t1', 'ww_t1', 'τNet_t0', 'τNet_t1',
+           'thetaSource', 'θ0', 'spendingTarget', 'tauPower', 'carrier')
 
 
 def atTheta(d, theta):
@@ -39,6 +47,24 @@ def atTheta(d, theta):
         return d
     ts = d['thetaSource'].fillna('index') if 'thetaSource' in d.columns else pd.Series('index', index = d.index)
     return d[ts == theta]
+
+
+def atSpending(d, target = 'gross'):
+    """ The rows of frame `d` at spending target `target` (runESC.atSpending: a missing column or cell is 'gross'). """
+    if d is None:
+        return d
+    st = d['spendingTarget'].fillna('gross') if 'spendingTarget' in d.columns else pd.Series('gross', index = d.index)
+    return d[st == target]
+
+
+def withOtherTargets(d, out, target, theta):
+    """ Frame `d` (the run's rows, at spending target `target`) after the rows of csv `out` at thetaSource `theta` and
+    another target (kept from an earlier run at that target), so that one merged csv holds both targets' rows. """
+    if not os.path.exists(out):
+        return d
+    old = atTheta(pd.read_csv(out, float_precision = 'round_trip'), theta)
+    other = old.drop(atSpending(old, target).index)
+    return pd.concat([other, d], ignore_index = True) if len(other) else d
 
 
 def merge(log, crra):
@@ -77,8 +103,8 @@ def costs(frames):
     'scale' at rho != 1). One
     row per (rho, spec, scenario, θpinned) at the published method (LOG rows are exact), common X, phi 0.5,
     with the outcomes at t0 and t0+1, their changes against the baseline of the SAME reading and spec (d*),
-    and pi = Pi/R at t0 where the spec carries it (with its carrier where not 'pi'). A key found in
-    two files is an error. Pure. """
+    and pi = Pi/R at t0 where the spec carries it (with its carrier where not 'pi'), and tauPower, carrier where the
+    rows carry them (runESC.costColumns). A key found in two files is an error. Pure. """
     parts = []
     for stem, d in frames.items():
         if d is None or d.empty:
@@ -105,7 +131,7 @@ def costs(frames):
         d['d' + c] = d[c].values - base[c].reindex(at).values
     cols = (['ρ', 'spec', 'p', 'scenario', 'θpinned', 'method', 'source'] + list(OUTCOMES)
             + ['d' + c for c in OUTCOMES] + [c for c in ('ΠR', 'carrier') if c in d.columns]
-            + [c for c in ('thetaSource', 'θ0') if c in d.columns])
+            + [c for c in ('τNet_t0', 'τNet_t1', 'thetaSource', 'θ0', 'spendingTarget', 'tauPower') if c in d.columns])
     return d[cols].sort_values(['spec', 'ρ', 'scenario', 'θpinned']).reset_index(drop = True)
 
 
@@ -115,8 +141,16 @@ def main():
     ap.add_argument('--costs', action = 'store_true',
                     help = "write escAgeingCosts.csv from the paper's csvs and the --tag Costs runs instead")
     ap.add_argument('--theta', default = None, help = "keep the rows at this thetaSource only (atTheta)")
+    ap.add_argument('--spendingTarget', default = 'gross', choices = ('gross', 'net'),
+                    help = "keep the rows at this spending target only (atSpending; 'gross' the rows without one)")
+    ap.add_argument('--outdir', default = None,
+                    help = 'the ESC directory both merges read and write instead of results/esc/ (runESC.py --outdir)')
     args = ap.parse_args()
-    target = os.path.join(ESC, 'escAgeingCosts.csv' if args.costs else 'escExperiments.csv')
+    esc = ESC if args.outdir is None else os.path.abspath(args.outdir)      # before runESC's import moves the cwd
+    import runESC
+    runESC.refuseCost(esc)
+    sel = lambda d: atSpending(atTheta(d, args.theta), args.spendingTarget)
+    target = os.path.join(esc, 'escAgeingCosts.csv' if args.costs else 'escExperiments.csv')
     if args.theta is None:
         import oecd26
         if oecd26.underResults(target):
@@ -125,11 +159,11 @@ def main():
                              "--theta V (--theta index: the rows without thetaSource)".format(os.path.relpath(target, REPO)))
     if args.costs:
         stems = ('escShocks', 'escShocksCRRA', 'escShocksCosts', 'escShocksCRRACosts', 'escShocksCRRACostsMild')
-        frames = {st: atTheta(pd.read_csv(os.path.join(ESC, st + '.csv')), args.theta) for st in stems
-                  if os.path.exists(os.path.join(ESC, st + '.csv'))}
+        frames = {st: sel(pd.read_csv(os.path.join(esc, st + '.csv'))) for st in stems
+                  if os.path.exists(os.path.join(esc, st + '.csv'))}
         d = costs(frames)
-        out = os.path.join(ESC, 'escAgeingCosts.csv')
-        d.to_csv(out, index = False)
+        out = os.path.join(esc, 'escAgeingCosts.csv')
+        withOtherTargets(d, out, args.spendingTarget, args.theta).to_csv(out, index = False)
         print(f'-> {os.path.relpath(out, REPO)}  ({len(d)} rows from {", ".join(frames)})\n')
         for pin, lab in ((True, 'theta PINNED'), (False, 'theta CHOSEN')):
             sub = d[(d['θpinned'] == pin) & (d['scenario'] != 'baseline')]
@@ -138,10 +172,14 @@ def main():
             print('--- {}: changes at 2020 against the baseline of the same reading ---'.format(lab))
             print(piv.round(4).to_string(), '\n')
         return
-    d = merge(atTheta(pd.read_csv(os.path.join(ESC, 'escShocks.csv')), args.theta),
-              atTheta(pd.read_csv(os.path.join(ESC, 'escShocksCRRA.csv')), args.theta))
-    out = os.path.join(ESC, 'escExperiments.csv')
-    d.to_csv(out, index = False)
+    inputs = [os.path.join(esc, f) for f in ('escShocks.csv', 'escShocksCRRA.csv')]
+    missing = [os.path.basename(f) for f in inputs if not os.path.exists(f)]
+    if missing:
+        raise SystemExit('collectESCexperiments.py: {} missing in {}; escExperiments.csv merges the LOG and the CRRA rows '
+                         '(runESC.py and runESCcrra.py --stage shocks into that directory first)'.format(', '.join(missing), esc))
+    d = merge(sel(pd.read_csv(inputs[0])), sel(pd.read_csv(inputs[1])))
+    out = os.path.join(esc, 'escExperiments.csv')
+    withOtherTargets(d, out, args.spendingTarget, args.theta).to_csv(out, index = False)
     print(f'-> {os.path.relpath(out, REPO)}  ({len(d)} rows)\n')
 
     order = ['baseline', 'mild', 'acute', 'frIncome', 'frLeisure', 'frVoting', 'frBoth',

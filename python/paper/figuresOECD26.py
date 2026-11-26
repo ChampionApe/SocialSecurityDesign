@@ -18,7 +18,7 @@ from matplotlib.transforms import Bbox
 import config as C
 import datasets as D
 import oecdFigure1 as F1
-from figures import plt, SERIES, INK, _panel, _save, markId, mark
+from figures import plt, SERIES, SERIES3, INK, _panel, _save, markId, mark
 from tables import BANNER
 import tablesOECD26 as T
 from tablesOECD26 import (RELATIONS, SPENDING, panelData, ols, suffix, variant, spendingSlopes, _xy, _layersText,
@@ -54,6 +54,8 @@ def oecd26Figure(layer = 1, turnout = None, sample = None, reading = None, spec 
     v = variant(turnout, sample, reading, spec, betaRule, spending, omegaRule, retAge, theta)
     p = panelData(layer, **v)
     sfx = suffix(**v)
+    if layer == 1 and sfx == '':
+        return oecd26Layer1Costs()
     name = 'OECD26_Layer{}'.format(layer) + sfx
     cells = ([(0, 0, 'spending', 'growth'), (0, 1, 'spending', 'inequality'), (0, 2, 'spending', 'index'),
               (1, 0, 'index', 'growth'), (1, 1, 'index', 'inequality')] if layer == 1 else
@@ -126,13 +128,133 @@ def oecd26Figure(layer = 1, turnout = None, sample = None, reading = None, spec 
                 r'and in the model (section \ref{sec:esc:crossSection}): ' + shared + r', at its cost '
                 r'$\lambda_{n,t}$ and at its own CSES propensities to vote, Luxembourg, which has none, at a flat '
                 r'profile. The model\textquotesingle s index is $1/(2-\theta)$ of the design chosen in 1990 for '
-                r'2020, its spending $\tau(1-\alpha)$ in 2020 on the path of that design. The lines are least-squares '
-                r'fits; table \ref{table:OECD26:slopes} reports their slopes.')
+                r'2020, its spending ' + T.spendingTex(v) + r' in 2020 on the path of that design. The lines are '
+                r'least-squares fits; table \ref{table:OECD26:slopes} reports their slopes.')
     else:
         note = (r'\textit{Note:} ' + sampleText(n, p.attrs['dropped']) + r' in the data and in the model, '
                 r'with the least-squares lines whose slopes table~\ref{table:OECD26:slopes' + sfx + '} reports. '
                 + modelText(v) + ' ' + _layersText(a, v, layers = (1,)) + ' ' + turnoutNote(v['turnout']))
     return out + [_note(name, _src(T._thetaSource(v)), note)]
+
+
+# Figure 7.2 (OECD26_Layer1 at the paper's variant): the model under both costs of tablesOECD26.COSTS.
+COSTSTYLE = {1: (SERIES[1], 'D', 3.6), 2: (SERIES3, 's', 3.1)}             # colour, marker, marker size
+CELLS = [(0, 0, 'spending', 'growth'), (0, 1, 'spending', 'inequality'), (0, 2, 'spending', 'index'),
+         (1, 0, 'index', 'growth'), (1, 1, 'index', 'inequality')]
+GRIDROWS = [('spending', 'growth'), ('index', 'growth'), ('spending', 'index'), ('spending', 'inequality'),
+            ('index', 'inequality')]
+
+
+def _costSeries(ax, name, x, y, yv, xv, series, colour, marker, ms, z, p, marks, part = None):
+    """ One series of a panel of the relation (yv, xv): its countries and its least-squares line, each a mark (the
+    line carries table 5's row). `part` the mark id's panel part (yv_xv where None). """
+    (xn, xf), (yn, yf) = MARKFMT[xv], MARKFMT[yv]
+    part = yv + '_' + xv if part is None else part
+    for iso in p.index:
+        pt, = ax.plot(x[iso], y[iso], linestyle = 'none', marker = marker, markersize = ms, color = colour,
+                      markeredgecolor = EDGE, markeredgewidth = 0.5, zorder = z)
+        pt.set_gid(markId(name, part, series, iso.lower()))
+        marks.append(mark(pt.get_gid(), p.at[iso, 'country'], y[iso],
+                          '{}: {}; {}: {}'.format(xn, xf.format(x[iso]), yn, yf.format(y[iso])),
+                          series = series, panel = '{} against {}'.format(yn, xn)))
+    o = ols(x, y)
+    xs = np.linspace(float(x.min()), float(x.max()), 2)
+    ln, = ax.plot(xs, o['intercept'] + o['slope']*xs, color = colour, linewidth = 1.2, zorder = z - 1)
+    ln.set_gid(markId(name, part, series, 'fit'))
+    marks.append(mark(ln.get_gid(), 'fitted line', o['slope'],
+                      'slope {:.{d}f} (s.e. {:.{d}f})'.format(o['slope'], o['se'], d = T.slopeDigits(yv, xv)),
+                      series = series, panel = '{} against {}'.format(yn, xn), table = 'OECD26_Slopes',
+                      row = yv + '_' + xv))
+
+
+def _limits(ax, yv, xv, ps):
+    if yv == 'index':
+        ax.set_ylim(*AXIS['index'])
+    else:
+        top = max(float(np.nanmax(p[['spendingData', 'spendingModel']].values)) for p in ps)
+        ax.set_ylim(0, max(AXIS['spending'][1], top + 1))
+    if xv == 'index':
+        ax.set_xlim(*AXIS['index'])
+
+
+def _handle(colour, marker, ms = 3.6):
+    return plt.Line2D([], [], linestyle = '-', linewidth = 1.2, marker = marker, markersize = ms, color = colour,
+                      markeredgecolor = EDGE, markeredgewidth = 0.5)
+
+
+def oecd26Layer1Costs(layout = 'overlay'):
+    r""" Figure 7.2 at the paper's variant, the data beside the model under each cost of tablesOECD26.COSTS (each its
+    own anchor and mean ω, costKw). `layout` 'overlay' (OECD26_Layer1, the paper's): figure 1.1's five panels, three
+    series each. 'grid' (OECD26_Layer1Grid, built, not input): one row per relation, one column per cost, the data
+    repeated. Both write the same note; a line's mark carries table 5's row. """
+    if layout not in ('overlay', 'grid'):
+        raise ValueError('layout {!r}: overlay | grid'.format(layout))
+    name = 'OECD26_Layer1' + ('' if layout == 'overlay' else 'Grid')
+    v = variant()
+    ps = {k: panelData(1, **T.costKw(k)) for k in T.COSTS}
+    first = ps[T.COSTS[0]]
+    if any(list(p.index) != list(first.index) for p in ps.values()):
+        raise ValueError(name + ': the two costs cover different countries')
+    n = len(first)
+    marks = []
+    if layout == 'overlay':
+        fig, axes = plt.subplots(2, 3, figsize = (5.91, 3.9), constrained_layout = True)
+        for r, c, yv, xv in CELLS:
+            ax = axes[r, c]
+            _panel(ax, '', '', titlesize = 8, labelsize = 7)
+            x, y = _xy(first, yv, xv, 'Data')
+            _costSeries(ax, name, x, y, yv, xv, 'data', SERIES[0], 'o', 3.6, 3, first, marks)
+            for k in T.COSTS:
+                x, y = _xy(ps[k], yv, xv, 'Model')
+                colour, marker, ms = COSTSTYLE[k]
+                _costSeries(ax, name, x, y, yv, xv, T.COSTKEY[k], colour, marker, ms, 3 + k, ps[k], marks)
+            _limits(ax, yv, xv, ps.values())
+            if c == 0:
+                ax.set_ylabel(F1.LABEL[F1.PLOT[yv]], color = INK['secondary'], fontsize = 7.5)
+            if r == 1 or c == 2:
+                ax.set_xlabel(F1.LABEL[F1.PLOT[xv]], color = INK['secondary'], fontsize = 7.5)
+        axes[1, 2].axis('off')
+        leg = axes[1, 2].legend([_handle(SERIES[0], 'o')] + [_handle(*COSTSTYLE[k]) for k in T.COSTS],
+                                ['data'] + ['model, ' + T.COSTNAME[k] for k in T.COSTS], loc = 'center',
+                                frameon = False, fontsize = 7, labelcolor = INK['secondary'],
+                                title = '{} countries, fitted lines'.format(n), title_fontsize = 7)
+        leg.get_title().set_color(INK['secondary'])
+    else:
+        fig, axes = plt.subplots(len(GRIDROWS), 2, figsize = (5.91, 8.4), constrained_layout = True)
+        for r, (yv, xv) in enumerate(GRIDROWS):
+            for c, k in enumerate(T.COSTS):
+                ax = axes[r, c]
+                _panel(ax, '', '', titlesize = 8, labelsize = 7)
+                part = '{}_{}_{}'.format(yv, xv, T.COSTKEY[k])
+                x, y = _xy(ps[k], yv, xv, 'Data')
+                _costSeries(ax, name, x, y, yv, xv, 'data', SERIES[0], 'o', 3.6, 3, ps[k], marks, part)
+                x, y = _xy(ps[k], yv, xv, 'Model')
+                _costSeries(ax, name, x, y, yv, xv, T.COSTKEY[k], SERIES[1], 'D', 3.6, 4, ps[k], marks, part)
+                _limits(ax, yv, xv, ps.values())
+                if r == 0:
+                    ax.set_title(T.COSTTITLE[k], fontsize = 8, color = INK['primary'], loc = 'left')
+                ax.set_xlabel(F1.LABEL[F1.PLOT[xv]], color = INK['secondary'], fontsize = 7)
+                if c == 0:
+                    ax.set_ylabel(F1.LABEL[F1.PLOT[yv]], color = INK['secondary'], fontsize = 7)
+                else:
+                    ax.tick_params(labelleft = False)
+        fig.legend([_handle(SERIES[0], 'o'), _handle(SERIES[1], 'D')], ['data', 'model'], loc = 'outside lower center',
+                   ncol = 2, frameon = False, fontsize = 7, labelcolor = INK['secondary'])
+    out = _save(fig, name, marks)
+    T.paperWording()
+    ωs = {k: T.layer1Omega(v, **T.costKw(k)) for k in T.COSTS}
+    if any(ω is None for ω in ωs.values()):
+        raise ValueError(name + ": the note is written for omegaRule 'mean'")
+    note = (r'\textit{Note:} ' + '{} countries'.format(n) + r', as in figure \ref{fig:OECD26:spending}, in the data '
+            r'and in the model under each cost of section \ref{sec:esc:crossSection}: every country at the U.S.\ $\beta$ '
+            r'and at the mean of the political weights that match each country\textquotesingle s spending at its observed '
+            r'design (appendix \ref{app:oecd26:layer2}), '
+            + ' and '.join(r'$\omega = ' + C.num(ωs[k], 2) + '$ under ' + T.COSTTEX[k] for k in T.COSTS)
+            + r', at its cost $\lambda_{n,t}$ and at its own CSES propensities to vote, Luxembourg, which has none, at a '
+            r'flat profile. The model\textquotesingle s index is $1/(2-\theta)$ of the design chosen in 1990 for 2020, its '
+            r'spending ' + T.spendingTex(v) + r' in 2020 on the path of that design. The lines are least-squares fits; '
+            r'table \ref{table:OECD26:slopes} reports their slopes.')
+    return out + [_note(name, T.costsSrc('layer1.csv, layer2.csv, anchor.csv'), note)]
 
 
 def oecd26Spending(turnout = None, sample = None):
@@ -410,49 +532,42 @@ def _fitPanel(ax, f, name, part, units, lim, ms = 3.6, msUS = 5.2):
 
 def oecd26ThetaFit(units = 'theta'):
     r""" OECD26_ThetaFit (section 7.3; `units` 'index': OECD26_ThetaFitIndex, built, not input): the design each
-    country's model predicts, in force in 2020, against the observed one, the model | own ω (layers 1 | 2), at the
-    paper's variant; the 45-degree line, the fitted line over the countries other than the U.S., the U.S. open (the
-    anchor, on the line by construction), ISO labels, and r and the RMSE with that of predicting the sample mean, the
-    U.S. left out (tablesOECD26.thetaFit). Writes its note, which defines own ω; the statistics are on the panels. """
+    country's model predicts, in force in 2020, against the observed one, one panel per cost of tablesOECD26.COSTS
+    (the model of figure 7.2 under each, costKw); the 45-degree line, the fitted line over the countries other than
+    the U.S., the U.S. open (the anchor of each cost, off the line since every country takes the mean ω), ISO labels,
+    and r and the RMSE with that of predicting the sample mean, the U.S. left out (tablesOECD26.thetaFit). Writes its
+    note; the statistics are on the panels. Own ω (layer 2) is on page C4 (oecd26ThetaFitRows). """
     name = 'OECD26_ThetaFit' + ('' if units == 'theta' else 'Index')
     unit, lim, _ = UNITS[units]
     T.paperWording()
-    fs = {k: T.thetaFit(k, units = units) for k in (1, 2)}
+    fs = {k: T.thetaFit(1, units = units, **T.costKw(k)) for k in T.COSTS}
     fig, axes = plt.subplots(1, 2, figsize = (5.91, 3.05))
     fig.subplots_adjust(left = 0.085, right = 0.99, bottom = 0.25, top = 0.93, wspace = 0.2)
     marks = []
-    for ax, k in zip(axes, (1, 2)):
+    for ax, k in zip(axes, T.COSTS):
         f = fs[k]
-        part = 'layer{}'.format(k)
-        marks += _fitPanel(ax, f, name, part, units, lim)
-        ax.set_title(layerTitle(k), fontsize = 7.5, color = INK['primary'], loc = 'left')
+        marks += _fitPanel(ax, f, name, T.COSTKEY[k], units, lim)
+        ax.set_title(T.COSTTITLE[k], fontsize = 7.5, color = INK['primary'], loc = 'left')
         ax.set_xlabel('Observed ' + unit, color = INK['secondary'], fontsize = 7)
-        if k == 1:
+        if k == T.COSTS[0]:
             ax.set_ylabel('Predicted ' + unit, color = INK['secondary'], fontsize = 7)
         _isoLabels(ax, f['x'].to_numpy(float), f['y'].to_numpy(float), list(f['panel'].index), bold = ('USA',))
     h = [plt.Line2D([], [], ls = 'none', marker = 'D', ms = 3.6, color = SERIES[1], mec = EDGE, mew = 0.5),
          plt.Line2D([], [], ls = 'none', marker = 'o', ms = 5.2, mfc = 'white', mec = INK['primary'], mew = 0.9),
          plt.Line2D([], [], color = SERIES[1], lw = 1.0), plt.Line2D([], [], color = INK['muted'], lw = 0.8,
                                                                     ls = (0, (3, 2)))]
-    mean = C.US['oecd26']['omegaRule'] == 'mean'           # the U.S. then leaves the 45-degree line in the model
-    fig.legend(h, ['country, model', 'U.S. (anchor{})'.format(r'; on the line with own $\omega$ by construction' if mean
-                                                             else ', on the line by construction'),
-                   'fitted line', '45° line'],
+    fig.legend(h, ['country, model', 'U.S. (anchor)', 'fitted line', '45° line'],
                loc = 'lower center', ncol = 4, frameon = False, fontsize = 6.3, labelcolor = INK['secondary'],
                handlelength = 1.8, columnspacing = 1.4)
     out = _save(fig, name, marks)
     what = r'$\theta$' if units == 'theta' else r'index $1/(2-\theta)$'
-    # own ω is defined here, where the paper first shows it (tablesOECD26's NAMES)
+    nStat = fs[T.COSTS[0]]['nStat']
     note = (r'\textit{Note:} The design ' + what + r' of each country\textquotesingle s model for 2020, chosen in 1990, against '
-            r'the observed one. Left, the model of figure \ref{fig:OECD26:layer1}; right, the model with each '
-            r'country\textquotesingle s own political weight (own $\omega$), calibrated to its spending at its observed '
-            r'design (appendix \ref{app:oecd26:layer2}). The U.S.\ is the anchor'
-            + (r'; in the right panel it lies on the $45^{\circ}$ line by construction' if mean else
-               r' and lies on the $45^{\circ}$ line by construction')
-            + r'. The solid line is the least-squares fit over the other ' + str(fs[1]['nStat'])
+            r'the observed one, under each cost of figure \ref{fig:OECD26:layer1}. The U.S.\ is the anchor on which each '
+            r'cost is calibrated. The solid line is the least-squares fit over the other ' + str(nStat)
             + r' countries, and each panel reports, without the U.S., the correlation $r$ and the RMSE of the '
             r'prediction, beside the RMSE of a prediction at the sample mean.')
-    return out + [_note(name, _src(), note)]
+    return out + [_note(name, T.costsSrc(), note)]
 
 
 # The measures are defined on the site (page C4's section esc-oecd26-measure), which the paper has no label for: \oa.

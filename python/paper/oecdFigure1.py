@@ -323,7 +323,7 @@ def sources(df, retrieved, wbUpdated, usRange, widModified):
          'The OECD Data Explorer dataflows DSD_PAG@DF_PRR and DSD_PAG@DF_PAG now hold only 2024 (Pensions at '
          'a Glance 2025); the publication StatLink still serves the 2020 vintage.'),
         ('bbIndex', 'derived', 'Pensions at a Glance 2021, table 4.1', 'grr100_men / grr050_men', '',
-         _both(df, ['bbIndex'], '2020'), URL['pag'], 'Men: the table headline and the concept of section 6. Misses the EPS: '
+         _both(df, ['bbIndex'], '2020'), URL['pag'], 'Men: the replacement-rate ratio of the table headline, not the index of section 6. Misses the EPS: '
          + _gaps(df, 'bbIndex', 'eps_bbIndex', 5e-4) + '.'),
         ('bbIndex_women', 'derived', 'Pensions at a Glance 2021, table 4.1', 'grr100_women / grr050_women', '',
          _both(df, ['bbIndex_women'], '2020'), URL['pag'], ''),

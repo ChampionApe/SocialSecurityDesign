@@ -366,7 +366,7 @@ def escOverview():
     Every row is a new equilibrium path whose political choice binds from the first period, so the
     design in force in 2020 is itself an outcome. All panels are read at 2020.
     """
-    df = D.escExperiments()
+    df = D.escExperiments(k = C.US['esc']['tauPower'])           # the cost of sections 7.1 and 7.2
     spec, ρs = C.US['esc']['spec'], C.US['esc']['ρTable']
     α = D.usAlpha()
     colours = RHOCOLOURS[:len(ρs)]

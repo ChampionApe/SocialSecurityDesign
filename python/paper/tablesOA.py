@@ -166,6 +166,14 @@ def oecdSources():
         if sub.empty:
             continue
         lines.append(_title(_tex(title), 4))
+        if title.startswith('Plotted'):
+            lines.append(_row([r'$\theta$, the design; the index is $1/(2-\theta)$',
+                               'derived: Pensions at a Glance 2021, table 4.2; OECD SOCX 2020 and national sources '
+                               'for the spending on top-ups and tested benefits',
+                               r'earnings-linked share of the gross public pension of men at 0.5, 1 and 2 times '
+                               r'average earnings, corrected for top-ups. Rules of 2020',
+                               r'The measure of appendix \ref{app:oecd26:data}, in data/oecd26\_theta.csv; the UK is '
+                               r'its exception.'], 'theta'))
         for _, r in sub.iterrows():
             source = '; '.join(_tex(x) for x in (r['provider'] + ': ' + r['dataset'], r['vintage'],
                                                   ('retrieved ' + r['retrieved']) if r['retrieved'] else '') if x)
@@ -178,7 +186,8 @@ def oecdSources():
                r'data/oecd29\_distribution.csv' if extra else '')
             + r'; data/oecdFigure1\_sources.csv' + (r' and data/oecd29\_sources.csv carry' if extra else ' carries')
             + r' the URL of every source. The figure\textquotesingle s Bismarckian index, $1/(2-\theta)$, is '
-            r'not among them: $\theta$ is from data/oecd26\_theta.csv (data/README.md).')
+            r'not among those columns: $\theta$ is from data/oecd26\_theta.csv (data/README.md), and bbIndex is the '
+            r'ratio of replacement rates.')
     rag = r'>{\raggedright\arraybackslash}'
     text = _xwrap('OECD_Sources', 'data/oecdFigure1_sources.csv' + (', oecd29_sources.csv' if extra else ''),
                   r'The sources of figure \ref{fig:US:OECDdata}',
@@ -358,42 +367,57 @@ def escPathCells(r):
     return [C.num(r['θ'], 3), C.pct(r['τ']), C.pct(r['τExo']), C.pp(r['τ'] - r['τExo'])]
 
 
-COSTNAME = {'size': r'The paper\textquotesingle s cost', 'scale': r'The cost on the design'}
+COSTNAME = {'scale': r'The cost on the design'}         # config.US['esc']['spec'] is named by its k (_costName)
 
 
-def escCostCalibration():
-    r""" C2.2: the two costs of redistribution calibrated under log preferences (rho = 1, the only rho at which
-    config.US['esc']['comparisonSpec'] is calibrated; escCalibration.csv through datasets.escCalibrationLOG): the
-    paper's cost f = exp(-lambda tau^2 Vtilde (1-theta)^2 / 2) of eq:esc:budget and the cost on the design
-    f = phi + (1-phi) theta^p, each with its parameter and the shares of revenue lost in 2020 at the observed
-    design and at theta = 0 (datasets.escWedge), at the 2020 tax. The paper's row prints as the rho = 1 row of
-    table:US_ESC:calibration (lambda at two decimals, the shares at one; test_onlineAppendix compares them).
-    Rows keyed `spec@<spec>`. """
+def _costName(k, capital = True):
+    """ 'The linear cost' / 'the squared cost' (config.COSTWORDS) of the cost with tau^k. """
+    s = C.COSTWORDS[k]
+    return s[0].upper() + s[1:] if capital else s
+
+
+def _escRel(k, names):
+    """ 'results/<escDir(k)>/<names>' for a banner. """
+    return 'results/' + os.path.basename(D.escDir(k)) + '/' + names
+
+
+def escCostCalibration(k = 2):
+    r""" C2.2: the costs of redistribution calibrated under log preferences (rho = 1, the only rho at which
+    config.US['esc']['comparisonSpec'] is calibrated; escCalibration.csv of datasets.escDir(k) through
+    datasets.escCalibrationLOG): the cost f = exp(-lambda tau^k Vtilde (1-theta)^2 / 2) with tau^k (k = 1
+    eq:esc:budget, k = 2 eq:esc:budgetSquared; config.COSTEQ) and the cost on the design f = phi + (1-phi) theta^p,
+    which does not depend on k, each with its parameter and the shares of revenue lost in 2020 at the observed design
+    and at theta = 0 (datasets.escWedge), at the 2020 tax. At k = config.US['esc']['tauPower'] the first row prints as
+    the rho = 1 row of table:US_ESC:calibration (lambda at two decimals, the shares at one; test_onlineAppendix compares
+    them). Built as ESC_CostCalibration + config.costSuffix(k). Rows keyed `spec@<spec>`. """
     ρ = C.US['ρAnchor']
     spec, alt = C.US['esc']['spec'], C.US['esc']['comparisonSpec']
+    name = 'ESC_CostCalibration' + C.costSuffix(k)
     lines, θs, phi = [], [], None
     for s, symbol, digits in ((spec, r'\lambda', 2), (alt, 'p', 3)):
-        r = D.escCalibrationLOG(s)
+        r = D.escCalibrationLOG(s, k = k)
         w = D.escWedge(r, s)
         θs.append(float(r['θStar']))
         if s == alt:
             phi = float(r['phi'])
-        lines.append(_row([COSTNAME[s], '$' + symbol + ' = ' + C.num(float(r['p']), digits) + '$',
+        lines.append(_row([_costName(k) if s == spec else COSTNAME[s],
+                           '$' + symbol + ' = ' + C.num(float(r['p']), digits) + '$',
                            C.pct(1 - w['fStar'], 1), C.pct(1 - w['f0'], 1)], 'spec@' + s))
     if max(θs) - min(θs) > 1e-6:
-        raise ValueError('ESC_CostCalibration: theta* differs between the two costs: {}'.format(θs))
+        raise ValueError('{}: theta* differs between the two costs: {}'.format(name, θs))
     year0 = str(C.usCalendar()['year0'])
     header = [r'\textbf{Cost}', r'\textbf{Parameter}', r'$1 - f(\theta^{\ast})$', r'$1 - f(0)$']
-    note = (r'\textit{Note:} Log preferences ($\rho = ' + C.num(ρ, 0) + r'$). The paper\textquotesingle s cost is '
-            r'that of equation \eqref{eq:esc:budget}, as in table \ref{table:US_ESC:calibration}; the cost on the '
-            r'design is $f(\theta) = \phi + (1-\phi)\theta^{p}$ with $\phi = ' + C.num(phi, 1) + r'$ imposed. Each '
-            r'parameter is calibrated so that the U.S.\ electorate re-elects its observed design, $\theta^{\ast} = '
-            + C.num(θs[0], 3) + r'$, in ' + year0 + r'. $1 - f(\theta^{\ast})$ and $1 - f(0)$ are the shares of '
-            r'revenue lost in ' + year0 + r' at the observed design and at a flat benefit, both at the ' + year0
-            + r' tax rate.' + C.variantNote(C.US['commonX']))
-    return _xwrap('ESC_CostCalibration', 'results/esc/escCalibration.csv',
-                  r'The two costs of redistribution calibrated for the U.S.', _label('ESC_CostCalibration'),
-                  'lYYY', header, _body(lines), note, width = r'.8\textwidth')
+    paper = k == C.US['esc']['tauPower']
+    note = (r'\textit{Note:} Log preferences ($\rho = ' + C.num(ρ, 0) + r'$). ' + _costName(k) + r' is that of '
+            r'equation \eqref{' + C.COSTEQ[k] + '}' + (r', as in table \ref{table:US_ESC:calibration}' if paper else '')
+            + r'; the cost on the design is $f(\theta) = \phi + (1-\phi)\theta^{p}$ with $\phi = ' + C.num(phi, 1)
+            + r'$ imposed. Each parameter is calibrated so that the U.S.\ electorate re-elects its observed design, '
+            r'$\theta^{\ast} = ' + C.num(θs[0], 3) + r'$, in ' + year0 + r'. $1 - f(\theta^{\ast})$ and $1 - f(0)$ are '
+            r'the shares of revenue lost in ' + year0 + r' at the observed design and at a flat benefit, both at the '
+            + year0 + r' tax rate.' + C.variantNote(C.US['commonX']))
+    return _xwrap(name, _escRel(k, 'escCalibration.csv'),
+                  r'The costs of redistribution calibrated for the U.S.: ' + _costName(k, False) + ' and the cost on '
+                  r'the design', _label(name), 'lYYY', header, _body(lines), note, width = r'.8\textwidth')
 
 
 def escTiming():
@@ -476,28 +500,34 @@ DECOMPGAP = {'LOG': 1e-10, 'CRRA': 2e-3}
 LAMBDAEPS = (0.1, 0.4)          # the range of participation and taxable-income elasticities, c5Numbers.EPS's ends
 
 
-def _decompChoices(ρ, exp):
-    r""" Panel B's designs at `rho`: {'US', 'FR', 'X1', 'X2'[, 'X3']: theta_2020} and the largest gap of the X rows.
-    US, FR: escExperiments.csv's free baseline and frIncome rows under the paper's cost; the X rows from
-    c5Numbers.py's design (rho = 1, whose US and FR rows must be escExperiments', else StaleInput) or designCRRA. """
+def _numRel(k, names):
+    """ 'results/<numDir(k)>/<names>' for a banner or a message. """
+    return 'results/' + os.path.basename(D.numDir(k)) + '/' + names
+
+
+def _decompChoices(ρ, exp, k = 2):
+    r""" Panel B's designs at `rho` under the cost with tau^k: {'US', 'FR', 'X1', 'X2'[, 'X3']: theta_2020} and the
+    largest gap of the X rows. US, FR: escExperiments.csv's free baseline and frIncome rows (`exp`, datasets.escDir(k));
+    the X rows from c5Numbers.py's design (rho = 1, whose US and FR rows must be escExperiments', else StaleInput) or
+    designCRRA (datasets.numDir(k)). """
     spec = C.US['esc']['spec']
-    θ = {k: float(D.escRow(exp, ρ, spec, sc, False)['θ_t0']) for k, sc in (('US', 'baseline'), ('FR', 'frIncome'))}
+    θ = {e: float(D.escRow(exp, ρ, spec, sc, False)['θ_t0']) for e, sc in (('US', 'baseline'), ('FR', 'frIncome'))}
     LOG = np.isclose(ρ, C.US['ρAnchor'])
     if LOG:
-        dd = D.designDecomp()
+        dd = D.designDecomp(k)
         ch = dd[(dd['kind'] == 'choice') & dd['experiment'].isin(['US', 'FR', 'X1', 'X2', 'X3'])].set_index('experiment')
-        for k in ('US', 'FR'):
-            if k not in ch.index or abs(float(ch.loc[k, 'θ2020']) - θ[k]) > 1e-6:
-                raise D.StaleInput('results/numerical/C5_designDecomp.csv: theta_2020 of {} is not escExperiments.csv\'s '
-                                   '({})'.format(k, θ[k]))
+        for e in ('US', 'FR'):
+            if e not in ch.index or abs(float(ch.loc[e, 'θ2020']) - θ[e]) > 1e-6:
+                raise D.StaleInput('{}: theta_2020 of {} is not escExperiments.csv\'s ({})'.format(
+                    _numRel(k, 'C5_designDecomp.csv'), e, θ[e]))
         xs = ('X1', 'X2', 'X3')
     else:
-        ch = D.designDecompCRRA(ρ).set_index('experiment')
+        ch = D.designDecompCRRA(ρ, k).set_index('experiment')
         xs = ('X1', 'X2')
     miss = [x for x in xs if x not in ch.index]
     if miss:
-        raise D.MissingInput('results/numerical/C5_designDecomp{}.csv (experiments {})'
-                             .format('' if LOG else 'CRRA_rho{:g}'.format(ρ), miss))
+        raise D.MissingInput('{} (experiments {})'.format(
+            _numRel(k, 'C5_designDecomp{}.csv'.format('' if LOG else 'CRRA_rho{:g}'.format(ρ))), miss))
     gap = max(float(ch.loc[x, 'gap']) for x in xs)
     if not gap < DECOMPGAP['LOG' if LOG else 'CRRA']:
         raise ValueError('ESC_Decompositions: the cost misses its target by {:.2e} at rho {}'.format(gap, ρ))
@@ -505,9 +535,10 @@ def _decompChoices(ρ, exp):
     return θ, gap
 
 
-def escDecompositions():
-    r""" C2.3: the numbers section 7 and appendix C.2 state of the design choice, one column per rho of
-    config.US['ρGrid'].
+def escDecompositions(k = 2):
+    r""" C2.3: the numbers section 7 and appendix C.2 state of the design choice under the cost with tau^k, one column
+    per rho of config.US['ρGrid'] (c5Numbers.py's csvs in datasets.numDir(k), the ESC csvs in datasets.escDir(k)).
+    Built as ESC_Decompositions + config.costSuffix(k).
 
       A. Log preferences only: dW_t/dtheta_{t+1} of eq:esc:leadFOC at the U.S. choice by route (datasets.designDecomp,
          case US, piece W; DECOMPROUTES), the routes' sum (the total, zero at the choice) and the shares of the offset,
@@ -516,35 +547,36 @@ def escDecompositions():
       B. theta_2020 as France's income distribution is imposed on the U.S. in three steps (DECOMPSTEPS: the cost first
          at the U.S. size and dispersion, X2, then at the U.S. size, X1, then France's own) and in total; under log
          also X3 - US, France's dispersion in the cost alone (_decompChoices).
-      C. App:esc:cost's magnitude at k = 2 (datasets.lambdaElasticity; its lambda must be escCalibration's, else
-         StaleInput): pi_2020, the wedge in place eq:esc:wedge, lambda, the local elasticity under the paper's carrier
-         2 kappa pi (1 - pi) (columns _A), the lambda that the elasticities LAMBDAEPS imply and lambda as a multiple of
-         each, the share of earnings outside the base; the local elasticity and that share under the fiscal
-         externality's 3 kappa pi (1 - pi) (columns _C).
+      C. App:esc:cost's magnitude (datasets.lambdaElasticity; its lambda must be escCalibration's, else StaleInput):
+         pi_2020 and lambda; at k = 2 (the carrier 'convex', eps(T) = kappa T) the wedge in place eq:esc:wedge, the
+         local elasticity under lambda = 2 kappa pi (1 - pi) (columns _A), the lambda that the elasticities LAMBDAEPS
+         imply and lambda as a multiple of each, the share of earnings outside the base, and the local elasticity and
+         that share under the fiscal externality's 3 kappa pi (1 - pi) (columns _C); at k = 1 (the carrier 'pi', a
+         constant elasticity) the elasticity lambda/pi that lambda = eps pi implies, the lambda of each elasticity of
+         LAMBDAEPS and the multiples (columns _ΠR).
 
     Rows keyed `<panel>@<item>`. """
     if not C.US['commonX']:
         raise D.StaleInput('results/numerical/C5_*.csv are at common X (python/US/c5Numbers.py), not the headline')
-    if C.TAU_POWER != 2 or C.CARRIER != 'convex':
-        raise D.StaleInput('ESC_Decompositions: appendix C.2\'s mapping is that of k = 2 and the carrier \'convex\'')
+    name = 'ESC_Decompositions' + C.costSuffix(k)
+    carrier = 'convex' if k == 2 else C.US['tau1']['carrier']
     ρs = [float(ρ) for ρ in C.US['ρGrid']]
     ρLOG = C.US['ρAnchor']
     ncol = 1 + len(ρs)
     cal = C.usCalendar()
     year0, yearBefore = cal['year0'], cal['dates'][cal['t0'] - 1]
     lines = []
-    atLOG =lambda s: [s if np.isclose(ρ, ρLOG) else '--' for ρ in ρs]
+    atLOG = lambda s: [s if np.isclose(ρ, ρLOG) else '--' for ρ in ρs]
 
     # A. the design condition at the U.S. choice, log preferences
-    dd = D.designDecomp()
+    dd = D.designDecomp(k)
     foc = dd[(dd['kind'] == 'foc') & (dd['case'] == 'US') & (dd['piece'] == 'W')].set_index('route')
     if set(r for r, _ in DECOMPROUTES) - set(foc.index):
-        raise D.MissingInput('results/numerical/C5_designDecomp.csv (the routes of the U.S. design condition)')
+        raise D.MissingInput(_numRel(k, 'C5_designDecomp.csv') + ' (the routes of the U.S. design condition)')
     v = {r: float(foc.loc[r, 'value']) for r, _ in DECOMPROUTES}
     pull = abs(v['design'])
     if abs(v['design'] + v['cost'] + v['tax'] - v['total']) > 1e-6*pull or abs(v['total']) > 1e-6*pull:
-        raise ValueError('ESC_Decompositions: the routes of the design condition do not sum to zero at the choice: '
-                         '{}'.format(v))
+        raise ValueError('{}: the routes of the design condition do not sum to zero at the choice: {}'.format(name, v))
     θ1 = float(foc['θ1'].iloc[0])
     lines.append(_title(r'A. The design condition at the U.S.\ choice, log preferences', ncol))
     for r, label in DECOMPROUTES:
@@ -555,10 +587,10 @@ def escDecompositions():
     lines[-1] = lines[-1].replace(r' \\ % row:', r' \\[.5em] % row:')
 
     # B. France's income distribution in three steps
-    exp = D.escExperiments()
+    exp = D.escExperiments(k)
     θ, gaps = {}, {}
     for ρ in ρs:
-        θ[ρ], gaps[ρ] = _decompChoices(ρ, exp)
+        θ[ρ], gaps[ρ] = _decompChoices(ρ, exp, k)
     lines.append(_title(r'B. France\textquotesingle s income distribution in three steps, the change in $\theta_{'
                         + str(year0) + '}$', ncol))
     for key, label, (a, b) in DECOMPSTEPS:
@@ -568,47 +600,79 @@ def escDecompositions():
     lines[-1] = lines[-1].replace(r' \\ % row:', r' \\[.5em] % row:')
 
     # C. the size of lambda
-    le = D.lambdaElasticity().set_index('ρ')
-    need = (['πBaseline2020', 'tbar2020', 'λ', 'εLocal_A', 'εLocal_C', 'baseOutside_A', 'baseOutside_C']
-            + ['{}_ε{:g}_{}'.format(c, e, s) for e in LAMBDAEPS for c, s in (('λ', 'A'), ('multiple', 'A'))])
+    le = D.lambdaElasticity(k).set_index('ρ')
+    e0, e1 = LAMBDAEPS
+    if k == 2:
+        sfx = 'A'
+        rowsC = [('pi', r'$\pi = \Pi/R$', 'πBaseline2020', lambda x: C.num(x, 3)),
+                 ('tbar', r'The wedge in place, $\bar{t}$', 'tbar2020', lambda x: C.num(x, 3)),
+                 ('lambda', r'$\lambda$', 'λ', lambda x: C.num(x, 2)),
+                 ('eps', r'The local elasticity, $\varepsilon(\bar{t})$', 'εLocal_A', lambda x: C.num(x, 2))]
+    else:
+        sfx = 'ΠR'
+        rowsC = [('pi', r'$\pi = \Pi/R$', 'πBaseline2020', lambda x: C.num(x, 3)),
+                 ('lambda', r'$\lambda$', 'λ', lambda x: C.num(x, 2)),
+                 ('eps', r'The elasticity of the base, $\varepsilon = \lambda/\pi$', 'εImplied_ΠR',
+                  lambda x: C.num(x, 2))]
+    lamDigits = 2 if k == 2 else 3
+    rowsC += [('lambda_eps{:g}'.format(e0), r'$\lambda$ at $\varepsilon = ' + C.num(e0, 1) + '$',
+               'λ_ε{:g}_{}'.format(e0, sfx), lambda x: C.num(x, lamDigits)),
+              ('lambda_eps{:g}'.format(e1), r'$\lambda$ at $\varepsilon = ' + C.num(e1, 1) + '$',
+               'λ_ε{:g}_{}'.format(e1, sfx), lambda x: C.num(x, lamDigits)),
+              ('multiple_eps{:g}'.format(e1), r'$\lambda$ as a multiple of that at $\varepsilon = ' + C.num(e1, 1) + '$',
+               'multiple_ε{:g}_{}'.format(e1, sfx), lambda x: C.num(x, 1)),
+              ('multiple_eps{:g}'.format(e0), r'$\lambda$ as a multiple of that at $\varepsilon = ' + C.num(e0, 1) + '$',
+               'multiple_ε{:g}_{}'.format(e0, sfx), lambda x: C.num(x, 1))]
+    if k == 2:
+        rowsC += [('outside', 'Earnings outside the base', 'baseOutside_A', lambda x: C.pct(x, 1)),
+                  ('eps_fiscal', r'Fiscal externality: $\varepsilon(\bar{t})$', 'εLocal_C', lambda x: C.num(x, 2)),
+                  ('outside_fiscal', r'Fiscal externality: earnings outside the base', 'baseOutside_C',
+                   lambda x: C.pct(x, 1))]
+    need = [col for _, _, col, _ in rowsC]
     miss = [c for c in need if c not in le.columns]
     if miss or any(not np.isclose(le.index, ρ).any() for ρ in ρs):
-        raise D.MissingInput('results/numerical/C5_lambdaElasticity.csv (columns {}, rho {})'.format(miss, ρs))
-    if 'carrier' in le.columns and set(le['carrier'].dropna()) != {C.CARRIER}:
-        raise D.StaleInput('results/numerical/C5_lambdaElasticity.csv: carrier {}'.format(set(le['carrier'])))
-    escCal = D.escCalibration()
+        raise D.MissingInput('{} (columns {}, rho {})'.format(_numRel(k, 'C5_lambdaElasticity.csv'), miss, ρs))
+    if 'carrier' in le.columns and set(le['carrier'].dropna()) != {carrier}:
+        raise D.StaleInput('{}: carrier {}, the mapping of k = {} is {!r}'.format(
+            _numRel(k, 'C5_lambdaElasticity.csv'), set(le['carrier']), k, carrier))
+    escCal = D.escCalibration(k = k)
     row = lambda ρ: le.loc[le.index[np.isclose(le.index, ρ)][0]]
     for ρ in ρs:
         λcal = float(escCal[(ρ, C.US['esc']['spec'])]['p'])
         if abs(float(row(ρ)['λ']) - λcal) > 1e-6*λcal:
-            raise D.StaleInput('results/numerical/C5_lambdaElasticity.csv: lambda {} at rho {}, calibrated {}'
-                               .format(float(row(ρ)['λ']), ρ, λcal))
+            raise D.StaleInput('{}: lambda {} at rho {}, calibrated {}'.format(
+                _numRel(k, 'C5_lambdaElasticity.csv'), float(row(ρ)['λ']), ρ, λcal))
     cells = lambda col, fmt: [fmt(float(row(ρ)[col])) for ρ in ρs]
-    e0, e1 = LAMBDAEPS
     lines.append(_title(r'C. The size of $\lambda$, ' + str(year0), ncol))
-    for key, label, col, fmt in (
-            ('pi', r'$\pi = \Pi/R$', 'πBaseline2020', lambda x: C.num(x, 3)),
-            ('tbar', r'The wedge in place, $\bar{t}$', 'tbar2020', lambda x: C.num(x, 3)),
-            ('lambda', r'$\lambda$', 'λ', lambda x: C.num(x, 2)),
-            ('eps', r'The local elasticity, $\varepsilon(\bar{t})$', 'εLocal_A', lambda x: C.num(x, 2)),
-            ('lambda_eps{:g}'.format(e0), r'$\lambda$ at $\varepsilon = ' + C.num(e0, 1) + '$',
-             'λ_ε{:g}_A'.format(e0), lambda x: C.num(x, 2)),
-            ('lambda_eps{:g}'.format(e1), r'$\lambda$ at $\varepsilon = ' + C.num(e1, 1) + '$',
-             'λ_ε{:g}_A'.format(e1), lambda x: C.num(x, 2)),
-            ('multiple_eps{:g}'.format(e1), r'$\lambda$ as a multiple of that at $\varepsilon = ' + C.num(e1, 1) + '$',
-             'multiple_ε{:g}_A'.format(e1), lambda x: C.num(x, 1)),
-            ('multiple_eps{:g}'.format(e0), r'$\lambda$ as a multiple of that at $\varepsilon = ' + C.num(e0, 1) + '$',
-             'multiple_ε{:g}_A'.format(e0), lambda x: C.num(x, 1)),
-            ('outside', 'Earnings outside the base', 'baseOutside_A', lambda x: C.pct(x, 1)),
-            ('eps_fiscal', r'Fiscal externality: $\varepsilon(\bar{t})$', 'εLocal_C', lambda x: C.num(x, 2)),
-            ('outside_fiscal', r'Fiscal externality: earnings outside the base', 'baseOutside_C',
-             lambda x: C.pct(x, 1))):
+    for key, label, col, fmt in rowsC:
         lines.append(_row([label] + cells(col, fmt), 'C@' + key))
 
     gapCRRA = max(g for ρ, g in gaps.items() if not np.isclose(ρ, ρLOG))
     header = [''] + [r'$\rho = {:g}$'.format(ρ) for ρ in ρs]
     T = r'\mathcal{T}_{' + str(year0) + '}'
-    note = (r'\textit{Note:} $\rho = ' + C.num(ρLOG, 0) + r'$ is log preferences. Panel A: the derivative of the '
+    paper = k == C.US['esc']['tauPower']
+    lamRef = r'$\lambda$ of table \ref{table:US_ESC:calibration}' if paper else r'$\lambda$ the calibrated cost parameter'
+    if k == 2:
+        panelC = (r'$\pi = \Pi/R$ on the path without the cost, $\bar{t} = \tau(1-\pi)$ the wedge in place of eq.\ '
+                  r'\eqref{eq:esc:wedge} at the calibrated tax rate, ' + lamRef + r', and $\varepsilon(\bar{t}) = '
+                  r'\kappa\bar{t} = \lambda\tau/(2\pi)$ the local elasticity of the base under $\lambda = 2\kappa\pi(1-\pi)$. '
+                  r'$\lambda$ at $\varepsilon$ is the cost parameter that a local elasticity $\varepsilon$ implies, '
+                  r'$2\pi\varepsilon/\tau$, at the ends of the range of participation and taxable-income elasticities '
+                  r'\parencite{ChettyGMW11a1,SaezSG12a1}, and the multiples are the calibrated $\lambda$ over it. Earnings '
+                  r'outside the base: the share $\frac{1}{2}\kappa\bar{t}^{2}$ that the wedge in place keeps outside. '
+                  r'Fiscal externality: the budget charged with the participation tax of every unit of base that leaves, '
+                  r'$\lambda = 3\kappa\pi(1-\pi)$.')
+    else:
+        panelC = (r'$\pi = \Pi/R$ on the path without the cost, ' + lamRef + r', and $\varepsilon = \lambda/\pi$ the '
+                  r'elasticity of the base that $\lambda = \varepsilon\pi$ implies under a constant elasticity. $\lambda$ '
+                  r'at $\varepsilon$ is the cost parameter $\varepsilon\pi$ that an elasticity $\varepsilon$ implies, at '
+                  r'the ends of the range of participation and taxable-income elasticities '
+                  r'\parencite{ChettyGMW11a1,SaezSG12a1}, and the multiples are the calibrated $\lambda$ over it.')
+    total = (r'the response to France\textquotesingle s income distribution in figure \ref{fig:US_ESC:overview}' if paper
+             else r'the response to France\textquotesingle s income distribution under this cost '
+                  r'(\oa{esc-costs-design})')
+    note = (r'\textit{Note:} ' + _costName(k) + r', equation \eqref{' + C.COSTEQ[k] + r'}; $\rho = ' + C.num(ρLOG, 0)
+            + r'$ is log preferences. Panel A: the derivative of the '
             r'political objective of the electorate of ' + str(yearBefore) + r' in the design it chooses for '
             + str(year0) + r', eq.\ \eqref{eq:esc:leadFOC}, at the U.S.\ choice $\theta_{' + str(year0) + '} = '
             + C.num(θ1, 3) + r'$, by route: the design with the share of revenue lost and the anticipated tax held, '
@@ -619,24 +683,18 @@ def escDecompositions():
             r'where the choice binds from the first period, as France\textquotesingle s income distribution is imposed '
             r'on the U.S., first everywhere but in the cost, whose share of revenue lost at each design is held at its '
             r'U.S.\ value, then in the dispersion of relative incomes $\tilde{V}$ in the cost, and last in the tax rate '
-            r'in the cost; the total is the response to France\textquotesingle s income distribution in figure '
-            r'\ref{fig:US_ESC:overview}, and the split depends on the order of the steps. '
-            r'Under CRRA preferences the share held is met to a relative gap of at most ' + C.pct(gapCRRA, 2) + '. '
+            r'in the cost; the first step is the combined effect of France\textquotesingle s distribution outside the '
+            r'cost, and the total is ' + total + r'. In the first two steps $\lambda$ is multiplied at each date by a '
+            r'factor, taken as given by voters, that equates the share lost at the tax rate of the path solved with the '
+            r'share at the U.S.\ tax rate of that date, so that at a candidate tax off the path the share lost still '
+            r'changes ' + ('with the square of the tax rate' if k == 2 else 'in proportion to the tax rate')
+            + r'. Under CRRA preferences the share held is met to a relative gap of at most ' + C.pct(gapCRRA, 2) + '. '
             r'The dispersion in the cost alone is the U.S.\ with France\textquotesingle s $\tilde{V}$ in the cost, '
-            r'computed under log preferences only. Panel C: the magnitudes of appendix \ref{app:esc:cost}, $\pi = \Pi/R$ '
-            r'on the path without the cost, $\bar{t} = \tau(1-\pi)$ the wedge in place of eq.\ \eqref{eq:esc:wedge} at '
-            r'the calibrated tax rate, $\lambda$ of table \ref{table:US_ESC:calibration}, and $\varepsilon(\bar{t}) = '
-            r'\kappa\bar{t} = \lambda\tau/(2\pi)$ the local elasticity of the base under $\lambda = 2\kappa\pi(1-\pi)$. '
-            r'$\lambda$ at $\varepsilon$ is the '
-            r'cost parameter that a local elasticity $\varepsilon$ implies, $2\pi\varepsilon/\tau$, at the ends of the '
-            r'range of participation and taxable-income elasticities \parencite{ChettyGMW11a1,SaezSG12a1}, and the '
-            r'multiples are the calibrated $\lambda$ over it. Earnings outside the base: the share '
-            r'$\frac{1}{2}\kappa\bar{t}^{2}$ that the wedge in place keeps outside. Fiscal externality: the budget '
-            r'charged with the participation tax of every unit of base that leaves, $\lambda = 3\kappa\pi(1-\pi)$.')
-    src = ('results/numerical/C5_designDecomp.csv, C5_designDecompCRRA_rho*.csv, C5_lambdaElasticity.csv, '
-           'results/esc/escExperiments.csv, escCalibration{,CRRA}.csv')
-    return _xwrap('ESC_Decompositions', src, r'The cost and the design: the decompositions of section \ref{sec:esc}',
-                  _label('ESC_Decompositions'), '>{\\raggedright\\arraybackslash}p{6.2cm}' + 'Y'*len(ρs), header,
+            r'computed under log preferences only. Panel C: the magnitudes of appendix \ref{app:esc:cost}, ' + panelC)
+    src = (_numRel(k, 'C5_designDecomp.csv, C5_designDecompCRRA_rho*.csv, C5_lambdaElasticity.csv') + ', '
+           + _escRel(k, 'escExperiments.csv, escCalibration{,CRRA}.csv'))
+    return _xwrap(name, src, r'The cost and the design: the decompositions of section \ref{sec:esc}, '
+                  + _costName(k, False), _label(name), '>{\\raggedright\\arraybackslash}p{6.2cm}' + 'Y'*len(ρs), header,
                   _body(lines), note)
 
 
@@ -740,35 +798,45 @@ SOLVEGROUPS = {'calibration': 'Calibrations', 'shocks': 'Experiments', 'sweeps':
                'esc': 'Endogenous design', 'oecd26': 'Cross-country test',
                **{'oecd26_theta_' + v: r'Cross-country test, $\theta$ measured as ' + C.THETANAMES.get(v, v)
                   for v in C.US['oecd26']['thetaVariants']},
+               C.US['tau1']['esc']: r'Endogenous design, the cost linear in the tax',
+               C.US['tau1']['oecd26']: r'Cross-country test, the cost linear in the tax',
                'numerical': 'Numerical checks'}                                  # results/<dir>, in print order
 ARMWORDS = (('ARG', 'Argentina'), ('US', 'The U.S., the UK and France'))
+
+
+# The notes' sentence on the roots column (datasets.ROOTCOLUMNS, countSummary's rootsMax).
+ROOTSNOTE = (r'Roots: the largest number of solutions of the fixed point for next period\textquotesingle s state (the '
+             r'savings of the formal households under CRRA preferences; in Argentina also the informal households\textquotesingle{} '
+             r'share of savings), over the rows that record it, whatever their tax count; under log preferences the '
+             r'U.S. arm solves no such fixed point, and rows written before the count existed do not record it. ')
 
 
 def numSelection():
     r""" The count table by solve (page D2; appendix D states it in words): datasets.selectionCsvs' files grouped
     by arm and by the results directory that holds them (SOLVEGROUPS), the tax rule first and then the design layer
     of the exact CRRA recursion over every file that records it; per group the files, the rows, the rows that
-    record counts, and over them the largest number of equilibria and of candidates and the total of fallback
-    states (datasets.countSummary over the group's files). The split of the other rows and the file-by-file list
-    are numSelectionFiles'. Rows keyed `<layer>_<arm>_<dir>`. """
+    record counts, and over them the largest number of equilibria and of candidates, the largest number of roots of
+    the state's fixed point (rootsMax, over the rows that record it) and the total of fallback states
+    (datasets.countSummary over the group's files). The split of the other rows and the file-by-file list are
+    numSelectionFiles'. Rows keyed `<layer>_<arm>_<dir>`. """
     entries = D.selectionCsvs()
     stats = {(lab, layer): D.countSummary(ps, layer) for _, lab, ps in entries for layer in ('tax', 'design')}
     num = lambda v: '--' if v is None else str(v)
     cells = lambda s: [str(s['files']), str(s['rows']), str(s['counted']), num(s['eqMax']), num(s['candMax']),
-                       num(s['fallbacks'])]
+                       num(s['rootsMax']), num(s['fallbacks'])]
     group = lambda ps: os.path.basename(os.path.dirname(ps[0]))
     unknown = sorted({group(ps) for _, _, ps in entries} - set(SOLVEGROUPS))
     if unknown:
         raise ValueError('NUM_Selection: no label for results/{}'.format(', '.join(unknown)))
     lines = []
     for arm, words in ARMWORDS:
-        lines.append(_title('Tax rule: ' + words.replace('The U.S.', 'the U.S.'), 7))
+        lines.append(_title('Tax rule: ' + words.replace('The U.S.', 'the U.S.'), 8))
         for g, lab in SOLVEGROUPS.items():
             ps = [p for a, _, pp in entries if a == arm and group(pp) == g for p in pp]
             if ps:
                 lines.append(_row([lab] + cells(D.countSummary(ps, 'tax')), 'tax_{}_{}'.format(arm.lower(), g)))
         lines[-1] = lines[-1].replace(r' \\ % row:', r' \\[.5em] % row:')
-    lines.append(_title('Design layer of the exact CRRA recursion', 7))
+    lines.append(_title('Design layer of the exact CRRA recursion', 8))
     for g, lab in SOLVEGROUPS.items():
         ps = [p for _, lab2, pp in entries if group(pp) == g and stats[(lab2, 'design')]['counted'] for p in pp]
         if ps:
@@ -778,19 +846,19 @@ def numSelection():
             r'of equilibria at any state and period, the largest number of candidates, and the number of states at '
             r'which no candidate passed the equilibrium test and the solver fell back. The other rows select '
             r'nothing at that layer (the economic-equilibrium rows, with taxes held at the baseline path; the tax '
-            r'of the exact recursion, selected inside its design layer; the cost calibrations that failed; the '
+            r'of the exact recursion, selected inside its design layer; the '
             r'cross-country test\textquotesingle s rows of Luxembourg at its own turnout, which has no CSES '
             r'election and so no solve; the rows with the design pinned) or were '
             r'written before the counts existed; the supplemental appendix lists every file. The tax rule\textquotesingle '
             r's candidates are the two corners and the crossings of the first order condition; the design '
-            r'layer\textquotesingle s are the brackets of its consistency residual. '
+            r'layer\textquotesingle s are the brackets of its consistency residual. ' + ROOTSNOTE
             + _countVerdict(entries, stats))
-    header = (r' & & \multicolumn{2}{c}{\textbf{Rows}} & \multicolumn{2}{c}{\textbf{Largest number of}} & \\'
-              + '\n' + r'\cmidrule(lr){3-4}\cmidrule(lr){5-6}' + '\n'
-              r'\textbf{Solves} & \textbf{Files} & all & counted & equilibria & candidates & \textbf{Fallbacks}')
+    header = (r' & & \multicolumn{2}{c}{\textbf{Rows}} & \multicolumn{3}{c}{\textbf{Largest number of}} & \\'
+              + '\n' + r'\cmidrule(lr){3-4}\cmidrule(lr){5-7}' + '\n'
+              r'\textbf{Solves} & \textbf{Files} & all & counted & equilibria & candidates & roots & \textbf{Fallbacks}')
     return _xwrap('NUM_Selection', 'results/{calibration,shocks,sweeps,esc,oecd26,numerical}/*.csv',
                   'Equilibrium counts in the results the exhibits read', _label('NUM_Selection'),
-                  r'>{\raggedright\arraybackslash}p{3.0cm}YYYYYY', header, _body(lines), note, width = r'\textwidth',
+                  r'>{\raggedright\arraybackslash}p{3.0cm}YYYYYYY', header, _body(lines), note, width = r'\textwidth',
                   size = r'\footnotesize\setlength{\tabcolsep}{5pt}\renewcommand{\arraystretch}{1.1}')
 
 
@@ -813,16 +881,16 @@ def numSelectionFiles():
     fname = lambda lab, n: (re.sub(r'(?<=[a-z])(?=[A-Z])', r'\\allowbreak{}', _tex(lab).replace(r'\_', r'\_\allowbreak{}'))
                             + ('' if n == 1 else r' (' + str(n) + ' files)'))
     cells = lambda s: [str(s['rows']), str(s['counted']), str(s['uncounted']), str(s['unrecorded']),
-                       num(s['eqMax']), num(s['candMax']), num(s['fallbacks'])]
+                       num(s['eqMax']), num(s['candMax']), num(s['rootsMax']), num(s['fallbacks'])]
     lines = []
     for arm, title in (('ARG', 'Tax rule: Argentina'), ('US', 'Tax rule: the U.S., the UK and France')):
-        lines.append(_title(title, 8))
+        lines.append(_title(title, 9))
         for a, lab, ps in entries:
             if a == arm:
                 lines.append(_row([fname(lab, stats[(lab, 'tax')]['files'])] + cells(stats[(lab, 'tax')]),
                                   'tax_' + _fileKey(lab)))
     lines[-1] = lines[-1].replace(r' \\ % row:', r' \\[.5em] % row:')
-    lines.append(_title('Design layer of the exact CRRA recursion: brackets as candidates', 8))
+    lines.append(_title('Design layer of the exact CRRA recursion: brackets as candidates', 9))
     for a, lab, ps in entries:
         s = stats[(lab, 'design')]
         if s['counted'] == 0:
@@ -837,9 +905,7 @@ def numSelectionFiles():
             r'that maximizes its integral criterion where no candidate passes the equilibrium test. No selection '
             r'in the tax rule: the economic-equilibrium rows, with taxes held at the baseline path; the rows of '
             r'the exact recursion under CRRA preferences with the design chosen, whose tax is selected inside the '
-            r'design layer and counted there; and cost calibrations that failed, France\textquotesingle{}s '
-            r'observed design being out of the cost\textquotesingle{}s reach, and under the cost on the design '
-            r'that of the UK at the U.S.\ income groups, a row escCountry.csv keeps and no exhibit prints; and the '
+            r'design layer and counted there; and the '
             r'cross-country test\textquotesingle s rows of Luxembourg at its own turnout, which has no CSES election '
             r'and so no solve. '
             r'The design layer is that of the exact recursion, which compares the candidate designs with '
@@ -850,14 +916,113 @@ def numSelectionFiles():
             r'earlier cost on the design and of the path iteration under CRRA preferences, the cross-check the '
             r'exhibits do not read, written before the counts existed and not rerun at the current calibration. '
             r'escExperiments.csv, which the endogenous-design exhibits read, merges the escShocks* files, whose '
-            r'counts are the rows above. ' + last)
+            r'counts are the rows above. ' + ROOTSNOTE + last)
     return _xwrap('NUM_SelectionFiles', 'results/{calibration,shocks,sweeps,esc,oecd26,numerical}/*.csv',
                   'Equilibrium counts in the results the exhibits read, file by file', _label('NUM_SelectionFiles'),
-                  r'>{\raggedright\arraybackslash}p{3.0cm}YYYYYYY',
-                  r'\textbf{File} & \multicolumn{4}{c}{\textbf{Rows}} & \multicolumn{2}{c}{\textbf{Largest number of}} '
-                  r'& \textbf{Fallback} \\' + '\n' + r'\cmidrule(lr){2-5}\cmidrule(lr){6-7}' + '\n'
-                  r' & all & counted & no selection & not recorded & equilibria & candidates & states',
+                  r'>{\raggedright\arraybackslash}p{3.0cm}YYYYYYYY',
+                  r'\textbf{File} & \multicolumn{4}{c}{\textbf{Rows}} & \multicolumn{3}{c}{\textbf{Largest number of}} '
+                  r'& \textbf{Fallback} \\' + '\n' + r'\cmidrule(lr){2-5}\cmidrule(lr){6-8}' + '\n'
+                  r' & all & counted & no selection & not recorded & equilibria & candidates & roots & states',
                   _body(lines), note, width = r'\textwidth', size = r'\footnotesize\setlength{\tabcolsep}{4pt}')
+
+
+# ---------------------------------------------------------------------------------------------------
+# Page A1: the reform of section 5 under three readings of the pre-reform economy (ARG_SpendingBaseline).
+# ---------------------------------------------------------------------------------------------------
+ARGREADINGS = ('paper', 'epsPre0', 'spending')
+
+
+def argSpendingBaseline():
+    r""" The reform of section 5 in 2010 (datasets.argReading) under three readings of the pre-reform economy, one column
+    each: the paper's (the basic pension, pension spending of the workbook), no informal retiree drawing a pension
+    ($\epsilon = 0$ before the reform) and the paper's at pension spending of config.ARG['spendingBaseline'] of GDP. Rows:
+    the calibrated $\beta$ and $\omega$, the pre-reform tax rate and spending, its part paid to informal retirees, and the
+    reform's changes in 2010 in the tax rate (p.p.), spending and spending on informal retirees (p.p. of GDP), and
+    formal benefits (%). Rows keyed on the quantity. """
+    r = {w: D.argReading(w) for w in ARGREADINGS}
+    share = lambda x: C.num(100*x, 2)
+    rows = [('beta', r'$\beta$', lambda d: C.num(d['β'], 3)),
+            ('omega', r'$\omega$', lambda d: C.num(d['ω'], 3)),
+            ('tax', r'Tax rate before the reform (\%)', lambda d: share(d['τ_base'])),
+            ('spending', r'Pension spending before the reform (\% of GDP)', lambda d: share(d['S_base'])),
+            ('informal', r'\quad paid to informal retirees', lambda d: share(d['Sinf_base'])),
+            ('dtax', r'Change in the tax rate (p.p.)', lambda d: _signed(100*(d['τ_reform'] - d['τ_base']))),
+            ('dspending', r'Change in pension spending (p.p.\ of GDP)', lambda d: _signed(100*(d['S_reform'] - d['S_base']))),
+            ('dinformal', r'\quad paid to informal retirees',
+             lambda d: _signed(100*(d['Sinf_reform'] - d['Sinf_base']))),
+            ('dbenefits', r'Change in formal benefits (\%)', lambda d: _signed(100*d['dBenefits']))]
+    lines = [_title('Calibration', 4)]
+    for k, lab, f in rows:
+        if k == 'dtax':
+            lines[-1] = lines[-1].replace(r' \\ % row: ', r' \\[.5em] % row: ')
+            lines.append(_title('The reform in {}'.format(C.calendar()['year0']), 4))
+        lines.append(_row([lab] + [f(r[w]) for w in ARGREADINGS], k))
+    S = 100*C.ARG['spendingBaseline']['spending']
+    note = (r'\textit{Note:} The reform of section \ref{sec:argentina} at $\rho = ' + C.num(C.ARG['ρBaseline'], 0)
+            + r'$, each column calibrated anew to the targets of appendix \ref{app:EPH}, pension spending as its '
+            r'header gives it. Basic '
+            r'pension: informal retirees draw the basic pension before the reform, the paper\textquotesingle s '
+            r'reading; $\epsilon = 0$: none draws a pension before the reform. Spending is pension spending relative to '
+            r'GDP, formal plus informal output, in ' + str(C.calendar()['year0']) + r'; the part paid to informal '
+            r'retirees is their share of the outlay. Changes are reform minus pre-reform path in '
+            + str(C.calendar()['year0']) + r', the formal benefits\textquotesingle{} the change of every formal '
+            r'retiree\textquotesingle s benefit.')
+    header = (r' & \multicolumn{2}{c}{\textbf{Spending ' + C.num(100*r['paper']['spendGDP'], 1) + r'\% of GDP}} & '
+              r'\textbf{Spending ' + C.num(S, 1) + r'\% of GDP} \\' + '\n' + r'\cmidrule(lr){2-3}\cmidrule(lr){4-4}' + '\n'
+              r' & \textbf{Basic pension} & $\bm{\epsilon = 0}$ & \textbf{Basic pension}')
+    src = ', '.join(os.path.relpath(p, C.REPO).replace('\\', '/') for w in ARGREADINGS for p in r[w]['paths'])
+    return _xwrap('ARG_SpendingBaseline', src, r'The reform under three readings of the pre-reform economy, Argentina',
+                  _label('ARG_SpendingBaseline'), r'>{\raggedright\arraybackslash}p{6.2cm}YYY', header, _body(lines),
+                  note, width = r'\textwidth')
+
+
+# ---------------------------------------------------------------------------------------------------
+# Page C2: the U.S. under the linear and the squared cost side by side (ESC_TauPower).
+# ---------------------------------------------------------------------------------------------------
+def escTauPower():
+    r""" The U.S. under the cost linear in the tax ($k = 1$, config.US['tau1'], the cost of sections 7.1-7.2) and under
+    the cost with the tax squared ($k = 2$), each calibrated to the same targets: the cost parameter at each rho of
+    config.US['esc']['ρTable'] (datasets.escCalibration), and under log preferences (datasets.escTauPower) the design
+    in force in 2020 in the baseline and under acute ageing and the 2020 tax rate in each, with the design chosen and
+    pinned. Columns k = 1 and k = 2; rows keyed on the quantity (`lambda` the rho = 1 row, `lambda@<rho>` the others). """
+    d = D.escTauPower()
+    ks = sorted(d)
+    cal = {k: D.escCalibration(k = k) for k in ks}
+    ρ1, spec = C.US['ρAnchor'], C.US['esc']['spec']
+    for k in ks:
+        if abs(float(cal[k][(ρ1, spec)]['p']) - float(d[k]['cal']['p'])) > 1e-9*float(d[k]['cal']['p']):
+            raise D.StaleInput('ESC_TauPower: the rho = 1 lambda of k = {} differs between its readers'.format(k))
+    lam = lambda ρ: (lambda k: C.num(float(cal[k][(float(ρ), spec)]['p']), 2) if (float(ρ), spec) in cal[k] else '--')
+    get = lambda k, scen, pin, col: float(d[k]['shocks'].loc[(scen, pin), col])
+    rows = [(('lambda' if np.isclose(ρ, ρ1) else 'lambda@' + _rhoKey(ρ)), r'$\lambda$, $\rho = ' + C.num(ρ, 1) + '$',
+             lam(ρ)) for ρ in C.US['esc']['ρTable']]
+    rows += [
+            ('theta_base', r'Design in force in 2020, baseline', lambda k: C.num(get(k, 'baseline', False, 'θ_t0'), 3)),
+            ('theta_acute', r'\quad under acute ageing', lambda k: C.num(get(k, 'acute', False, 'θ_t0'), 3)),
+            ('dtheta', r'\quad change', lambda k: _signed(get(k, 'acute', False, 'θ_t0') - get(k, 'baseline', False, 'θ_t0'), 3)),
+            ('tax_base', r'Tax rate in 2020, baseline (\%)', lambda k: C.num(100*get(k, 'baseline', False, 'τ_t0'), 2)),
+            ('dtax_chosen', r'\quad change under acute ageing, design chosen (p.p.)',
+             lambda k: _signed(100*(get(k, 'acute', False, 'τ_t0') - get(k, 'baseline', False, 'τ_t0')))),
+            ('dtax_pinned', r'\quad change under acute ageing, design pinned (p.p.)',
+             lambda k: _signed(100*(get(k, 'acute', True, 'τ_t0') - get(k, 'baseline', True, 'τ_t0'))))]
+    lines = [_row([lab] + [f(k) for k in ks], key) for key, lab, f in rows]
+    n = len(C.US['esc']['ρTable'])
+    lines[n - 1] = lines[n - 1].replace(r' \\ % row:', r' \\[.5em] % row:')
+    year0 = str(C.usCalendar()['year0'])
+    note = (r'\textit{Note:} The U.S.\ under the cost of section \ref{sec:esc}, $f = \exp(-\frac{1}{2}\lambda\tau^k'
+            r'\tilde V(1-\theta)^2)$, linear in the tax rate ($k = 1$, equation \eqref{' + C.COSTEQ[1] + r'}, as in table '
+            r'\ref{table:US_ESC:calibration}) and with the tax rate squared ($k = 2$, equation \eqref{' + C.COSTEQ[2]
+            + r'}), each $\lambda$ calibrated at each $\rho$ so that the design in force in ' + year0 + r' is the '
+            r'observed one, with $\omega$ and $\beta$, so that the benefits paid match spending. The other rows are under '
+            r'log preferences ($\rho = 1$). Acute ageing holds workers per retiree at one over the whole horizon; each '
+            r'reading is a new equilibrium path read in ' + year0 + '.')
+    src = ', '.join(os.path.relpath(p, C.REPO).replace('\\', '/') for k in ks for p in d[k]['paths']
+                    + (os.path.join(D.escDir(k), 'escCalibrationCRRA.csv'),))
+    return _xwrap('ESC_TauPower', src, r'The U.S.\ under the linear and the squared cost',
+                  _label('ESC_TauPower'), r'>{\raggedright\arraybackslash}p{7.4cm}YY',
+                  [''] + [r'\textbf{' + _costName(k)[4:].capitalize() + r'}, $\bm{k = ' + str(int(k)) + '}$'
+                          for k in ks],
+                  _body(lines), note, width = r'\textwidth')
 
 
 # ---------------------------------------------------------------------------------------------------

@@ -26,6 +26,7 @@ is skipped when all its outputs exist, unless --force. Commands run from the rep
 interpreter, with PYTHONUTF8=1.
 """
 import os, sys, glob, time, argparse, datetime, subprocess
+import pandas as pd
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -38,6 +39,7 @@ G = C.ARG['gridSettings']
 GRIDFLAGS = ['--interpKind', G['interpKind'], '--smoothKnots', str(G['smoothKnots']),
              '--nι', str(G['nι']), '--ns', str(G['ns'])]
 THETA = C.thetaFlags()                            # --theta C --main: the paper's measure of the design
+SPENDING = C.spendingFlags()                      # --spendingTarget: the drivers that read a cost (c5, horizonUS)
 ARGRULE = ['--rule', C.ARG['rule'], '--refType', str(C.ARG['refType'])]
 
 
@@ -54,13 +56,16 @@ def num(name):
 
 
 class Cmd:
-    """ One command. `outputs` (paths or globs) let the step skip it when they all exist; None: the script decides
-    itself what to redo (a stage driver or a resuming sweep), and `force` is what --force appends to it. """
-    def __init__(self, args, outputs = None, force = ()):
-        self.args, self.outputs, self.force = list(args), outputs, list(force)
+    """ One command. `outputs` (paths or globs) let the step skip it when they all exist and, `atSpending`, each
+    holds rows at the paper's spending target (config.atSpending); None: the script decides itself what to redo (a
+    stage driver or a resuming sweep), and `force` is what --force appends to it. """
+    def __init__(self, args, outputs = None, force = (), atSpending = False):
+        self.args, self.outputs, self.force, self.atSpending = list(args), outputs, list(force), atSpending
 
     def done(self):
-        return self.outputs is not None and all(glob.glob(p) for p in self.outputs)
+        if self.outputs is None or not all(glob.glob(p) for p in self.outputs):
+            return False
+        return not self.atSpending or all(len(C.atSpending(pd.read_csv(f))) for p in self.outputs for f in glob.glob(p))
 
 
 def steps(a):
@@ -101,13 +106,18 @@ def steps(a):
                  '--pkldir', C.argInstanceDir(True), '--refine', '60', '--refineRho', '0.5', '0.6'],
                 outputs = [shock('ARG_reform{}_commonX.csv'.format(k)) for k in ('FOC', 'B5', 'HouseholdSavings', 'Refine')])]),
         ('c5', 'the smaller U.S. numbers the text quotes', [
-            Cmd([py('US', 'c5Numbers.py'), c] + THETA, outputs = [num(f)]) for c, f in c5out.items()] + [
-            Cmd([py('US', 'c5Numbers.py'), 'designCRRA', '--rho', r] + THETA,
-                outputs = [num('C5_designDecompCRRA_rho{:g}.csv'.format(float(r)))]) for r in ('0.5', '2.0')]),
+            Cmd([py('US', 'c5Numbers.py'), c] + THETA + SPENDING, outputs = [num(f)], atSpending = True)
+            for c, f in c5out.items()] + [
+            Cmd([py('US', 'c5Numbers.py'), 'designCRRA', '--rho', r] + THETA + SPENDING,
+                outputs = [num('C5_designDecompCRRA_rho{:g}.csv'.format(float(r)))], atSpending = True)
+            for r in ('0.5', '2.0')]),
         ('horizonUS', "appendix D's checks, the U.S.", [
-            Cmd([py('US', 'runHorizon.py'), '--stage', 'log', 'horizon', 'residuals', 'jumps', 'scheme'] + THETA,
-                outputs = [num(f) for f in ('US_horizon.csv', 'US_residuals.csv', 'US_jumps.csv', 'US_derivativeScheme.csv')]),
-            Cmd([py('US', 'runHorizon.py'), '--stage', 'design'] + THETA, outputs = [num('US_horizonDesign.csv')])]),
+            Cmd([py('US', 'runHorizon.py'), '--stage', 'residuals', 'jumps', 'scheme'] + THETA,
+                outputs = [num(f) for f in ('US_residuals.csv', 'US_jumps.csv', 'US_derivativeScheme.csv')]),
+            Cmd([py('US', 'runHorizon.py'), '--stage', 'log', 'horizon'] + THETA + SPENDING,
+                outputs = [num('US_horizon.csv')], atSpending = True),
+            Cmd([py('US', 'runHorizon.py'), '--stage', 'design'] + THETA + SPENDING, outputs = [num('US_horizonDesign.csv')],
+                atSpending = True)]),
         ('horizonARG', "appendix D's checks, Argentina", [
             Cmd([py('InformalSavings', 'runHorizon.py')],
                 outputs = [num('ARG_horizon_commonX.csv'), num('ARG_residuals_commonX.csv')])]),

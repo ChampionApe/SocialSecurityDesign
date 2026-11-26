@@ -465,17 +465,19 @@ class ModelOECD(ModelESC):
         self.updateAuxPars()
 
     def _calResidual(self, report):
-        """ One entry per element of _calPars, same order: R_{t0}/R0 - 1 for β, τ_{t0} - τ0 for ω. """
+        """ One entry per element of _calPars, same order: R_{t0}/R0 - 1 for β, τ_{t0} - τ0 for ω, τ_{t0} the
+        targeted quantity (ModelESC._calTargetReport: τ_{t0} f(θ_{t0}, τ_{t0}) under spendingTarget 'net'). """
+        report = self._calTargetReport(report)
         return np.array(([report['R']/self.db['R0'] - 1] if 'β' in self._calPars else [])
                         + ([report['τ'] - self.db['τ0']] if 'ω' in self._calPars else []))
 
 
 def build(inp, β, ω, λ = None, spec = 'size', phi = 0.5, gs = None, nθ = 41, nθCand = 121, betaRule = 'common',
-          R0 = None, calibrateω = True):
+          R0 = None, calibrateω = True, spendingTarget = 'gross'):
     """ A ModelOECD on `inp` (countryInputs) at β (imposed under betaRule 'common', the root's start under
     'commonR'), with ω and the cost parameter λ (the 'p' slot; None = no cost), the LOG grid `gs` (GS by default)
     installed. R0: the 2020 return 'commonR' calibrates β to, required there; NaN otherwise, so that a stray R
-    target fails. calibrateω: ModelOECD's. Calendar DATES, t0 = 2020. """
+    target fails. calibrateω: ModelOECD's. spendingTarget: ModelESC's. Calendar DATES, t0 = 2020. """
     if betaRule == 'commonR' and R0 is None:
         raise ValueError("build: betaRule 'commonR' needs the target R0")
     T = len(DATES)
@@ -487,7 +489,7 @@ def build(inp, β, ω, λ = None, spec = 'size', phi = 0.5, gs = None, nθ = 41,
             'h0': inp['workweek']/(7*12), 'ρ': 1., 'β': float(β), 'ω': float(ω)}
     wedge = None if λ is None else {'spec': spec, 'phi': phi, 'p': float(λ)}
     m = ModelOECD(pars = pars, wedge = wedge, nθ = nθ, nθCand = nθCand, commonX = True, nj = 4, T = T,
-                  betaRule = betaRule, calibrateω = calibrateω)
+                  betaRule = betaRule, calibrateω = calibrateω, spendingTarget = spendingTarget)
     m.db['dates'], m.db['workweek'], m.db['country'] = DATES, inp['workweek'], inp['iso3']
     m.LOG.initGS(GS if gs is None else gs)
     return m

@@ -8,33 +8,36 @@
 \label{table:OA:NUM_Selection}
 \renewcommand{\arraystretch}{1.25}
 \footnotesize\setlength{\tabcolsep}{5pt}\renewcommand{\arraystretch}{1.1}
-\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{3.0cm}YYYYYY}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{3.0cm}YYYYYYY}
 \toprule
- & & \multicolumn{2}{c}{\textbf{Rows}} & \multicolumn{2}{c}{\textbf{Largest number of}} & \\
-\cmidrule(lr){3-4}\cmidrule(lr){5-6}
-\textbf{Solves} & \textbf{Files} & all & counted & equilibria & candidates & \textbf{Fallbacks} \\
+ & & \multicolumn{2}{c}{\textbf{Rows}} & \multicolumn{3}{c}{\textbf{Largest number of}} & \\
+\cmidrule(lr){3-4}\cmidrule(lr){5-7}
+\textbf{Solves} & \textbf{Files} & all & counted & equilibria & candidates & roots & \textbf{Fallbacks} \\
 \midrule 
-\multicolumn{7}{l}{\textit{Tax rule: Argentina}} \\
-Calibrations & 2 & 32 & 32 & 1 & 3 & 0 \\ % row: tax_arg_calibration
-Experiments & 64 & 448 & 224 & 1 & 3 & 0 \\ % row: tax_arg_shocks
-Equilibria over designs & 2 & 756 & 756 & 1 & 3 & 0 \\ % row: tax_arg_sweeps
-Numerical checks & 2 & 114 & 114 & 1 & 3 & 0 \\[.5em] % row: tax_arg_numerical
-\multicolumn{7}{l}{\textit{Tax rule: the U.S., the UK and France}} \\
-Calibrations & 6 & 18 & 18 & 1 & 3 & 0 \\ % row: tax_us_calibration
-Experiments & 3 & 162 & 90 & 1 & 3 & 0 \\ % row: tax_us_shocks
-Endogenous design & 13 & 224 & 190 & 1 & 3 & 0 \\ % row: tax_us_esc
-Cross-country test & 3 & 317 & 311 & 1 & 3 & 0 \\ % row: tax_us_oecd26
-Cross-country test, $\theta$ measured as public tier, 23 countries & 3 & 53 & 47 & 1 & 3 & 0 \\ % row: tax_us_oecd26_theta_A
-Cross-country test, $\theta$ measured as all mandatory tiers & 3 & 53 & 53 & 1 & 3 & 0 \\ % row: tax_us_oecd26_theta_B
-Numerical checks & 5 & 213 & 147 & 1 & 3 & 0 \\[.5em] % row: tax_us_numerical
-\multicolumn{7}{l}{\textit{Design layer of the exact CRRA recursion}} \\
-Endogenous design & 4 & 50 & 34 & 1 & 1 & 0 \\ % row: design_esc
-Numerical checks & 2 & 75 & 66 & 1 & 1 & 0 \\ % row: design_numerical
+\multicolumn{8}{l}{\textit{Tax rule: Argentina}} \\
+Calibrations & 3 & 33 & 33 & 1 & 3 & 1 & 0 \\ % row: tax_arg_calibration
+Experiments & 65 & 455 & 231 & 1 & 3 & 1 & 0 \\ % row: tax_arg_shocks
+Equilibria over designs & 2 & 756 & 756 & 1 & 3 & 1 & 0 \\ % row: tax_arg_sweeps
+Numerical checks & 2 & 114 & 114 & 1 & 3 & 1 & 0 \\[.5em] % row: tax_arg_numerical
+\multicolumn{8}{l}{\textit{Tax rule: the U.S., the UK and France}} \\
+Calibrations & 6 & 18 & 18 & 1 & 3 & 1 & 0 \\ % row: tax_us_calibration
+Experiments & 3 & 162 & 90 & 1 & 3 & 1 & 0 \\ % row: tax_us_shocks
+Endogenous design & 13 & 224 & 190 & 1 & 3 & 1 & 0 \\ % row: tax_us_esc
+Cross-country test & 3 & 380 & 374 & 1 & 3 & -- & 0 \\ % row: tax_us_oecd26
+Cross-country test, $\theta$ measured as public tier, 23 countries & 3 & 53 & 47 & 1 & 3 & -- & 0 \\ % row: tax_us_oecd26_theta_A
+Cross-country test, $\theta$ measured as all mandatory tiers & 3 & 53 & 53 & 1 & 3 & -- & 0 \\ % row: tax_us_oecd26_theta_B
+Endogenous design, the cost linear in the tax & 13 & 224 & 190 & 1 & 3 & 1 & 0 \\ % row: tax_us_esc_tau1
+Cross-country test, the cost linear in the tax & 3 & 106 & 106 & 1 & 3 & -- & 0 \\ % row: tax_us_oecd26_tau1
+Numerical checks & 5 & 213 & 147 & 1 & 3 & 1 & 0 \\[.5em] % row: tax_us_numerical
+\multicolumn{8}{l}{\textit{Design layer of the exact CRRA recursion}} \\
+Endogenous design & 4 & 50 & 34 & 1 & 1 & 1 & 0 \\ % row: design_esc
+Endogenous design, the cost linear in the tax & 4 & 50 & 34 & 1 & 1 & 1 & 0 \\ % row: design_esc_tau1
+Numerical checks & 2 & 75 & 66 & 1 & 1 & 1 & 0 \\ % row: design_numerical
 \bottomrule
 \end{tabularx}
 \begin{tablenotes}[flushleft]
 \footnotesize
-\item[] \textit{Note:} The files of results that the exhibits read, grouped by the solves that wrote them: per group the files, their rows, the rows that record the counts, and over these the largest number of equilibria at any state and period, the largest number of candidates, and the number of states at which no candidate passed the equilibrium test and the solver fell back. The other rows select nothing at that layer (the economic-equilibrium rows, with taxes held at the baseline path; the tax of the exact recursion, selected inside its design layer; the cost calibrations that failed; the cross-country test\textquotesingle s rows of Luxembourg at its own turnout, which has no CSES election and so no solve; the rows with the design pinned) or were written before the counts existed; the supplemental appendix lists every file. The tax rule\textquotesingle s candidates are the two corners and the crossings of the first order condition; the design layer\textquotesingle s are the brackets of its consistency residual. Every counted row has one equilibrium at every state and period, and no fallback.
+\item[] \textit{Note:} The files of results that the exhibits read, grouped by the solves that wrote them: per group the files, their rows, the rows that record the counts, and over these the largest number of equilibria at any state and period, the largest number of candidates, and the number of states at which no candidate passed the equilibrium test and the solver fell back. The other rows select nothing at that layer (the economic-equilibrium rows, with taxes held at the baseline path; the tax of the exact recursion, selected inside its design layer; the cross-country test\textquotesingle s rows of Luxembourg at its own turnout, which has no CSES election and so no solve; the rows with the design pinned) or were written before the counts existed; the supplemental appendix lists every file. The tax rule\textquotesingle s candidates are the two corners and the crossings of the first order condition; the design layer\textquotesingle s are the brackets of its consistency residual. Roots: the largest number of solutions of the fixed point for next period\textquotesingle s state (the savings of the formal households under CRRA preferences; in Argentina also the informal households\textquotesingle{} share of savings), over the rows that record it, whatever their tax count; under log preferences the U.S. arm solves no such fixed point, and rows written before the count existed do not record it. Every counted row has one equilibrium at every state and period, and no fallback.
 \end{tablenotes}
 \end{threeparttable}
 \end{table}

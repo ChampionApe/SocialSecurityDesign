@@ -1,5 +1,6 @@
 r""" Figure builders for the supplemental appendix: the calibrations across rho, the baseline path of the endogenous design
-(escPathPaper, US_ESC_Path), the tax against a pinned design (escTauTheta). House style from figures.py (_panel, SERIES, INK); drawn at the measure (5.91 in).
+(escPathPaper, US_ESC_Path), the tax against a pinned design (escTauTheta), each under either cost (`k`, the `_linear`
+twin at k = 1). House style from figures.py (_panel, SERIES, INK); drawn at the measure (5.91 in).
 
 Each writes results/paper/Figs/<name>.{pdf,png,svg} and <name>.marks.json through figures._save. Every data
 point is its own artist, tagged with figures.markId; the text of its mark is the value as the tables print it
@@ -198,18 +199,18 @@ def usTaxState():
 # ---------------------------------------------------------------------------------------------------
 # The endogenous design's baseline path
 # ---------------------------------------------------------------------------------------------------
-def escPathPaper():
-    r""" The paper's figure of the baseline path (sec:esc, fig:US_ESC:path), at the baseline rho (log
-    preferences) and from the calibration year on, where the calibration pins the design and everything after
-    is the model's: workers per retiree, the design chosen against theta* pinned, and the tax rate with the
-    design chosen and with it pinned (datasets.escPath). The path from 1990, the other rhos and the Frisch
-    elasticities are the supplemental appendix's (siteData.escPaths). """
-    name = 'US_ESC_Path'
+def escPathPaper(k = 2):
+    r""" The U.S. baseline path with the design chosen (page C1), at the baseline rho (log preferences) and from the
+    calibration year on, where the calibration pins the design and everything after is the model's: workers per
+    retiree, the design chosen against theta* pinned, and the tax rate with the design chosen and with it pinned
+    (datasets.escPath), under the cost with tau^k (datasets.escDir; US_ESC_Path + config.costSuffix(k)). The path from
+    1990, the other rhos and the Frisch elasticities are the datasets' (siteData.escPaths). """
+    name = 'US_ESC_Path' + C.costSuffix(k)
     ρ1, spec = C.US['ρBaseline'], C.US['esc']['spec']
     year0 = C.usCalendar()['year0']
-    df = D.escPath(ρ1)
+    df = D.escPath(ρ1, k = k)
     df = df[df['date'].astype(int) >= year0].reset_index(drop = True)
-    θstar = float(D.escCalibration()[(ρ1, spec)]['θStar'])
+    θstar = float(D.escCalibration(k = k)[(ρ1, spec)]['θStar'])
     xs = df['date'].values.astype(int)
     chosen, pinned = SERIES[0], SERIES[1]
     dashed = (0, (4, 2))
@@ -265,15 +266,15 @@ def tauThetaPeaks(d):
     return float(d['θpin'].iloc[k]), float(τ[k]), float(τ[0]), float(τ[-1]), bool(np.all(np.diff(τ) < 0))
 
 
-def escTauTheta():
+def escTauTheta(k = 2):
     r""" US_ESC_TauTheta: the U.S. tax rate of 2020 against a design pinned on the whole path (datasets.escTauTheta,
-    python/US/runTauTheta.py), without the cost (section 6's calibration) and under the paper's cost at its calibrated
-    λ, each economy calibrated at the observed θ* (vertical rule); every point is a pinned design (the grid, θ*, and
-    the steps around the costly economy's peak). Also writes `US_ESC_TauTheta_note.tex`: the peak and the corners of
-    both curves. """
-    name = 'US_ESC_TauTheta'
+    python/US/runTauTheta.py), without the cost (section 6's calibration) and under the cost with tau^k at its calibrated
+    λ (datasets.escDir; US_ESC_TauTheta + config.costSuffix(k)), each economy calibrated at the observed θ* (vertical
+    rule); every point is a pinned design (the grid, θ*, and the steps around the costly economy's peak). Also writes
+    `<name>_note.tex`: the peak and the corners of both curves. """
+    name = 'US_ESC_TauTheta' + C.costSuffix(k)
     spec = C.US['esc']['spec']
-    tt = D.escTauTheta()
+    tt = D.escTauTheta(k = k)
     year0 = C.usCalendar()['year0']
     θstar = float(C.theta0())
     fig, ax = plt.subplots(1, 1, figsize = (WIDTH*0.62, 2.6), constrained_layout = True)
@@ -315,14 +316,16 @@ def escTauTheta():
     note = (r'\textit{Note:} The U.S.\ in ' + str(year0) + r' under log preferences ($\rho = 1$), with the design '
             r'pinned at the same $\theta$ at every date and the economy started from its own steady state; $\beta$, '
             r'$\omega$ and $X$ stay at their calibration at the observed $\theta^{\ast} = ' + C.num(θstar, 3)
-            + r'$ (dashed line), without the cost as in section \ref{sec:oecd} and with the paper\textquotesingle s '
-            r'cost at $\lambda = ' + C.num(lam, 2) + r'$ (table \ref{table:US_ESC:calibration}). ' + first + second
+            + r'$ (dashed line), without the cost as in section \ref{sec:oecd} and with ' + C.COSTWORDS[k]
+            + r' of equation \eqref{' + C.COSTEQ[k] + r'} at $\lambda = ' + C.num(lam, 2) + '$'
+            + (r' (table \ref{table:US_ESC:calibration})' if k == C.US['esc']['tauPower'] else '') + '. ' + first + second
             + (r' The designs are $\theta = {:g}, {:g}, \dots, {:g}$, $\theta^{{\ast}}$ and, around the peak, steps of '.format(
                    grid[0], grid[1], grid[-1])
                + C.num(float(np.diff(np.sort(step.values)).min()), 2) + '.' if len(step) > 1 else ''))
     path = os.path.join(C.PAPERDIR, 'Figs', name + '_note.tex')
     with open(path, 'w', encoding = 'utf-8', newline = '\n') as f:
-        f.write(BANNER.format(name = name, src = 'results/esc/escTauTheta.csv, escCalibration.csv') + note + '\n')
+        f.write(BANNER.format(name = name, src = 'results/' + os.path.basename(D.escDir(k)) + '/escTauTheta.csv, '
+                              'escCalibration.csv') + note + '\n')
     return out + [path]
 
 

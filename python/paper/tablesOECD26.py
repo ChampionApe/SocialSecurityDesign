@@ -25,7 +25,9 @@ Every builder takes
            the anchor's);
   spending the model's spending: 'chosen' (100 τInForce (1 - α), the 2020 tax on the path whose design in force is the
            chosen one, = spending2020 τInForce/τ2020; reading 'inForce' and a cost only) | 'observed' (spending2020, the
-           tax at the observed design, which own ω (layer 2) matches by construction);
+           tax at the observed design, which own ω (layer 2) matches by construction); under a cost and the spending
+           target 'net' (config.US['esc']['spendingTarget'], netSpending) each is the benefits paid, 100 τ f (1 - α):
+           spendingNetInForce and spendingNet2020;
   omegaRule the model's (layer 1's) ω: 'mean' (the mean of the countries' own ω) | 'anchor' (the U.S. anchor's);
   retAge   ν's retirement-age correction: 'nra' (statutory age) | 'none' | 'exit' (effective exit age);
   theta    the design's measure (config.THETANAMES): config.US['theta'] or a data variant (results/oecd26_theta_<V>/);
@@ -88,6 +90,31 @@ RETAGECAPTION = {'none': r'$\nu$ uncorrected', 'exit': r'$\nu$ corrected at the 
 THETACAPTION = {m: r'the design measured as ' + C.THETANAMES.get(m, m) for m in MEASURES}
 # A layer as a header or row label prints it (NAMES above).
 LAYERNAME = {1: 'Model', 2: r'Own $\omega$'}
+# Section 7.3's two costs, by the power k of the tax rate in f (Eq esc:budget at k = 1, esc:budgetSquared at k = 2): k = 2 in
+# datasets.oecd26Dir(), k = 1 in datasets.tau1Dir('oecd26') under config.US['tau1']'s carrier (costKw). Table 5 and
+# figures 7.2 and 7.3 show the model under both at the paper's variant; every other exhibit is k = 2's.
+COSTS = (1, 2)
+COSTKEY = C.COSTKEYS                                                   # mark series and `% row:` parts
+COSTNAME = {1: 'linear cost', 2: 'squared cost'}                         # legends and table headers, after "model, "
+COSTTITLE = {1: 'Cost linear in the tax rate', 2: 'Cost in the tax rate squared'}       # panel titles
+COSTTEX = {1: 'the cost linear in the tax rate', 2: 'the cost in the tax rate squared'}
+
+
+def costKw(k):
+    """ panelData's `root` and `carrier` of the cost with tau^k: {} at k = 2 (the defaults), config.US['tau1']'s at 1. """
+    if k == 2:
+        return {}
+    t = C.US['tau1']
+    if k != t['tauPower']:
+        raise ValueError('cost k = {}: one of {}'.format(k, COSTS))
+    return {'root': D.tau1Dir('oecd26'), 'carrier': t['carrier']}
+
+
+def costsSrc(layers = 'layer1.csv, anchor.csv'):
+    """ The %% Source: of an exhibit of both costs. """
+    return 'results/' + C.US['tau1']['oecd26'] + '/, ' + D.oecd26DirRel() + ' ' + layers + '; ' + DATASRC
+
+
 # The notes' sentence on the propensities to vote by income group.
 TURNOUTNOTE = {'csesFlat': r'Turnout: each country\textquotesingle s own propensities to vote by income group, from the '
                            r'CSES; Luxembourg, which has no CSES survey and enforces compulsory voting, at a flat profile.',
@@ -182,6 +209,19 @@ def _check(v):
                          "and a cost only; got {}".format(v))
 
 
+def netSpending(v):
+    """ Is the model's spending of variant `v` the benefits paid, 100 τ f (1 - α) (`spendingNet2020`,
+    `spendingNetInForce` of the rows), rather than 100 τ (1 - α)? Under a cost and config.US['esc']['spendingTarget']
+    'net', where every ω is calibrated to it; without a cost f = 1 and the two coincide. """
+    return v['spec'] != 'none' and C.US['esc']['spendingTarget'] == 'net'
+
+
+def spendingTex(v):
+    r""" The model's spending as the notes print it at variant `v`: the benefits paid under netSpending, the tax
+    times labour's share otherwise. """
+    return r'$\tau f(1-\alpha)$, the benefits paid,' if netSpending(v) else r'$\tau(1-\alpha)$'
+
+
 def dataSide(theta = None):
     """ (countries, index, spending) of the data side under the design's measure `theta` (module docstring): figure
     1.1's order, I and spending (% of GDP) as Series on ISO3. """
@@ -196,7 +236,8 @@ def dataSide(theta = None):
 
 
 def panelData(layer, turnout = None, sample = None, reading = None, spec = None, betaRule = None, theta = None,
-              spending = None, omegaRule = None, root = None, retAge = None, inequality = None):
+              spending = None, omegaRule = None, root = None, retAge = None, inequality = None, usInput = None,
+              carrier = None):
     r""" One row per country of the sample with a model row: figure 1.1's x variables (`growth`, `inequality` = the
     measure `inequality` of INEQUALITYROWS, config.INEQUALITY's where None), every measure of INEQUALITYROWS (`gini`,
     `yHighOverLow`, `Vtilde`), the data's
@@ -206,14 +247,17 @@ def panelData(layer, turnout = None, sample = None, reading = None, spec = None,
     ('mean' | 'anchor'), both from datasets.oecd26Dir(theta, root). Countries whose model row is 'noTurnout' (cses) are
     dropped from both sides and listed in `.attrs['dropped']`; a sample country with no row is MissingInput, one
     without its three income groups (datasets.incomeGroups) or a failed row an error, a model row whose Vtilde is not
-    its income groups' StaleInput. """
+    its income groups' StaleInput. `usInput` (layer 1): the rows with that input of every country at its U.S. value
+    (python/US/runOECD26.py --usInput; under 'income' every row's Vtilde is the U.S. groups'); `carrier`: the carrier the
+    anchor of `root` carries (datasets.oecd26Anchor; config.CARRIER where None). """
     v = variant(turnout, sample, reading, spec, betaRule, spending, omegaRule, retAge, theta)
     _check(v)
     theta = v['theta']
     fig = D.oecdFigure1Data()
     smp = D.oecd26Sample()
     model = D.oecd26Layer(layer, v['turnout'], v['spec'], v['betaRule'], _thetaSource(v), root,
-                          v['omegaRule'] if layer == 1 else 'anchor', v['retAge'])
+                          v['omegaRule'] if layer == 1 else 'anchor', v['retAge'], usInput if layer == 1 else None,
+                          carrier)
     isos, index, spend = dataSide(theta)
     lack = [c for c in isos if c not in model.index]
     if lack:
@@ -231,16 +275,26 @@ def panelData(layer, turnout = None, sample = None, reading = None, spec = None,
     groups = D.incomeGroups(isos)                                  # every sample country has its three groups
     dropped = list(m.index[m['status'] == 'noTurnout'])
     keep = [c for c in isos if c not in dropped]
-    gap = float((m.loc[keep, 'Vtilde'].astype(float) - groups.loc[keep, 'Vtilde']).abs().max())
+    ref = (pd.Series(float(D.incomeGroups(['USA']).loc['USA', 'Vtilde']), index = keep) if usInput == 'income'
+           else groups.loc[keep, 'Vtilde'])
+    gap = float((m.loc[keep, 'Vtilde'].astype(float) - ref).abs().max())
     if not gap <= D.GROUPTOL:
         raise D.StaleInput('{}: the rows\' Vtilde differs from the income groups of {} by {:.2e}: rows computed at other '
                            'income groups; rerun python/US/runOECD26.py'.format(
                                D.oecd26Path(layer, None if theta == 'paper' else theta, root),
                                os.path.relpath(D.OECD29DIST, C.REPO), gap))
     θ = m.loc[keep, READINGS[v['reading']]].astype(float)
-    observed = m.loc[keep, 'spending2020'].astype(float)
-    model = (observed if v['spending'] == 'observed' else
-             observed*m.loc[keep, 'τInForce'].astype(float)/m.loc[keep, 'τ2020'].astype(float))
+    if netSpending(v):
+        lack = [k for k in ('spendingNet2020', 'spendingNetInForce') if k not in m.columns]
+        if lack:
+            raise D.StaleInput('{}: no {} (rows written before the net spending target): rerun python/US/runOECD26.py'
+                               .format(D.oecd26Path(layer, None if theta == 'paper' else theta, root), ', '.join(lack)))
+        observed = m.loc[keep, 'spendingNet2020'].astype(float)
+        model = observed if v['spending'] == 'observed' else m.loc[keep, 'spendingNetInForce'].astype(float)
+    else:
+        observed = m.loc[keep, 'spending2020'].astype(float)
+        model = (observed if v['spending'] == 'observed' else
+                 observed*m.loc[keep, 'τInForce'].astype(float)/m.loc[keep, 'τ2020'].astype(float))
     inequality = C.INEQUALITY if inequality is None else inequality
     if inequality not in INEQUALITYROWS:
         raise ValueError('inequality {!r}: one of {}'.format(inequality, INEQUALITYROWS))
@@ -280,16 +334,16 @@ def _xy(p, yRole, xRole, side):
 
 def slopes(turnout = None, sample = None, reading = None, spec = None, betaRule = None, relations = RELATIONS,
            layers = (1, 2), theta = None, spending = None, omegaRule = None, root = None, keep = None, retAge = None,
-           inequality = None):
+           inequality = None, usInput = None, carrier = None):
     """ One row per relation of `relations` (RELATIONS by default): OLS of the data and of each layer of `layers`
     (`data`, `layer1`, `layer2`, each an ols dict, None for a layer not asked for), on the countries every layer
     asked for covers (and among `keep`, if given), under the design's measure `theta` and at `retAge` (panelData;
     layer 1 at `omegaRule`, both from `root`; income inequality the measure `inequality`, config.INEQUALITY's where
     None). Layer 2 matches spending at the observed design by construction, so
     under spending 'observed' its spending-on-regressor rows are flagged `targeted2`. Under spec 'none' no row has a
-    design: ask for the spending relations only (SPENDING). """
+    design: ask for the spending relations only (SPENDING). `usInput`, `carrier`: panelData's. """
     ps = {k: panelData(k, turnout, sample, reading, spec, betaRule, theta, spending, omegaRule, root, retAge,
-                       inequality) for k in layers}
+                       inequality, usInput, carrier) for k in layers}
     common = ps[layers[0]].index
     for k in layers[1:]:
         common = common.intersection(ps[k].index)
@@ -317,26 +371,29 @@ def spendingSlopes(turnout = None, sample = None, **kw):
                   layers = (1,), spending = 'observed', **kw)
 
 
-def layer1Omega(v):
+def layer1Omega(v, root = None, carrier = None):
     """ Layer 1's ω̄ at the variant `v` (a dict of variant()) under omegaRule 'mean': the `ωMean` its rows carry (the
-    mean of layer 2's ω, runOECD26.meanOmega); None under 'anchor', where every country takes the anchor's. """
+    mean of layer 2's ω, runOECD26.meanOmega); None under 'anchor', where every country takes the anchor's. `root`,
+    `carrier`: panelData's (costKw). """
     if v['omegaRule'] != 'mean':
         return None
-    rows = D.oecd26Layer(1, v['turnout'], v['spec'], v['betaRule'], _thetaSource(v), None, 'mean', v['retAge'])
+    rows = D.oecd26Layer(1, v['turnout'], v['spec'], v['betaRule'], _thetaSource(v), root, 'mean', v['retAge'], None,
+                         carrier)
     ω = rows.loc[rows['status'] == 'ok', 'ωMean'].astype(float).unique()
     if len(ω) != 1:
         raise ValueError('layer 1 at the mean ω ({}): {} values of ωMean'.format(v, len(ω)))
     return float(ω[0])
 
 
-def thetaFit(layer, turnout = None, units = 'theta', omegaRule = None, root = None, retAge = None, theta = None):
+def thetaFit(layer, turnout = None, units = 'theta', omegaRule = None, root = None, retAge = None, theta = None,
+             carrier = None):
     """ The predicted against the observed design of layer `layer` at the paper's variant but `turnout`, `omegaRule`,
-    `retAge` and the measure `theta`, from `root` (oecd26Dir by default): `panel` (panelData) and, over the countries
+    `retAge` and the measure `theta`, from `root` (oecd26Dir by default; `carrier` its anchor's, costKw): `panel` (panelData) and, over the countries
     other than the U.S. (the anchor), Pearson's `r` of model on data, `rmse` of the model's prediction, `rmseMean` that
     of predicting every country at the sample mean, `sdModel` and `sdData` the standard deviations (population, ddof
     0: sdData equals rmseMean) of predicted and observed, and `fit` (ols of model on data). `units` 'theta' (θ) or
     'index' (I = 1/(2 - θ)). `n` counts the U.S. in, `nStat` out. """
-    p = panelData(layer, turnout, omegaRule = omegaRule, root = root, retAge = retAge, theta = theta)
+    p = panelData(layer, turnout, omegaRule = omegaRule, root = root, retAge = retAge, theta = theta, carrier = carrier)
     col = {'theta': ('θData', 'θModel'), 'index': ('indexData', 'indexModel')}[units]
     h = p.drop(index = 'USA')
     x, y = h[col[0]].to_numpy(float), h[col[1]].to_numpy(float)
@@ -450,12 +507,35 @@ def modelText(v):
     spend = (r'in 2020 on the path of the design it chooses' if v['spending'] == 'chosen' else
              r'in 2020 at the observed design')
     return (r'The model\textquotesingle s index is $1/(2-\theta)$ of the design ' + design
-            + r', and its spending $\tau(1-\alpha)$ ' + spend + '.')
+            + r', and its spending ' + spendingTex(v) + ' ' + spend + '.')
+
+
+def _slopesCosts():
+    r""" Table 5 (OECD26_Slopes at the paper's variant): the data beside the model under each cost of COSTS, each with
+    its own anchor and mean ω (costKw). Rows keyed `<y>_<x>`. """
+    ss = {k: slopes(layers = (1,), **costKw(k)) for k in COSTS}
+    if len({tuple(s.attrs['countries']) for s in ss.values()}) != 1:
+        raise ValueError('OECD26_Slopes: the two costs cover different countries')
+    first = ss[COSTS[0]]
+    body = []
+    for i in range(len(first)):
+        r = first.iloc[i]
+        d = slopeDigits(r['y'], r['x'])
+        body.append(' & '.join([YTEX[r['y']] + ' on ' + XTEX[r['x']], _cell(r['data'], d, stack = True)]
+                               + [_cell(ss[k].iloc[i]['layer1'], d, stack = True) for k in COSTS])
+                    + r' \\ % row: ' + rowKey(r['y'] + '_' + r['x']))
+    note = (r'\textit{Note:} Least-squares slopes, standard errors in parentheses, ' + '{} countries. '.format(first.attrs['n'])
+            + r'The model under each cost as in figure \ref{fig:OECD26:layer1}.')
+    return _xwrap('OECD26_Slopes', costsSrc(),
+                  r'Figure \ref{fig:US:OECDdata}\textquotesingle s relations in the data and in the model',
+                  'table:OECD26:slopes', 'l' + 'Y'*(1 + len(COSTS)),
+                  [r'\textbf{Relation}', r'\textbf{Data}'] + [r'\textbf{Model, ' + COSTNAME[k] + '}' for k in COSTS],
+                  '\n'.join(body), note, width = r'\textwidth')
 
 
 def slopesLayers(v):
-    """ The layers OECD26_Slopes shows at the variant `v`: the model alone at the paper's variant (table 5), the model
-    and own ω at any other. """
+    """ The layers OECD26_Slopes shows at a variant `v` other than the paper's (table 5 is _slopesCosts): the model and
+    own ω. """
     return (1,) if suffix(**v) == '' else (1, 2)
 
 
@@ -465,6 +545,8 @@ def oecd26Slopes(turnout = None, sample = None, reading = None, spec = None, bet
     political weight, the mean of the countries' own or the U.S. one), and at a variant other than the paper's also
     with each country's own political weight (own ω, layer 2; slopesLayers). """
     v = variant(turnout, sample, reading, spec, betaRule, spending, omegaRule, retAge, theta)
+    if suffix(**v) == '':
+        return _slopesCosts()
     layers = slopesLayers(v)
     s = slopes(**v, layers = layers)
     a = D.oecd26Anchor(v['turnout'], v['spec'], _thetaSource(v))
@@ -644,6 +726,182 @@ def oecd26Variants():
                   r'measures of the design',
                   'table:OECD26:variants', r'>{\raggedright\arraybackslash}p{2.5cm}l' + 'Y'*len(RELATIONS), header,
                   '\n'.join(body), note, width = r'\textwidth', size = r'\footnotesize\setlength{\tabcolsep}{3pt}')
+
+
+# ---------------------------------------------------------------------------------------------------
+# Page C4's further readings: section 6's test with partial slopes (OECD26_GivenDesign), the model with one input at its
+# U.S. value (OECD26_USInputs), table 5 without the U.S. (OECD26_SlopesNoUS) and under the cost linear in the tax
+# (OECD26_SlopesTau1). All ONLINE_ONLY.
+
+
+def olsControl(x, z, y):
+    """ Least squares of y on a constant, x and the control z: the coefficient on x and its classical standard error,
+    and n. """
+    x, z, y = (np.asarray(a, dtype = float) for a in (x, z, y))
+    X = np.column_stack([np.ones_like(x), x, z])
+    b, *_ = np.linalg.lstsq(X, y, rcond = None)
+    e = y - X @ b
+    V = np.sum(e**2)/(len(y) - X.shape[1])*np.linalg.inv(X.T @ X)
+    return {'slope': float(b[1]), 'se': float(np.sqrt(V[1, 1])), 'n': len(y)}
+
+
+GIVEN = (('spending', 'index'), ('spending', 'growth'), ('spending', 'inequality'))
+
+
+def oecd26GivenDesign():
+    r""" Section 6's test with the design given and no cost (config.US['oecd26']['spendingSpec'], the model's spending at
+    each country's observed design; layer 1 at the paper's turnout, ω rule and ν): spending on the index I, on population
+    growth and on income inequality, in the data and in the model, alone and controlling for population growth (the
+    coefficient in the regression on the regressor and growth; none for growth itself). The model's index is the data's,
+    the design being given. Rows keyed `<y>_<x>`. """
+    v = variant(spec = C.US['oecd26']['spendingSpec'])
+    p = panelData(1, spec = v['spec'], spending = 'observed')
+    x = lambda role: p['indexData'] if role == 'index' else p[role]
+    body = []
+    for yR, xR in GIVEN:
+        cells = [RELTEX[(yR, xR)] if (yR, xR) in RELTEX else 'Spending on ' + XTEX[xR]]
+        for side in ('Data', 'Model'):
+            y = p['spending' + side]
+            cells.append(_cell(ols(x(xR), y), 2, stack = True))
+            cells.append('--' if xR == 'growth' else _cell(olsControl(x(xR), p['growth'], y), 2, stack = True))
+        body.append(' & '.join(cells) + r' \\ % row: ' + rowKey(yR + '_' + xR))
+    a = D.oecd26Anchor(v['turnout'], v['spec'])
+    note = (r'\textit{Note:} Least-squares slopes, standard errors in parentheses, ' + sampleText(len(p), p.attrs['dropped'])
+            + r'. Alone: the regression on the regressor; with growth: the coefficient on it in the regression on it and '
+            r'population growth. The model is that of the test of section \ref{sec:oecd} (figure '
+            r'\ref{fig:OECD26:spending}), without the cost: '
+            r'every country at its observed design, so that its index is the data\textquotesingle s, and its spending '
+            r'$\tau(1-\alpha)$ in 2020 there. ' + _layersText(a, v, layers = (1,)) + ' ' + turnoutNote(v['turnout'])
+            + _dashNote(body))
+    header = (r' & \multicolumn{2}{c}{\textbf{Data}} & \multicolumn{2}{c}{\textbf{Model}} \\' + '\n'
+              + r'\cmidrule(lr){2-3}\cmidrule(lr){4-5}' + '\n'
+              + r'\textbf{Relation} & alone & with growth & alone & with growth')
+    return _xwrap('OECD26_GivenDesign', D.oecd26DirRel() + 'layer1.csv, anchor.csv; ' + DATASRC,
+                  r'Pension spending in the data and in the model with the design given, without the cost',
+                  'table:OA:OECD26_GivenDesign', r'>{\raggedright\arraybackslash}p{4.2cm}YYYY', header,
+                  '\n'.join(body), note, width = r'\textwidth')
+
+
+USINPUTNAMES = {'demography': 'demography', 'income': 'income distribution', 'turnout': 'turnout'}
+USINPUTTEXT = {'demography': r'workers per retiree, after the correction for the retirement age',
+               'income': r'the income groups, and with them $\tilde V$',
+               'turnout': r'the propensities to vote by income group'}
+
+
+def oecd26USInputs(k = 2):
+    r""" The model at the paper's specification (layer 1) with one input of every country at its U.S. value
+    (config.US['oecd26']['usInputs']; python/US/runOECD26.py --usInput), beside the data and the paper's model, under the
+    cost with tau^k (costKw; OECD26_USInputs + config.costSuffix(k), its label too): the five slopes of OECD26_Slopes, and
+    spending on the index controlling for population growth. A reading whose rows are missing or stale prints `--`; the
+    paper's own raise. Rows keyed `<y>_<x>` and `spending_index_growth`. """
+    v = variant()
+    kw = costKw(k)
+    sfx = C.costSuffix(k)
+    symbol = C.CARRIERSYMBOL[kw.get('carrier', C.CARRIER)]
+    cols = [('data', None), ('model', None)] + [('model', u) for u in C.US['oecd26']['usInputs']]
+    panels = {}
+    for _, u in cols:
+        if u in panels:
+            continue
+        try:
+            panels[u] = panelData(1, usInput = u, **kw)
+        except (D.MissingInput, D.StaleInput):
+            if u is None:
+                raise
+            panels[u] = None
+    base = panels[None]
+    common = base.index
+    for u, pu in panels.items():
+        if pu is not None:
+            common = common.intersection(pu.index)
+
+    def cell(side, u, yR, xR, control = False):
+        pu = panels[u if side == 'model' else None]
+        if pu is None:
+            return '--'
+        pu = pu.loc[common]
+        tag = 'Data' if side == 'data' else 'Model'
+        x, y = _xy(pu, yR, xR, tag)
+        o = olsControl(x, pu['growth'], y) if control else ols(x, y)
+        return _cell(o, slopeDigits(yR, xR), stack = True)
+
+    body = []
+    for yR, xR in RELATIONS:
+        body.append(' & '.join([RELTEX[(yR, xR)]] + [cell(sd, u, yR, xR) for sd, u in cols])
+                    + r' \\ % row: ' + rowKey(yR + '_' + xR))
+    body.append(' & '.join([r'Spending on $I$, with population growth'] + [cell(sd, u, 'spending', 'index', True)
+                                                                          for sd, u in cols])
+                + r' \\ % row: spending_index_growth')
+    D.oecd26Anchor(v['turnout'], v['spec'], **kw)
+    note = (r'\textit{Note:} Least-squares slopes, standard errors in parentheses, ' + '{} countries'.format(len(common))
+            + r'; the last row is the coefficient on $I$ in the regression on $I$ and population growth. The model as in '
+            r'figure \ref{fig:OECD26:layer1}, under ' + COSTTEX[k] + r'; in the last three columns every country takes '
+            r'one input at its U.S.\ value, '
+            + _and([r'\textit{' + USINPUTNAMES[u] + '}: ' + USINPUTTEXT[u] for u in C.US['oecd26']['usInputs']])
+            + r', every other input, its spending datum and observed design among them, its own, and $\beta$, $\omega$ '
+            r'and $' + symbol + r'$ those of the model under that cost. The regressors are the '
+            r'data\textquotesingle s, except the index, which is each column\textquotesingle s own.' + _dashNote(body))
+    header = (r' & & & \multicolumn{3}{c}{\textbf{Model, one input at its U.S.\ value}} \\' + '\n'
+              + r'\cmidrule(lr){4-6}' + '\n'
+              + r'\textbf{Relation} & \textbf{Data} & \textbf{Model} & '
+              + ' & '.join(USINPUTNAMES[u] for u in C.US['oecd26']['usInputs']))
+    src = (D.oecd26DirRel() if k == 2 else 'results/' + C.US['tau1']['oecd26'] + '/') + 'layer1.csv, anchor.csv; ' + DATASRC
+    return _xwrap('OECD26_USInputs' + sfx, src,
+                  r'Figure \ref{fig:US:OECDdata}\textquotesingle s relations in the model with one input at its U.S.\ value, '
+                  + COSTTEX[k], 'table:OA:OECD26_USInputs' + sfx, r'>{\raggedright\arraybackslash}p{3.6cm}YYYYY', header,
+                  '\n'.join(body), note, width = r'\textwidth', size = r'\footnotesize')
+
+
+def oecd26SlopesNoUS():
+    r""" Table 5 (OECD26_Slopes at the paper's variant: the data and the model) on the sample and without the U.S., the
+    anchor where the cost parameter, β and the U.S. ω are calibrated. Rows keyed `<y>_<x>`. """
+    v = variant()
+    every = slopes(layers = (1,))
+    noUS = slopes(layers = (1,), keep = [c for c in every.attrs['countries'] if c != 'USA'])
+    body = []
+    for (_, r), (_, q) in zip(every.iterrows(), noUS.iterrows()):
+        d = slopeDigits(r['y'], r['x'])
+        body.append(' & '.join([RELTEX[(r['y'], r['x'])], _cell(r['data'], d, stack = True),
+                                _cell(q['data'], d, stack = True), _cell(r['layer1'], d, stack = True),
+                                _cell(q['layer1'], d, stack = True)]) + r' \\ % row: ' + rowKey(r['y'] + '_' + r['x']))
+    note = (r'\textit{Note:} Least-squares slopes, standard errors in parentheses, on the ' + str(every.attrs['n'])
+            + r' countries of table \ref{table:OECD26:slopes} and on the ' + str(noUS.attrs['n'])
+            + r' without the U.S., the anchor of the model. ' + specText(None, v, layers = (1,)))
+    header = (r' & \multicolumn{2}{c}{\textbf{Data}} & \multicolumn{2}{c}{\textbf{Model}} \\' + '\n'
+              + r'\cmidrule(lr){2-3}\cmidrule(lr){4-5}' + '\n'
+              + r'\textbf{Relation} & all & without the U.S. & all & without the U.S.')
+    return _xwrap('OECD26_SlopesNoUS', D.oecd26DirRel() + 'layer1.csv, anchor.csv; ' + DATASRC,
+                  r'Figure \ref{fig:US:OECDdata}\textquotesingle s relations without the U.S.',
+                  'table:OA:OECD26_SlopesNoUS', r'>{\raggedright\arraybackslash}p{4.2cm}YYYY', header, '\n'.join(body),
+                  note, width = r'\textwidth')
+
+
+def oecd26SlopesTau1():
+    r""" Table 5's slopes under the paper's cost (quadratic in the tax, k = 2) and under the cost linear in the tax
+    (config.US['tau1'], its own anchor and own ω in datasets.tau1Dir('oecd26')), the model at the paper's specification
+    otherwise, beside the data. Rows keyed `<y>_<x>`. """
+    t = C.US['tau1']
+    k2 = slopes(layers = (1,))
+    k1 = slopes(layers = (1,), root = D.tau1Dir('oecd26'), carrier = t['carrier'])
+    if list(k1.attrs['countries']) != list(k2.attrs['countries']):
+        raise ValueError('OECD26_SlopesTau1: the two costs cover different countries')
+    a1 = D.oecd26Anchor(PAPER['turnout'], PAPER['spec'], root = D.tau1Dir('oecd26'), carrier = t['carrier'])
+    body = []
+    for (_, r), (_, q) in zip(k2.iterrows(), k1.iterrows()):
+        d = slopeDigits(r['y'], r['x'])
+        body.append(' & '.join([RELTEX[(r['y'], r['x'])], _cell(r['data'], d, stack = True),
+                                _cell(r['layer1'], d, stack = True), _cell(q['layer1'], d, stack = True)])
+                    + r' \\ % row: ' + rowKey(r['y'] + '_' + r['x']))
+    note = (r'\textit{Note:} Least-squares slopes, standard errors in parentheses, ' + '{} countries. '.format(k2.attrs['n'])
+            + r'$k = 2$: the model as in figure \ref{fig:OECD26:layer1}, its cost the tax rate squared. $k = 1$: the cost '
+            r'linear in the tax rate, $f = \exp(-\frac{1}{2}\lambda_{n,t}\tau\tilde V(1-\theta)^2)$ with $\lambda_{n,t} = '
+            r'\varepsilon\,\pi_{n,t}$, $\varepsilon = ' + C.num(float(a1['p']), 2) + r'$ calibrated on the U.S.\ anchor and '
+            r'every country at the mean of its own $\omega$ under that cost; the rest as at $k = 2$.')
+    header = [r'\textbf{Relation}', r'\textbf{Data}', r'\textbf{Model}, $\bm{k = 2}$', r'\textbf{Model}, $\bm{k = 1}$']
+    return _xwrap('OECD26_SlopesTau1', D.oecd26DirRel() + ', results/' + t['oecd26'] + '/ layer1.csv, anchor.csv; '
+                  + DATASRC, r'Figure \ref{fig:US:OECDdata}\textquotesingle s relations under the cost linear in the tax',
+                  'table:OA:OECD26_SlopesTau1', r'>{\raggedright\arraybackslash}p{4.2cm}YYY', header, '\n'.join(body),
+                  note, width = r'\textwidth')
 
 
 # ---------------------------------------------------------------------------------------------------

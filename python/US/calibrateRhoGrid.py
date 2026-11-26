@@ -80,7 +80,7 @@ OUTDIR = os.path.join(REPO, 'results', 'calibration')
 COLUMNS = ['ρ', 'preferences', 'requested', 'residual', 'verifyResidual',
            'β', 'ω', 'X',
            'R', 'τ', 'sr', 'h', 'hbar', 'nfev', 'time', 'n', 'ns', 'smoothKnots', 'interpKind',
-           'nEqMax', 'nCandMax', 'nFallback',
+           'nEqMax', 'nCandMax', 'nFallback', 'nRootsSMax',
            'x0', 'x1', 'commit', 'timestamp']
 THETACOLUMNS = ['thetaSource', 'θ0']      # appended under --theta only (oecd26.usBeta reads them)
 # R and τ are targets, so they are constants down the csv by construction -- kept anyway, because a column

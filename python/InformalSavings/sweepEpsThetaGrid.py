@@ -73,7 +73,7 @@ OUTDIR = os.path.join(REPO, 'results', 'sweeps')
 # NaN on a row resumed from a csv written before they existed.
 COLUMNS = ['eps', 'theta', 'ρ', 'statusQuo', 'universalEps',
            'τ', 'sr', 'srGDP', 'h', 'ι', 's', 's_', 'Y', 'Y0', 'c10', 'c20', 'nRoots', 'nEqMax', 'nCandMax',
-           'nFallback', 'time']
+           'nFallback', 'nRootsSMax', 'nRootsιMax', 'time']
 # sr is savings over formal output (Base.savingsRate); srGDP is savings over GDP, s/(Y+Y0), with Y and Y0
 # formal and informal output (EE_report), the concept of the tax target (model.taxTarget).
 

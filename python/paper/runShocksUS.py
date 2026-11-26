@@ -18,6 +18,9 @@ THE θ VARIANT. Every command carries config.thetaFlags() (--theta config.US['th
 the UK at the variant's θ0, the standard results/ paths), and an output counts as present only where it holds rows
 at that thetaSource (`_atTheta`). The data variants of the supplemental appendix's page C4,
 config.US['oecd26']['thetaVariants'], run without --main into their own results/oecd26_theta_<V>/ (`oecd26Variants`).
+Every command of a driver with a cost also carries config.spendingFlags() (--spendingTarget
+config.US['esc']['spendingTarget']), and its outputs count only where they hold rows at that target (`_atTheta`,
+config.spendingKeyed).
 
 TWO PARTS. `part = 'main'` is what a routine rebuild runs: the exogenous-theta shocks in both variants and
 the LOG leg of the endogenous-theta appendix, all cheap, and the cross-section. `part = 'prepub'` holds the
@@ -45,6 +48,9 @@ for _s in (sys.stdout, sys.stderr):
     _s.reconfigure(encoding = 'utf-8')
 
 THETA = C.thetaFlags()
+# Every command of a driver that calibrates or reads a cost carries the spending target (config.spendingFlags); the
+# exogenous-theta shocks have none.
+SPENDINGFLAG = C.spendingFlags()
 RHOFLAGS = ['--rho'] + [str(r) for r in C.US['ρTable']]
 G = C.US['gridSettings']
 GRIDFLAGS = ['--n', str(G['n']), '--ns', str(G['ns']),
@@ -52,7 +58,7 @@ GRIDFLAGS = ['--n', str(G['n']), '--ns', str(G['ns']),
 # The ESC leg runs under the headline calibration variant only. It is the most expensive stage in the
 # pipeline, and unlike the exogenous-theta shocks -- where both variants are cheap and both are built --
 # a second variant here would double a multi-hour run for an appendix the paper does not read twice.
-ESCVARIANT = (['--commonX'] if C.US['commonX'] else []) + THETA
+ESCVARIANT = (['--commonX'] if C.US['commonX'] else []) + THETA + SPENDINGFLAG
 ESC = C.US['esc']
 # The paper's cost specification, for the CRRA legs and the stationary check (one spec each; the
 # stationary check follows the paper's spec so sec:numerical's footnote quotes the paper's own design).
@@ -78,10 +84,15 @@ def _read(path):
 
 
 def _atTheta(path, variant = None):
-    """ Output check: the csv exists AND holds rows at thetaSource `variant` (config.US['theta'] by default). The
-    file's mere existence says nothing: a csv written before the variant holds index rows only. """
+    """ Output check: the csv exists AND holds rows at thetaSource `variant` (config.US['theta'] by default) and, for
+    a csv of a driver with a cost (config.spendingKeyed), at config.US['esc']['spendingTarget']. The file's mere
+    existence says nothing: a csv written before the variant holds index rows only, one before the target gross
+    rows only. """
     df = _read(path)
-    return df is not None and len(C.atTheta(df, variant)) > 0
+    if df is None:
+        return False
+    df = C.atTheta(df, variant)
+    return len(C.atSpending(df) if C.spendingKeyed(path) else df) > 0
 
 
 def _hasExactRows(path, ρs = None, spec = None):
@@ -91,7 +102,7 @@ def _hasExactRows(path, ρs = None, spec = None):
     df = _read(path)
     if df is None or 'method' not in df.columns:
         return False
-    df = C.atTheta(df)
+    df = C.atSpending(C.atTheta(df))
     df = df[df['method'].fillna('path') == 'exact']
     if spec is not None:
         df = df[df['spec'] == spec]
@@ -223,7 +234,7 @@ EXPERIMENTS = {
         'script':  'runOECD26.py',
         'argSets': lambda: [['--spec'] + v['spec'] + ['--betaRule'] + v['betaRule'] + ['--turnout'] + v['turnout']
                             + ['--stage'] + v['stage'] + ['--inSample', '--omegaRule', v['omegaRule'], '--retAge', r]
-                            + THETA
+                            + THETA + SPENDINGFLAG
                             for v in OECD['variants'] for r in v['retAge']],
         'outputs': lambda: [os.path.join(C.RESULTS, 'oecd26', f + '.csv') for f in ('anchor', 'layer1', 'layer2')],
         'requires': lambda: [C.usSweepCsv('US', True)],
@@ -242,7 +253,7 @@ EXPERIMENTS = {
                                                                '--turnout', OECD['turnout'],
                                                                '--stage', 'anchor', 'layer2', 'layer1',
                                                                '--omegaRule', OECD['omegaRule'],
-                                                               '--retAge', OECD['retAge']]]
+                                                               '--retAge', OECD['retAge']] + SPENDINGFLAG]
                                  for V in OECD['thetaVariants']), []),
         'outputs': lambda: [os.path.join(_variantDir(V), f + '.csv') for V in OECD['thetaVariants']
                             for f in ('anchor', 'layer1', 'layer2')],
@@ -300,7 +311,7 @@ EXPERIMENTS = {
         'part':    'both',
         'always':  True,
         'script':  'collectESCexperiments.py',
-        'args':    ['--costs', '--theta', C.US['theta']],
+        'args':    ['--costs', '--theta', C.US['theta']] + SPENDINGFLAG,
         'outputs': lambda: [os.path.join(C.ESCDIR, 'escAgeingCosts.csv')],
         'requires': lambda: [os.path.join(C.ESCDIR, 'escShocksCosts.csv')],
         'note':    'merge the ageing counterfactuals under the three costs',
@@ -312,7 +323,7 @@ EXPERIMENTS = {
         'part':    'both',
         'always':  True,
         'script':  'collectESCexperiments.py',
-        'args':    ['--theta', C.US['theta']],
+        'args':    ['--theta', C.US['theta']] + SPENDINGFLAG,
         'outputs': lambda: [os.path.join(C.ESCDIR, 'escExperiments.csv')],
         'note':    'merge the LOG and CRRA legs into one long table',
     },
@@ -322,7 +333,7 @@ EXPERIMENTS = {
     'escXi': {
         'part':    'main',
         'script':  'runESCxi.py',
-        'args':    THETA,
+        'args':    THETA + SPENDINGFLAG,
         'outputs': lambda: [os.path.join(C.ESCDIR, 'escXiRobustness.csv')],
         'requires': lambda: [os.path.join(C.ESCDIR, f) for f in ('escCalibration.csv', 'escPath.csv', 'escExperiments.csv')],
         'note':    'endogenous-theta counterfactuals at xi = 0.2, 0.3, 0.4, LOG (rho = 1)',

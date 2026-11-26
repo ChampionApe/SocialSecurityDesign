@@ -75,7 +75,7 @@ THETACOLUMNS = ['thetaSource', 'θ0']      # appended under --theta only
 COLUMNS = ['ρ', 'preferences', 'requested', 'residual', 'verifyResidual', 'hoursDrift',
            'β', 'ω', 'λ', 'X',
            'R', 'τ', 'sr', 'h', 'hbar', 'nfev', 'time', 'n', 'ns', 'smoothKnots', 'interpKind', 'retAge', 'βUS',
-           'nEqMax', 'nCandMax', 'nFallback',
+           'nEqMax', 'nCandMax', 'nFallback', 'nRootsSMax',
            'x0', 'commit', 'timestamp']
 INPUTCOLUMNS = ('retAge', 'βUS')          # recorded since 2026-11-04; a row without them is resumed unchecked
 

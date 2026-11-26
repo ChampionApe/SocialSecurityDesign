@@ -34,6 +34,7 @@ theta -- see notes/crossCuttingFindings.md #9, which is exactly this trap in its
 THE CALIBRATION, and what is approximate about it. Three targets, three parameters:
 
     R_{t0}, tau_{t0}     ->  beta, omega     ModelUS.calibrate, wedge installed, theta EXOGENOUS at theta*
+                                             (tau_{t0} f(theta*, tau_{t0}) under spendingTarget 'net', netTax)
     theta_{t0} = theta*  ->  p               the outer root here (lambda under 'size'; phi is imposed)
 
 where theta_{t0} is the design in FORCE at the baseline year on a freely simulated path -- chosen in 1990,
@@ -86,21 +87,29 @@ WEDGE_BRACKET = {'scale': (0.05, 3.0), 'flat': (0.05, 3.0), 'size': (0.5*TAU_SCA
 # stops at ΠR_TOLCRRA; a pi error of 1e-8 moves tau by ~1e-11. A fixed point that stalls on a jump of the
 # CRRA solve (_ΠRFixedPoint) is accepted below ΠR_STALLTOL, 2e-4 in pi (~1e-4 in the 2020 tax).
 ΠR_START, ΠR_TOL, ΠR_TOLCRRA, ΠR_TOL2D, ΠR_STALLTOL, ΠR_MAXITER = 0.55, 1e-10, 1e-8, 1e-5, 2e-4, 40
+# What a calibration with a cost targets for spending (db['spendingTarget']): 'gross' the tax, tau_{t0} = tau0;
+# 'net' the benefits paid, tau_{t0} f(theta_{t0}, tau_{t0}) = tau0 (netTax). Without a cost the two coincide.
+SPENDING_TARGETS = ('gross', 'net')
 
 
 class ModelESC(ModelUS):
     _defaultWedge = {'spec': None, 'phi': 0.5, 'p': 1.0}
 
     def __init__(self, *args, wedge = None, nθ = 41, nθCand = 121, nθCandCRRA = 13,
-                 nθCandPerm = 21, nθ2D = 13, nθCand2D = 21, designRule = 'root', Ma = 5, **kwargs):
+                 nθCandPerm = 21, nθ2D = 13, nθCand2D = 21, designRule = 'root', Ma = 5, spendingTarget = 'gross',
+                 **kwargs):
         """ wedge: {'spec': None|'scale'|'flat'|'size'|'sizePiR', 'phi': float, 'p': float} ('p' is lambda
         under 'size', ε under 'sizePiR' at carrier 'pi', κ at 'convex'). spec=None reproduces ModelUS exactly (Base.wedgeA/wedgeB are then the
         identity), which is what test_esc.py pins. designRule, Ma: LeadedCRRA2D's design layer ('root', alg
         esc:crra2D, or 'legacy') and the root layer's tabulation nodes. nθ2D: LeadedCRRA2D's θ-state grid,
-        its policies cubic along it (test_gridConvergence.py checks 13 nodes against 97; finding #19). """
+        its policies cubic along it (test_gridConvergence.py checks 13 nodes against 97; finding #19).
+        spendingTarget: SPENDING_TARGETS, what calibrate() matches to db['τ0'] under a cost (_calTargetReport). """
         self._wedge0 = self._defaultWedge | (wedge or {})
         if self._wedge0['spec'] not in WEDGE_SPECS:
             raise ValueError(f"ModelESC: unknown wedge spec {self._wedge0['spec']!r}; one of {WEDGE_SPECS}.")
+        if spendingTarget not in SPENDING_TARGETS:
+            raise ValueError(f'ModelESC: spendingTarget {spendingTarget!r}, one of {SPENDING_TARGETS}.')
+        self._spendingTarget0 = spendingTarget
         super().__init__(*args, **kwargs)
         self.ESC = LeadedLOG(self, nθ = nθ, nθCand = nθCand)
         self.ESCC = LeadedCRRA(self, nθCand = nθCandCRRA)
@@ -116,13 +125,69 @@ class ModelESC(ModelUS):
         self.db.update({'wedgeSpec': self._wedge0['spec'], 'wedgePhi': self._wedge0['phi'],
                         'wedgeP': self._wedge0['p'],
                         'wedgeTauPower': TAU_POWER,      # tau^k in f
-                        'wedgeCarrier': WEDGE_CARRIER})  # g(pi) under 'sizePiR'
+                        'wedgeCarrier': WEDGE_CARRIER,   # g(pi) under 'sizePiR'
+                        'spendingTarget': getattr(self, '_spendingTarget0', 'gross')})
         super().initPars(pars = pars)
 
     # ------------------------------------------------------------------ wedge parameters
     @property
     def wedge(self):
         return {'spec': self.db['wedgeSpec'], 'phi': self.db['wedgePhi'], 'p': self.db['wedgeP']}
+
+    # ------------------------------------------------------------------ the spending target under a cost
+    @property
+    def spendingTarget(self):
+        """ db['spendingTarget'] (SPENDING_TARGETS; 'gross' where never set). """
+        return self.db.get('spendingTarget', 'gross')
+
+    def setSpendingTarget(self, target):
+        if target not in SPENDING_TARGETS:
+            raise ValueError(f'setSpendingTarget: {target!r}, one of {SPENDING_TARGETS}.')
+        self.db['spendingTarget'] = target
+
+    def netTax(self, τ, θ, t = None):
+        """ Benefits paid at date t over labour income: tau_t (chi_1 + chi_0) of Eq esc:benefits summed over the
+        retirees (sum_i gamma_{t-1,i} y_{t-1,i} = 1) with eq:governmentBudget:bbar, i.e. tau_t f(theta_t, tau_t)
+        under the proportional costs and tau_t (theta_t + f (1 - theta_t)) under 'flat'; times (1 - alpha) the
+        share of GDP. f is the retirees' (lag '[t-1]': their Vtilde and, under 'sizePiR', db's pi_t, the pi the
+        last solve was solved at, so call it before another solve moves db's pi). tau itself without a cost. t: a
+        db['t'] label (t0Year by default); τ, θ scalars or arrays that broadcast. """
+        spec = self.db.get('wedgeSpec')
+        if spec is None:
+            return τ
+        t = self.t0Year if t is None else t
+        if spec == 'flat':
+            return τ*(self.B.wedgeA(θ, τ, t, '[t-1]') + self.B.wedgeB(θ, τ, t, '[t-1]'))
+        return τ*self.B.fWedge(θ, τ, t, '[t-1]')
+
+    def _netTarget(self):
+        """ Does calibrate() target netTax rather than the tax? 'net' and a cost installed. """
+        return self.spendingTarget == 'net' and self.db.get('wedgeSpec') is not None
+
+    def _calTargetReport(self, report):
+        """ A calibration_report as its residual reads it: under 'net' with a cost its 'τ' is netTax at t0 (the
+        θ*-pinned path's tau_{t0}, theta_{t0} = db['θ'] at t0), so the root closes tau_{t0} f = db['τ0'];
+        `report` itself otherwise. The report calibrate() returns keeps the tax. """
+        if not self._netTarget():
+            return report
+        t0 = self.t0Year
+        return report | {'τ': float(self.netTax(float(report['τ']), float(self.db['θ'].xs(t0)), t0))}
+
+    def _calResidual(self, report):
+        """ The parent's eq:calibration residual on _calTargetReport(report). """
+        return super()._calResidual(self._calTargetReport(report))
+
+    def _τTargetGap(self, τ, θ):
+        """ The calibration's targeted quantity on a solved path at t0 minus db['τ0']: tau_{t0}, or under 'net' with a
+        cost netTax(tau_{t0}, theta_{t0}) (targetDrift's 'τ'). """
+        if self._netTarget():
+            τ = float(self.netTax(τ, θ, self.t0Year))
+        return τ - float(self.db['τ0'])
+
+    def calibratedTax0(self):
+        """ The tax at t0 the last calibrate() closed on: db['τ0'] unless the target is net, else the θ*-pinned
+        path's tau_{t0} (whose netTax is db['τ0'] to the calibration's tolerance). """
+        return float(self.db['τ0']) if not self._netTarget() else float(self._calτ0)
 
     # ------------------------------------------------------------------ 'sizePiR': pi_t = Pi_t/R_t
     def _hasΠR(self):
@@ -189,7 +254,13 @@ class ModelESC(ModelUS):
         fixed pi (_ΠRfrozen, so the root sees no feedback), pi is recomputed from the calibrated equilibrium,
         and the two alternate until max|Δpi| < ΠR_TOLCRRA (damped and accepted below ΠR_STALLTOL as in
         _ΠRFixedPoint). Returns the last calibration, with 'ΠRiter', 'ΠRpath' and 'ΠRgap' as _ΠRFixedPoint's;
-        db and the warm start keep the pi it was solved at. """
+        db and the warm start keep the pi it was solved at. The targets are _calResidual's (db['spendingTarget']);
+        the returned report's tau_{t0} is kept for calibratedTax0. """
+        cal = self._calibrateΠR(*args, **kwargs)
+        self._calτ0 = float(cal['report']['τ'])
+        return cal
+
+    def _calibrateΠR(self, *args, **kwargs):
         if not self._hasΠR():
             return super().calibrate(*args, **kwargs)
         start = getattr(self, '_ΠRstart', {}).get('calibrate')
@@ -326,7 +397,7 @@ class ModelESC(ModelUS):
         sol = self.EE_LOG_solve(τ, θ, ε, s0)
         report = self.EE_report(sol, τ, θ, ε, s0)
         drift = {'R': float(report['R'].xs(t0)) - float(self.db['R0']),
-                 'τ': float(τPath.xs(t0)) - float(self.db['τ0'])}
+                 'τ': self._τTargetGap(float(τPath.xs(t0)), float(θPath.xs(t0)))}
         return {'sols': sols, 'θ': θPath, 'τ': τPath, 'sol': sol, 'report': report,
                 'targetDrift': drift, 'multiplicity': LeadedLOG.multiplicity(sols)}
 
@@ -451,7 +522,7 @@ class ModelESC(ModelUS):
         report = self.EE_report(sol, τPath.values, θPath.values, ε, s0)
         t0 = self.t0Year
         drift = {'R': float(report['R'].xs(t0)) - float(self.db['R0']),
-                 'τ': float(τPath.xs(t0)) - float(self.db['τ0'])}
+                 'τ': self._τTargetGap(float(τPath.xs(t0)), float(θPath.xs(t0)))}
         return {'sols': sols, 'θ': θPath, 'τ': τPath, 'sol': sol, 'report': report,
                 'targetDrift': drift, 's0': s0, 'multiplicity': LeadedCRRA2D.multiplicity(sols)}
 
@@ -491,7 +562,7 @@ class ModelESC(ModelUS):
                                   tol = tol, s0 = s0, verbose = verbose, solveKwargs = solveKwargs)
         t0 = self.t0Year
         rec['targetDrift'] = {'R': float(rec['out']['report']['R'].xs(t0)) - float(self.db['R0']),
-                              'τ': float(rec['out']['τ'].xs(t0)) - float(self.db['τ0'])}
+                              'τ': self._τTargetGap(float(rec['out']['τ'].xs(t0)), float(rec['θ'].xs(t0)))}
         return rec
 
     # ------------------------------------------------------------------ the sequential choice

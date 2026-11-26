@@ -6,25 +6,33 @@ Run:  .venv\Scripts\python.exe python\US\runTauTheta.py --theta C --main --commo
       ... --refine 0.01                 also the designs within one grid cell of the cost model's grid maximum, at this
                                         step (0 for none; default 0.01)
       ... --force                       recompute rows already on disk
+      ... --spendingTarget gross|net    the cost's calibration target (runESC.SPENDING): the 'size' economy's λ and
+                                        (β, ω) are the calibration at that target (escCalibration.csv)
+      ... --outdir DIR                  escCalibration.csv and escShocks.csv read and escTauTheta.csv written in DIR
+                                        instead of --theta's ESC directory (runESC.py's --outdir); a run under another
+                                        cost than runESC.PAPERCOST (SSD_TAUPOWER, SSD_CARRIER) is refused into
+                                        results/esc/ (runESC.refuseCost), its rows carrying tauPower and carrier
 
 Two U.S. economies at ρ = 1 (log preferences), each calibrated at its observed design θ0 (the U.S. row of
 data/oecd26_theta.csv under --theta, runESC.setTheta):
   'none'  without the cost: section 6's calibration (β, ω, X recalibrated as in runESC's calib stage 'none' row);
-  'size'  under the paper's cost eq (esc:AB), f(θ, τ) = exp(-½ λ τ Ṽ (1-θ)²), at the λ of escCalibration.csv
+  'size'  under the paper's cost eq (esc:AB), f(θ, τ) = exp(-½ λ τ^k Ṽ (1-θ)²), at the λ of escCalibration.csv
           (spec 'size', phi 0.5, the run's commonX and θ variant), (β, ω, X) recalibrated at that λ.
 In each, θ_t = θ for every date (shocks.shockTheta) and the LOG politico-economic equilibrium with θ given is solved
 from the economy's own steady state (runESC.leadedNewPath, pin = True: the tax first order condition of
 eq (PEELOG:decoupling), with the cost's factor eq (esc:dlnc2i) under 'size'); β, ω, X and λ stay at their calibrated
-values. Each row reports at 2020: τ, spending 100 τ (1 - α) in % of GDP, the savings rate, the workweek against the
+values. Each row reports at 2020: τ, spending 100 τ (1 - α) in % of GDP, the benefits paid τNet = τ f(θ, τ)
+(ModelESC.netTax; τ under 'none') and spendingNet = 100 τNet (1 - α), the savings rate, the workweek against the
 economy's own baseline, R, and the tax rule's counts (policy.multiplicityColumns), with the economy's calibrated β and
 ω, on which a row's reuse is keyed.
 
-Writes results/esc/escTauTheta.csv (under --main; a variant's root/esc otherwise), merged on (spec, phi, commonX,
-θpin) with thetaColumns; a row on disk at the same key, θ variant, λ, β and ω is reused unless --force.
+Writes results/esc/escTauTheta.csv (under --main; a variant's root/esc otherwise; --outdir's), merged on (spec, phi, commonX,
+spendingTarget, θpin) with runESC.tagColumns (spendingTarget blank at 'gross'); a row on disk at the same key, θ
+variant, spending target, λ, β and ω is reused unless --force.
 Self-checks printed at the end: the 'none' rows at θ = 0 and 1 against results/shocks/US_shocksCommonX.csv's θ = 0 and
-θ = 1 rows at ρ = 1, and the 'size' row at θ0 against escShocks.csv's pinned baseline; a gap above SELFCHECKTOL in τ,
-or no pair to compare, exits with an error after the rows are written. A relative --root is the caller's working
-directory's.
+θ = 1 rows at ρ = 1, and the 'size' row at θ0 against escShocks.csv's pinned baseline at the run's spending target; a
+gap above SELFCHECKTOL in τ, or no pair to compare, exits with an error after the rows are written. A relative --root
+is the caller's working directory's.
 """
 import os, sys, argparse, time
 import numpy as np, pandas as pd
@@ -36,7 +44,7 @@ import runESC as R                    # changes the working directory to HERE
 import shocks as sh
 from policy import multiplicityColumns
 
-KEY = ['spec', 'phi', 'commonX', 'θpin']
+KEY = ['spec', 'phi', 'commonX', 'spendingTarget', 'θpin']
 SELFCHECKTOL = 1e-6                   # the largest gap in τ against the published rows
 PHI = 0.5
 GRID = [round(0.1*k, 10) for k in range(11)]
@@ -47,7 +55,7 @@ def _onDisk(path, spec, θ, commonX, p, cal):
     ({'β', 'ω'} of the economy just calibrated: a row of an earlier calibration is recomputed, #13), or None. """
     if not os.path.exists(path):
         return None
-    d = pd.read_csv(path, float_precision = 'round_trip')
+    d = R.atSpending(pd.read_csv(path, float_precision = 'round_trip'))
     want = R.thetaColumns()
     hit = d[(d['spec'] == spec) & np.isclose(d['θpin'], θ, rtol = 0, atol = 1e-12)
             & (d['commonX'].astype(bool) == bool(commonX))]
@@ -84,8 +92,8 @@ def pinned(m, θ, hbarRef):
     t0 = r['m'].t0Year
     α = float(r['m'].db['α'].xs(t0))
     rt = r['t0']
-    return {'τ': rt['τ'], 'spending': 100*rt['τ']*(1 - α), 'sr': rt['sr'], 'workweek': rt['workweek'], 'R': rt['R'],
-            'θ_t0': r['θ0']} | multiplicityColumns(r['multiplicity'])
+    return {'τ': rt['τ'], 'spending': 100*rt['τ']*(1 - α), 'τNet': r['τNet0'], 'spendingNet': 100*r['τNet0']*(1 - α),
+            'sr': rt['sr'], 'workweek': rt['workweek'], 'R': rt['R'], 'θ_t0': r['θ0']} | multiplicityColumns(r['multiplicity'])
 
 
 def selfCheck(df, outdir, commonX, tol = SELFCHECKTOL):
@@ -108,7 +116,7 @@ def selfCheck(df, outdir, commonX, tol = SELFCHECKTOL):
                 θ, float(mine['τ'].iloc[0]), float(ref['τ'].iloc[0]), g))
     esc = os.path.join(outdir, 'escShocks.csv')
     if os.path.exists(esc):
-        e = pd.read_csv(esc)
+        e = R.atSpending(pd.read_csv(esc))
         if R.THETA['variant'] is not None:
             e = e[(e.get('thetaSource') == R.THETA['variant'])]
         e = e[(e['spec'] == 'size') & (e['scenario'] == 'baseline') & (e['θpinned'].astype(str) == 'True')
@@ -139,11 +147,20 @@ def main():
     p.add_argument('--refine', type = float, default = 0.01)
     p.add_argument('--specs', nargs = '+', default = ['none', 'size'], choices = ('none', 'size'))
     p.add_argument('--force', action = 'store_true')
+    p.add_argument('--spendingTarget', default = 'gross', choices = R.SPENDING_TARGETS,
+                   help = "runESC.py's: the 'size' economy at the cost calibrated to 'gross' tau_t0 or 'net' benefits "
+                          "paid; a key column (blank = 'gross')")
+    p.add_argument('--outdir', default = None,
+                   help = "the ESC directory read and written instead of --theta's (results/esc/ under --main). A "
+                          "relative path is the working directory's.")
     a = p.parse_args()
+    R.setSpendingTarget(a.spendingTarget)
     a.root = None if a.root is None else os.path.abspath(os.path.join(CWD, a.root))
     import oecd26
     theta = a.theta if a.root is not None else oecd26.indexTheta(a.theta, [R.OUTDIR], 'runTauTheta.py')
     outdir = R.setTheta(theta, a.root, ('calib',), False, a.commonX, 1.0, a.main)
+    outdir = outdir if a.outdir is None else os.path.abspath(os.path.join(CWD, a.outdir))
+    R.refuseCost(outdir)
     out = os.path.join(outdir, 'escTauTheta.csv')
     calibPath = os.path.join(outdir, 'escCalibration.csv')
     calib = R.checkCalib(pd.read_csv(calibPath), calibPath, ['size'], [PHI], a.commonX)
@@ -163,7 +180,7 @@ def main():
                 return old
             t = time.time()
             r = {'spec': spec, 'phi': PHI if spec != 'none' else np.nan, 'commonX': a.commonX, 'θpin': float(θ),
-                 'p': lam, 'kind': kind} | cal | pinned(m, θ, hbarRef) | R.thetaColumns()
+                 'p': lam, 'kind': kind} | cal | pinned(m, θ, hbarRef) | R.tagColumns()
             rows.append(r)
             R.mergeWrite(out, [x for x in rows], KEY)
             print('  [{}] θ = {:.4f} ({}): τ = {:.6f}, spending {:.4f}% of GDP, nEqMax {} ({:.1f}s)'.format(
@@ -181,7 +198,7 @@ def main():
                 for θ in np.round(lo + a.refine*np.arange(1, n), 10):
                     if not any(abs(θ - x) < 1e-12 for x in res):
                         res[float(θ)] = solve(float(θ), 'refine')
-    df = pd.read_csv(out, float_precision = 'round_trip')
+    df = R.atSpending(pd.read_csv(out, float_precision = 'round_trip'))
     if R.THETA['variant'] is not None:
         df = df[df['thetaSource'] == R.THETA['variant']]
     df = df[df['commonX'].astype(bool) == bool(a.commonX)]

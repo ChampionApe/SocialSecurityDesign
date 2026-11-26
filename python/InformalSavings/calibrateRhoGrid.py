@@ -4,6 +4,9 @@ Run:  .venv\Scripts\python.exe python\InformalSavings\calibrateRhoGrid.py [optio
       ... --lo 0.5 --hi 2.0 --step 0.1        the default sweep
       ... --lo 0.5 --hi 2.0 --step 0.25       a coarse pass first
       ... --force                             re-solve points already in the csv
+      ... --spending 0.052 --out F --pkldir D  pension spending over GDP S in place of the workbook's datum: the tax
+                                              target derived from it (model.taxTarget, eq calibration:tau); refused
+                                              into the default csv and instance directory, which hold the workbook's
 
 The march is anchored at rho=1, where the LOG solver applies and no warm start is needed, and walks
 outward in both directions (gridsearch.continuation.marchGrid). Each calibration costs ~26 PEE solves at
@@ -51,7 +54,7 @@ PKLDIR = os.path.join(OUTDIR, 'instances')
 
 # Ordered so the csv reads as: what was solved, what it cost, whether to believe it, then the answer.
 COLUMNS = ['ρ', 'preferences', 'requested', 'residual', 'verifyResidual', 'occupancyι', 'occupancys',
-           'nEqMax', 'nCandMax', 'nFallback',
+           'nEqMax', 'nCandMax', 'nFallback', 'nRootsSMax', 'nRootsιMax',
            'β', 'ω', 'η0', 'X0', 'X', 'hbar', 'commonX', 'epsPre0',
            'KY', 'sr', 'τ', 'ι', 'yInf', 'spendGDP', 'srGDP',
            'nRoots', 'nfev', 'time', 'nι', 'ns', 'nτ', 'x0', 'x1', 'x2', 'x3',
@@ -65,7 +68,8 @@ COLUMNS = ['ρ', 'preferences', 'requested', 'residual', 'verifyResidual', 'occu
 # the column that makes it visible. toRow reindexes to this list, so a record key absent here is dropped.
 # nEqMax/nCandMax/nFallback are the tax candidates' counts of the point's final solve (num_robustroot.tex):
 # nEqMax > 1 means the equilibrium selection bound somewhere, nFallback > 0 that some state had no
-# equilibrium on the grid. Non-key, like every column but ρ (finding #13); -1 on a failed point.
+# equilibrium on the grid. nRootsSMax/nRootsιMax: the largest root counts of the state fixed points (policy.ROOTS).
+# Non-key, like every column but ρ (finding #13); -1 on a failed point.
 
 
 def gitCommit():
@@ -84,7 +88,7 @@ def toRow(rec, requested, commit):
                                    'occupancys', 'β', 'ω', 'η0', 'X0', 'X', 'hbar', 'commonX', 'epsPre0',
                                    'KY', 'sr', 'τ', 'ι', 'yInf', 'spendGDP', 'srGDP', 'nRoots', 'nfev',
                                    'time')}
-    row |= {k: rec.get(k, -1) for k in ('nEqMax', 'nCandMax', 'nFallback')}
+    row |= {k: rec.get(k, -1) for k in ('nEqMax', 'nCandMax', 'nFallback', 'nRootsSMax', 'nRootsιMax')}
     row |= {'requested': requested, 'nι': g.get('nι'), 'ns': g.get('ns'), 'nτ': g.get('n'),
             'commit': commit, 'timestamp': datetime.datetime.now().isoformat(timespec = 'seconds')}
     row |= {f'x{i}': v for i, v in enumerate(rec['x'])}
@@ -154,12 +158,26 @@ def main():
     # before the root takes a single step. Give the anchor a guess near its solution instead.
     p.add_argument('--x0', type = float, nargs = 4, metavar = ('BETA', 'OMEGA', 'ETA0', 'X0'),
                    default = None, help = "the anchor's starting (beta, omega, eta0, X0)")
+    p.add_argument('--spending', type = float, default = None,
+                   help = "pension spending over GDP in place of the workbook's 'Pension spending' (test.py): the tax "
+                          'target follows (model.taxTarget); needs --out and --pkldir outside the defaults')
     args = p.parse_args()
     tag = ('CommonX' if args.commonX else '') + ('EpsPre0' if args.epsPre0 else '')
+    if args.spending is not None and (args.out is None or args.pkldir is None):
+        p.error("--spending: the default csv and instances hold the workbook's datum; give --out and --pkldir")
     if args.out is None:
         args.out = os.path.join(OUTDIR, f'informalSavings_rhoGrid{tag}.csv')
     if args.pkldir is None:
         args.pkldir = os.path.join(OUTDIR, f'instances{tag}')
+    # The spending datum and the tax target derived from it (test.py's construction, at the same alpha, gamma_0 and
+    # z_0^eta); {} at the workbook's.
+    spendingPars = {}
+    if args.spending is not None:
+        τ0, y0 = ModelInformalSavings.taxTarget(args.spending, float(testmod.pars['α']), float(testmod.pars['γj'][0]),
+                                                float(testmod.pars['zηj'][0]))
+        spendingPars = {'pensionSpending0': float(args.spending), 'τ0': τ0, 'yInformal0': y0}
+        print('pension spending {:.4f} of GDP (workbook {:.4f}): tax target {:.6f}'.format(
+            args.spending, testmod.pars['pensionSpending0'], τ0))
 
     pkldir = args.pkldir
     os.makedirs(OUTDIR, exist_ok = True)
@@ -198,7 +216,7 @@ def main():
         print('resuming: {} of {} points already in {}'.format(
             sum(round(float(v), 6) in done for v in grid), len(grid), os.path.relpath(args.out, REPO)))
 
-    m = ModelInformalSavings(pars = testmod.pars | {'ρ': float(args.anchor)}, commonX = args.commonX,
+    m = ModelInformalSavings(pars = testmod.pars | spendingPars | {'ρ': float(args.anchor)}, commonX = args.commonX,
                              epsPre0 = args.epsPre0, **testmod.kwargs)
     print('calibration variant: {}, pre-reform eps {}'.format(
         'common X (formal workweek targeted)' if args.commonX else 'vector X_i (relative hours as data)',

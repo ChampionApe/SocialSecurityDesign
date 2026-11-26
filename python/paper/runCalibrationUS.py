@@ -43,7 +43,9 @@ Two things happen, and only the first is expensive:
      into its --tag csv) and python/US/runESCcrra.py (CRRA, the other rho in the esc table grid, the paper's
      spec and the UK's own, with config.escBracket's scan bracket per rho). EXPENSIVE where missing (~2.5 h
      per CRRA rho: each trial value recalibrates (beta, omega) and runs the exact recursion), which is why
-     the check is per-(rho, spec) and the drivers merge into their csvs rather than overwriting them.
+     the check is per-(rho, spec) and the drivers merge into their csvs rather than overwriting them. Each
+     calibration matches config.US['esc']['spendingTarget'] (--spendingTarget, config.spendingFlags); a row at
+     the other target does not count.
 
   3. The summary, results/paper/usCalibrationSummary.csv -- one row per country. Stage (iii) builds the
      calibration and household-heterogeneity tables from this file rather than from a pickled instance,
@@ -188,7 +190,7 @@ def _escLogRows(phis, name = 'escCalibration.csv'):
     path = os.path.join(C.ESCDIR, name)
     if not os.path.exists(path):
         return set()
-    df = C.atTheta(pd.read_csv(path), country = 'US')
+    df = C.atSpending(C.atTheta(pd.read_csv(path), country = 'US'))
     ok = df[df['converged'].astype(bool)]
     if 'commonX' in ok.columns:
         ok = ok[ok['commonX'].astype(bool) == bool(C.US['commonX'])]
@@ -200,7 +202,7 @@ def _exactRows(path, phi):
     """ {(rho, spec)} of converged exact CRRA cost calibrations in `path` at `phi`, headline variant. """
     if not os.path.exists(path):
         return set()
-    df = C.atTheta(pd.read_csv(path), country = 'US')
+    df = C.atSpending(C.atTheta(pd.read_csv(path), country = 'US'))
     if 'method' not in df.columns:
         df['method'] = 'path'
     ok = df[df['converged'].astype(bool) & np.isclose(df['phi'], phi) & (df['method'].fillna('path') == 'exact')]
@@ -219,14 +221,15 @@ def escMissing(part = 'main', force = False, strict = True):
     'prepub': the EXACT CRRA calibrations of the paper's spec at every rho the ESC tables print (method = 'exact'
     rows -- the path iteration's rows in the same csv do not count), one command per rho with its own scan bracket
     from config.escBracket, and the UK's own (the deep test). `force` lists them all. Every command carries
-    config.thetaFlags() and only rows at the θ variant count. A placeholder bracket raises unless `strict` is False
-    (the --dry listing), which prints it as `--bracket <unset> <unset>` instead. """
+    config.thetaFlags() and config.spendingFlags(), and only rows at the θ variant and the spending target count. A
+    placeholder bracket raises unless `strict` is False (the --dry listing), which prints it as `--bracket <unset>
+    <unset>` instead. """
     esc = C.US['esc']
     spec, phi = esc['spec'], esc['phi']
     specsL = [spec] + ([esc['comparisonSpec']] if esc.get('comparisonSpec') else [])
     cv = esc['costVariants']
     # The ESC leg runs under the headline calibration variant only -- see paper/runShocksUS.ESCVARIANT.
-    variant = (['--commonX'] if C.US['commonX'] else []) + C.thetaFlags()
+    variant = (['--commonX'] if C.US['commonX'] else []) + C.thetaFlags() + C.spendingFlags()
     cmds = []
     haveL = set() if force else _escLogRows([phi])
     lackL = [s for s in specsL if (s, round(phi, 6)) not in haveL]
@@ -272,7 +275,7 @@ def escMissing(part = 'main', force = False, strict = True):
         pathUK = os.path.join(C.ESCDIR, 'escCalibrationCRRAUK.csv')
         haveUK = set()
         if os.path.exists(pathUK) and not force:
-            df = C.atTheta(pd.read_csv(pathUK), country = 'US')
+            df = C.atSpending(C.atTheta(pd.read_csv(pathUK), country = 'US'))
             ok = df[df['converged'].astype(bool) & (df['method'] == 'exact') & (df['spec'] == spec)
                     & (df['commonX'].astype(bool) == bool(C.US['commonX']))]
             haveUK = {round(float(r), 6) for r in ok['ρ']}

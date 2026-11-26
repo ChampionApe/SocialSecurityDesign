@@ -247,10 +247,12 @@ def _costHeader(spec):
 def escCalibrationTable(spec = None):
     r""" Table \ref{table:US_ESC:calibration} (section sec:esc): the calibrated cost parameter per rho (lambda
     under 'size', p under 'scale'), omega recalibrated with it, and the shares of revenue lost in 2020
-    at the observed design and at theta = 0, both at the 2020 tax rate. `spec` defaults to the paper's
-    (config.US['esc']['spec']); passing the comparison spec exercises the builder on its rows. """
+    at the observed design and at theta = 0, both at the 2020 tax rate, under the cost of sections 7.1 and 7.2
+    (config.US['esc']['tauPower'], datasets.escDir). `spec` defaults to the paper's (config.US['esc']['spec']);
+    passing the comparison spec exercises the builder on its rows. """
     spec = C.US['esc']['spec'] if spec is None else spec
-    cal = D.escCalibration()
+    k = C.US['esc']['tauPower']
+    cal = D.escCalibration(k = k)
     recs = {}
     for ρ in C.US['esc']['ρTable']:
         if (ρ, spec) not in cal:
@@ -266,7 +268,7 @@ def escCalibrationTable(spec = None):
     note = (r'\textit{Note:} ' + form + r'. $1 - f(\theta^{\ast})$ and $1 - f(0)$ are the shares of revenue lost '
             r'in 2020 at the observed design and at a flat benefit, both at the 2020 tax rate.'
             + C.variantNote(C.US['commonX']))
-    return _xwrap('US_ESC_Calibration', 'results/esc/escCalibration{,CRRA}.csv',
+    return _xwrap('US_ESC_Calibration', 'results/' + os.path.basename(D.escDir(k)) + '/escCalibration{,CRRA}.csv',
                   'The calibrated cost of redistribution for the U.S.',
                   'table:US_ESC:calibration', 'YYYYY', _costHeader(spec), body, note,
                   width = r'.8\textwidth')
@@ -299,8 +301,14 @@ def _frenchCornerFalls(tol = 1e-6):
             raise ValueError("US_ESC_Country: France's {} at the corner moves with lambda: {}".format(col, v.tolist()))
 
 
-def escCountryTable(specs = TRANSPORTS):
-    r""" Table \ref{table:US_ESC:country}: the deep test of the cost. One row per economy of COUNTRYROWS -- the UK
+def _costTwin(k):
+    """ What a table under the cost with tau^k adds to its name and label (config.costSuffix) and to its caption. """
+    return C.costSuffix(k), ', ' + C.COSTWORDS[k]
+
+
+def escCountryTable(specs = TRANSPORTS, k = 2):
+    r""" Table \ref{table:US_ESC:country}: the deep test of the cost, under the cost with tau^k (datasets.escDir;
+    US_ESC_Country + config.costSuffix(k), its label too). One row per economy of COUNTRYROWS -- the UK
     and France, each at its observed design (its θ0 under the θ variant) -- with that design and Ṽ, and per transport
     of the U.S. parameter in `specs` (TRANSPORTS: its λ; its ε when asked for) the design its electorate chooses
     under it and the parameter at which it re-elects its own design (`--` where no finite value does). Where France's
@@ -312,8 +320,9 @@ def escCountryTable(specs = TRANSPORTS):
     calibration (datasets.escCalibrationLOG), at which the U.S. ε and λ must be one cost (checked, 1e-3 relative).
     rho = 1 (LOG) only: the country stage has no CRRA counterpart. """
     specs = list(specs)
+    sfx, capTail = _costTwin(k)
     pir = C.US['esc']['costVariants']['spec']
-    dfs = {spec: D.escCountry(spec = spec) for spec in specs}
+    dfs = {spec: D.escCountry(spec = spec, k = k) for spec in specs}
     us = {spec: df[df['wedgeFrom'] == 'US'] for spec, df in dfs.items()}
     hasV = all('Vtilde' in df.columns for df in dfs.values()) and all(bool(u['Vtilde'].notna().any())
                                                                        for u in us.values())
@@ -351,7 +360,7 @@ def escCountryTable(specs = TRANSPORTS):
         raise ValueError("US_ESC_Country: France has an 'own' cost parameter at the corner, which no value gives")
     ratio = ''
     if hasR:
-        cal = D.escCalibrationLOG(pir)
+        cal = D.escCalibrationLOG(pir, k = k)
         if abs(float(cal['p']) - pUS[pir]) > 1e-6*pUS[pir]:
             raise ValueError('US_ESC_Country: the U.S. {} {} of escCountry differs from its calibration {}: a stale '
                              'country stage'.format(pir, pUS[pir], cal['p']))
@@ -387,25 +396,28 @@ def escCountryTable(specs = TRANSPORTS):
     else:
         gap = (r' --: no value of ' + which + ' makes ' + ' or '.join(noOwn) + r' re-elect its observed design.'
                if noOwn else '')
-    note = (r'\textit{Note:} Each economy is its own calibration at $\rho = 1$, with the ' + ' or the '.join(pars)
+    note = (r'\textit{Note:} ' + C.COSTWORDS[k][0].upper() + C.COSTWORDS[k][1:] + r', equation \eqref{'
+            + C.COSTEQ[k] + r'}. Each economy is its own calibration at $\rho = 1$, with the ' + ' or the '.join(pars)
             + '.' + ratio + ' ' + LQ + 'Chosen' + RQ
             + r' is the design in 2020 on the economy\textquotesingle s own freely simulated path under the '
             r'U.S.\ parameter, to be read against the observed one; ' + LQ + 'own' + RQ + r' is the value at '
             r'which that path re-elects the observed design.' + gap + C.variantNote(C.US['commonX']))
-    return _xwrap('US_ESC_Country', 'results/esc/escCountry.csv' + (', escCountryCosts.csv' if hasR else '')
-                  + (', escCornerSlope.csv' if corner and 'size' in specs else ''),
-                  r'The UK and France under the U.S.\ cost of redistribution',
-                  'table:US_ESC:country', 'l' + 'Y'*(ncol - 1 + 2*len(specs)), header, '\n'.join(rows), note,
+    return _xwrap('US_ESC_Country' + sfx, 'results/' + os.path.basename(D.escDir(k)) + '/escCountry.csv'
+                  + (', escCountryCosts.csv' if hasR else '') + (', escCornerSlope.csv' if corner and 'size' in specs else ''),
+                  r'The UK and France under the U.S.\ cost of redistribution' + capTail,
+                  'table:US_ESC:country' + sfx, 'l' + 'Y'*(ncol - 1 + 2*len(specs)), header, '\n'.join(rows), note,
                   width = r'\textwidth', size = r'\setlength{\tabcolsep}{3pt}')
 
 
-def ukEscCalibrationTable(spec = None):
+def ukEscCalibrationTable(spec = None, k = 2):
     r""" Table \ref{table:UK_ESC:calibration} (appendix app:escResults:calibration): the UK's own calibrated
     cost per rho at its own income groups (datasets.escCalibrationHost: rho = 1 from escCountry.csv, the
-    other rho from escCalibrationCRRAUK.csv), in the layout of escCalibrationTable. beta is the US value
-    without the cost at each rho, imposed as in appendix F (app:US); omega is recalibrated with the cost parameter. """
+    other rho from escCalibrationCRRAUK.csv), in the layout of escCalibrationTable, under the cost with tau^k
+    (datasets.escDir; UK_ESC_Calibration + config.costSuffix(k), its label too). beta is the US value without the cost
+    at each rho, imposed as in appendix F (app:US); omega is recalibrated with the cost parameter. """
     spec = C.US['esc']['spec'] if spec is None else spec
-    cal = D.escCalibrationHost('UK', spec = spec)
+    sfx, capTail = _costTwin(k)
+    cal = D.escCalibrationHost('UK', spec = spec, k = k)
     recs = {}
     for ρ in C.US['esc']['ρTable']:
         if ρ not in cal:
@@ -413,11 +425,14 @@ def ukEscCalibrationTable(spec = None):
         recs[ρ] = cal[ρ]
     body, θ, V = _costRows(recs, spec)
     sym = _wedgeSymbol(spec)
-    note = (r'\textit{Note:} As table \ref{table:US_ESC:calibration}, for the UK at its own income groups, where '
+    paper = k == C.US['esc']['tauPower']
+    note = (r'\textit{Note:} ' + ('As' if paper else 'In the layout of') + r' table \ref{table:US_ESC:calibration}, for '
+            r'the UK at its own income groups' + ('' if paper else r' and under ' + C.COSTWORDS[k] + r' of equation '
+                                                  r'\eqref{' + C.COSTEQ[k] + '}') + r', where '
             r'$\theta^{\ast} = ' + C.num(θ, 3) + '$' + ('' if V is None else r' and $\tilde V = ' + C.num(V, 3) + '$')
             + r' at every $\rho$; $' + sym + r'$ is the value at which the UK electorate re-elects its observed '
             r'design. $\beta$ is the U.S.\ value of the calibration without the cost, imposed as in appendix '
             r'\ref{app:US}, and $\omega$ is recalibrated with $' + sym + r'$.' + C.variantNote(C.US['commonX']))
-    return _xwrap('UK_ESC_Calibration', 'results/esc/escCountry.csv, escCalibrationCRRAUK.csv',
-                  'The calibrated cost of redistribution in the UK',
-                  'table:UK_ESC:calibration', 'YYYYY', _costHeader(spec), body, note, width = r'.8\textwidth')
+    return _xwrap('UK_ESC_Calibration' + sfx, 'results/' + os.path.basename(D.escDir(k))
+                  + '/escCountry.csv, escCalibrationCRRAUK.csv', 'The calibrated cost of redistribution in the UK' + capTail,
+                  'table:UK_ESC:calibration' + sfx, 'YYYYY', _costHeader(spec), body, note, width = r'.8\textwidth')

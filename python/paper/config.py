@@ -36,11 +36,23 @@ CARRIER = os.environ.get('SSD_CARRIER', 'convex')
 CARRIERS = ('pi', 'convex')
 if CARRIER not in CARRIERS:
     raise ValueError('SSD_CARRIER={!r}: one of {}'.format(CARRIER, CARRIERS))
-PIRSYMBOL = {'pi': r'\varepsilon', 'convex': r'\kappa'}[CARRIER]
+CARRIERSYMBOL = {'pi': r'\varepsilon', 'convex': r'\kappa'}
+PIRSYMBOL = CARRIERSYMBOL[CARRIER]
 PIRCOST = {'pi': r'$\lambda_{n,t} = \varepsilon\,\Pi_{n,t}/R_{n,t}$',
            'convex': r'$\lambda_{n,t} = 2\kappa\,\pi_{n,t}(1-\pi_{n,t})$, $\pi_{n,t} = \Pi_{n,t}/R_{n,t}$'}[CARRIER]
 PIRCOSTN = {'pi': r'$\lambda_n = \varepsilon\,\Pi_n/R_n$',
             'convex': r'$\lambda_n = 2\kappa\,\pi_n(1-\pi_n)$, $\pi_n = \Pi_n/R_n$'}[CARRIER]
+# Section 7's two costs by the power k of the tax rate in f (eq:esc:budget at k = 1, eq:esc:budgetSquared at k = 2), as
+# the supplemental appendix names them: COSTKEYS the `cost` column of its datasets and the suffix of an output's k = 1
+# twin (costSuffix: '_linear'; k = 2's outputs carry none), COSTWORDS the prose, COSTEQ the paper's equation.
+COSTKEYS = {1: 'linear', 2: 'squared'}
+COSTWORDS = {1: 'the linear cost', 2: 'the squared cost'}
+COSTEQ = {1: 'eq:esc:budget', 2: 'eq:esc:budgetSquared'}
+
+
+def costSuffix(k):
+    """ The suffix of the output under the cost with tau^k: '' at k = 2, '_linear' at k = 1. """
+    return '' if k == 2 else '_' + COSTKEYS[k]
 
 
 def carrierFactor(π):
@@ -219,6 +231,11 @@ US = {
     'ρStationary': [0.5, 2.0],
     'esc': {
         'spec':           'size',      # the paper's cost specification
+        # THE COST OF SECTIONS 7.1 AND 7.2 (table 4 US_ESC_Calibration, figure 6 US_ESC_overview): k of tau^k in f.
+        # 1, the cost linear in the tax, is read from results/<US['tau1']['esc']>/; 2 from results/esc/
+        # (datasets.escDir). Section 7.3 shows both (tablesOECD26.COSTS), and so does the supplemental appendix's part C
+        # (each exhibit and its `_linear` twin, the datasets' `cost` column); appendix D's checks read results/esc/, k = 2.
+        'tauPower':       1,
         'comparisonSpec': 'scale',     # the previous wedge, the supplemental appendix's second cost (page C2)
         # phi is a DUMMY KEY under 'size': f does not use it, but every ESC csv is merge-keyed on
         # (spec, phi, commonX) and the readers (runESC.pickCalib, datasets.escRow/escCalibration) filter on
@@ -271,6 +288,13 @@ US = {
         # 'frLeisure' is run and merged but no longer printed (dropped from the paper 2026-09-11).
         'scenarios': {'acute': 'Acute ageing', 'frIncome': 'Income distribution',
                       'frVoting': 'Voting', 'frAll': 'All French characteristics'},
+        # THE SPENDING TARGET UNDER A COST (python/US/modelESC.ModelESC.spendingTarget, --spendingTarget of every driver
+        # that calibrates or reads a cost; spendingFlags): 'net' every calibration with a cost matches the benefits paid,
+        # tau_t0 f(theta_t0, tau_t0) = tau0, and section 7's model spending is 100 tau f (1 - alpha) | 'gross' the tax
+        # itself, tau_t0 = tau0, and spending 100 tau (1 - alpha). A key column of every csv those drivers write (blank =
+        # 'gross'); every reader keeps the rows at this target only (atSpending, spendingKeyed). Without a cost both are
+        # the same economy.
+        'spendingTarget': 'net',
     },
     # THE CROSS-COUNTRY TEST (python/US/runOECD26.py, results/oecd26/), the one place its paper variant lives:
     # the builders (tablesOECD26.PAPER, figuresOECD26) and the readers (datasets.oecd26*) default to it, and
@@ -320,13 +344,29 @@ US = {
         ],
         'populationVariants': ['none', 'exit'],
         'thetaVariants': ['A', 'B'],
+        # `usInputs`: page C4's layer 1 with one input of every country at its U.S. value (python/US/runOECD26.py
+        # --usInput, at the paper's specification otherwise, rows in results/oecd26/layer1.csv keyed on usInput). Run
+        # by hand (REPLICATION.md section 3).
+        'usInputs': ['demography', 'income', 'turnout'],
     },
     # THE TAX AGAINST A PINNED DESIGN (python/US/runTauTheta.py, results/esc/escTauTheta.csv; US_ESC_TauTheta): the
     # U.S. at rho = 1 without the cost and under US['esc']['spec'] at its calibrated lambda, theta pinned on the whole
     # path at each point of `grid` and at theta0, and at `refine` steps within one grid cell of the costly economy's
     # grid maximum.
     'tauTheta': {'grid': [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0], 'refine': 0.01},
+    # THE COST LINEAR IN THE TAX (page C2's and C4's comparison with k = 2; the cost of tag paper/tau1, on today's inputs
+    # and spending target): SSD_TAUPOWER = tauPower, SSD_CARRIER = carrier; the U.S. at rho = 1 (calibration, baseline
+    # and acute ageing, python/US/runESC.py --outdir) in results/<esc>/, the cross-section (anchor, layers 2 and 1 at
+    # the paper's specification otherwise, python/US/runOECD26.py --outdir --usSweep) in results/<oecd26>/, C5's numbers
+    # (python/US/c5Numbers.py --escdir --outdir) in results/<numerical>/. Run by hand (REPLICATION.md section 3).
+    'tau1': {'tauPower': 1., 'carrier': 'pi', 'esc': 'esc_tau1', 'oecd26': 'oecd26_tau1', 'numerical': 'numerical_tau1'},
 }
+
+# ARGENTINA'S REFORM FROM ANOTHER PRE-REFORM SPENDING (page A1): the calibration at rho = 1 (log), common X, to pension
+# spending of `spending` of GDP in place of the workbook's (python/InformalSavings/calibrateRhoGrid.py --spending) and the
+# paper's surprise reform on it (shockUniversal.py, ARG['rule'], ARG['refType']), in results/<dir>/{calibration,shocks}/.
+# Run by hand (REPLICATION.md section 3).
+ARG['spendingBaseline'] = {'spending': 0.052, 'dir': 'arg_spending052'}
 
 THETAFILE = os.path.join(DATA, 'oecd26_theta.csv')
 ISO3 = {'US': 'USA', 'FR': 'FRA', 'UK': 'GBR'}
@@ -367,6 +407,36 @@ if INEQUALITY not in INEQUALITYLABELS:
 def thetaFlags():
     """ The flags every U.S./France/UK/ESC/OECD command of stages (i) and (ii) carries: --theta US['theta'] --main. """
     return ['--theta', US['theta'], '--main']
+
+
+def spendingFlags():
+    """ The flag every command of a driver that calibrates or reads a cost carries: --spendingTarget
+    US['esc']['spendingTarget']. """
+    return ['--spendingTarget', US['esc']['spendingTarget']]
+
+
+def atSpending(df, target = None):
+    """ The rows of `df` at spending target `target` (US['esc']['spendingTarget'] by default); a csv or cell without
+    the column is a 'gross' row (python/US/runESC.atSpending). """
+    target = US['esc']['spendingTarget'] if target is None else target
+    st = df['spendingTarget'].fillna('gross') if 'spendingTarget' in df.columns else pd.Series('gross', index = df.index)
+    return df[st == target]
+
+
+def spendingKeyed(path):
+    """ Is `path` a csv of a driver that takes --spendingTarget, whose rows are read at US['esc']['spendingTarget']
+    only (atSpending)? results/esc/, every results/oecd26*/ (the cross-section and its variants), and of
+    results/numerical/ the C5 numbers (c5Numbers.py), the stationary check with the design chosen
+    (stationaryApproxESC.py) and the horizon runs (runHorizon.py stages horizon, log, design); a results/esc_<x>/
+    directory (another cost's, runESC.py --outdir) as results/esc/, a results/numerical_<x>/ (c5Numbers.py --outdir)
+    as results/numerical/. """
+    p, name = os.path.normcase(os.path.abspath(path)), os.path.basename(path)
+    top = os.path.basename(os.path.dirname(p))
+    under = lambda d: p.startswith(os.path.normcase(os.path.abspath(d)) + os.sep)
+    return (under(ESCDIR) or top.startswith(('esc_', 'oecd26'))
+            or ((under(NUMDIR) or top.startswith('numerical_'))
+                and (name.startswith('C5_')
+                     or name in ('US_ESC_stationaryApprox.csv', 'US_horizon.csv', 'US_horizonDesign.csv'))))
 
 
 @functools.lru_cache(maxsize = None)

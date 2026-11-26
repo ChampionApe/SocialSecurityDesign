@@ -1,0 +1,425 @@
+{
+ "figure": "US_ESC_TauTheta_linear",
+ "marks": [
+  {
+   "id": "US_ESC_TauTheta_linear--none--theta0.0000",
+   "label": "θ = 0.000",
+   "series": "without the cost",
+   "panel": "Tax rate in 2020",
+   "value": 13.593217916715512,
+   "text": "13.59%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--none--theta0.1000",
+   "label": "θ = 0.100",
+   "series": "without the cost",
+   "panel": "Tax rate in 2020",
+   "value": 13.119240848086411,
+   "text": "13.12%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--none--theta0.2000",
+   "label": "θ = 0.200",
+   "series": "without the cost",
+   "panel": "Tax rate in 2020",
+   "value": 12.607018056439308,
+   "text": "12.61%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--none--theta0.3000",
+   "label": "θ = 0.300",
+   "series": "without the cost",
+   "panel": "Tax rate in 2020",
+   "value": 12.05461683504638,
+   "text": "12.05%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--none--theta0.4000",
+   "label": "θ = 0.400",
+   "series": "without the cost",
+   "panel": "Tax rate in 2020",
+   "value": 11.460101427375099,
+   "text": "11.46%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--none--theta0.5000",
+   "label": "θ = 0.500",
+   "series": "without the cost",
+   "panel": "Tax rate in 2020",
+   "value": 10.82158525801381,
+   "text": "10.82%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--none--theta0.5445",
+   "label": "θ = 0.544",
+   "series": "without the cost",
+   "panel": "Tax rate in 2020",
+   "value": 10.52285714285715,
+   "text": "10.52%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--none--theta0.6000",
+   "label": "θ = 0.600",
+   "series": "without the cost",
+   "panel": "Tax rate in 2020",
+   "value": 10.1373049498964,
+   "text": "10.14%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--none--theta0.7000",
+   "label": "θ = 0.700",
+   "series": "without the cost",
+   "panel": "Tax rate in 2020",
+   "value": 9.40572266393723,
+   "text": "9.41%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--none--theta0.8000",
+   "label": "θ = 0.800",
+   "series": "without the cost",
+   "panel": "Tax rate in 2020",
+   "value": 8.62566437172437,
+   "text": "8.63%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--none--theta0.9000",
+   "label": "θ = 0.900",
+   "series": "without the cost",
+   "panel": "Tax rate in 2020",
+   "value": 7.796502211577989,
+   "text": "7.80%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--none--theta1.0000",
+   "label": "θ = 1.000",
+   "series": "without the cost",
+   "panel": "Tax rate in 2020",
+   "value": 6.918388320243631,
+   "text": "6.92%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--size--theta0.0000",
+   "label": "θ = 0.000",
+   "series": "with the cost",
+   "panel": "Tax rate in 2020",
+   "value": 8.88491782986184,
+   "text": "8.88%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--size--theta0.1000",
+   "label": "θ = 0.100",
+   "series": "with the cost",
+   "panel": "Tax rate in 2020",
+   "value": 9.37060966752945,
+   "text": "9.37%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--size--theta0.2000",
+   "label": "θ = 0.200",
+   "series": "with the cost",
+   "panel": "Tax rate in 2020",
+   "value": 9.83215374205562,
+   "text": "9.83%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--size--theta0.3000",
+   "label": "θ = 0.300",
+   "series": "with the cost",
+   "panel": "Tax rate in 2020",
+   "value": 10.2444313856468,
+   "text": "10.24%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--size--theta0.4000",
+   "label": "θ = 0.400",
+   "series": "with the cost",
+   "panel": "Tax rate in 2020",
+   "value": 10.57624905085712,
+   "text": "10.58%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--size--theta0.5000",
+   "label": "θ = 0.500",
+   "series": "with the cost",
+   "panel": "Tax rate in 2020",
+   "value": 10.79156775916372,
+   "text": "10.79%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--size--theta0.5100",
+   "label": "θ = 0.510",
+   "series": "with the cost",
+   "panel": "Tax rate in 2020",
+   "value": 10.80522200912946,
+   "text": "10.81%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--size--theta0.5200",
+   "label": "θ = 0.520",
+   "series": "with the cost",
+   "panel": "Tax rate in 2020",
+   "value": 10.81729037991874,
+   "text": "10.82%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--size--theta0.5300",
+   "label": "θ = 0.530",
+   "series": "with the cost",
+   "panel": "Tax rate in 2020",
+   "value": 10.82773505239008,
+   "text": "10.83%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--size--theta0.5400",
+   "label": "θ = 0.540",
+   "series": "with the cost",
+   "panel": "Tax rate in 2020",
+   "value": 10.836518534363911,
+   "text": "10.84%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--size--theta0.5445",
+   "label": "θ = 0.544",
+   "series": "with the cost",
+   "panel": "Tax rate in 2020",
+   "value": 10.83991636616188,
+   "text": "10.84%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--size--theta0.5500",
+   "label": "θ = 0.550",
+   "series": "with the cost",
+   "panel": "Tax rate in 2020",
+   "value": 10.8436037176244,
+   "text": "10.84%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--size--theta0.5600",
+   "label": "θ = 0.560",
+   "series": "with the cost",
+   "panel": "Tax rate in 2020",
+   "value": 10.848953936223559,
+   "text": "10.85%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--size--theta0.5700",
+   "label": "θ = 0.570",
+   "series": "with the cost",
+   "panel": "Tax rate in 2020",
+   "value": 10.85253302600854,
+   "text": "10.85%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--size--theta0.5800",
+   "label": "θ = 0.580",
+   "series": "with the cost",
+   "panel": "Tax rate in 2020",
+   "value": 10.85430538528758,
+   "text": "10.85%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--size--theta0.5900",
+   "label": "θ = 0.590",
+   "series": "with the cost",
+   "panel": "Tax rate in 2020",
+   "value": 10.854236036543071,
+   "text": "10.85%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--size--theta0.6000",
+   "label": "θ = 0.600",
+   "series": "with the cost",
+   "panel": "Tax rate in 2020",
+   "value": 10.85229068909482,
+   "text": "10.85%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--size--theta0.6100",
+   "label": "θ = 0.610",
+   "series": "with the cost",
+   "panel": "Tax rate in 2020",
+   "value": 10.84843580261051,
+   "text": "10.85%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--size--theta0.6200",
+   "label": "θ = 0.620",
+   "series": "with the cost",
+   "panel": "Tax rate in 2020",
+   "value": 10.84263865135358,
+   "text": "10.84%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--size--theta0.6300",
+   "label": "θ = 0.630",
+   "series": "with the cost",
+   "panel": "Tax rate in 2020",
+   "value": 10.834867389054189,
+   "text": "10.83%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--size--theta0.6400",
+   "label": "θ = 0.640",
+   "series": "with the cost",
+   "panel": "Tax rate in 2020",
+   "value": 10.82509111428127,
+   "text": "10.83%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--size--theta0.6500",
+   "label": "θ = 0.650",
+   "series": "with the cost",
+   "panel": "Tax rate in 2020",
+   "value": 10.81327993618947,
+   "text": "10.81%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--size--theta0.6600",
+   "label": "θ = 0.660",
+   "series": "with the cost",
+   "panel": "Tax rate in 2020",
+   "value": 10.79940504050753,
+   "text": "10.80%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--size--theta0.6700",
+   "label": "θ = 0.670",
+   "series": "with the cost",
+   "panel": "Tax rate in 2020",
+   "value": 10.78343875562997,
+   "text": "10.78%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--size--theta0.6800",
+   "label": "θ = 0.680",
+   "series": "with the cost",
+   "panel": "Tax rate in 2020",
+   "value": 10.76535461866779,
+   "text": "10.77%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--size--theta0.6900",
+   "label": "θ = 0.690",
+   "series": "with the cost",
+   "panel": "Tax rate in 2020",
+   "value": 10.74512744130866,
+   "text": "10.75%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--size--theta0.7000",
+   "label": "θ = 0.700",
+   "series": "with the cost",
+   "panel": "Tax rate in 2020",
+   "value": 10.722733375329941,
+   "text": "10.72%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--size--theta0.8000",
+   "label": "θ = 0.800",
+   "series": "with the cost",
+   "panel": "Tax rate in 2020",
+   "value": 10.37545292675893,
+   "text": "10.38%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--size--theta0.9000",
+   "label": "θ = 0.900",
+   "series": "with the cost",
+   "panel": "Tax rate in 2020",
+   "value": 9.79755623311778,
+   "text": "9.80%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_TauTheta_linear--size--theta1.0000",
+   "label": "θ = 1.000",
+   "series": "with the cost",
+   "panel": "Tax rate in 2020",
+   "value": 8.99605689488585,
+   "text": "9.00%",
+   "table": null,
+   "row": null
+  }
+ ]
+}

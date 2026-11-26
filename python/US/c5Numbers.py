@@ -10,7 +10,10 @@ row of another theta, #13), every row written carrying both, and theta* = theta0
 writes results/numerical/ (all but selfcheck) is refused (oecd26.indexTheta); --theta index runs the workbook's theta
 (rows without thetaSource). Where a CRRA row of the Pi-inclusive cost ('sizePiR', escCalibrationCRRACosts.csv)
 is missing at the run's theta, `loss` and `lambda` leave its CRRA entries out (NaN); `a9` reads
-C5_US_shocksRhoGridCommonX.csv only at the run's theta.
+C5_US_shocksRhoGridCommonX.csv only at the run's theta. --spendingTarget gross|net (runESC.SPENDING): every model with
+a cost recalibrated here (escModel) targets that spending, the results/esc/ csvs are read at it (_atESC) and the rows
+written carry it (_tag; nothing at 'gross'), beside the rows of the other target on disk (_write). _withCost holds (beta,
+omega) at escModel's.
 
   selfcheck   the calibrated U.S. reproduced from its csv rows: the 2020 tax and the theta = 1 counterfactual at
               rho = 1 (runShocksUS's path) and the design in force in 2020 at the calibrated lambda (runESC's).
@@ -53,6 +56,12 @@ C5_US_shocksRhoGridCommonX.csv only at the run's theta.
 
 Every output is results/numerical/C5_*.csv; no paper table reads them, the supplemental appendix's US_TaxState and
 US_Strategic read C5_taxPolicyState.csv and C5_strategicTerm.csv.
+
+--escdir DIR reads the ESC csvs (ESC, results/esc/ by default) in DIR, --outdir DIR2 writes the C5 csvs (OUTDIR,
+results/numerical/ by default) in DIR2; relative paths are the working directory's. Both default directories hold the
+cost runESC.PAPERCOST (k = 2, carrier 'convex'): a run under another SSD_TAUPOWER or SSD_CARRIER is refused into
+results/numerical/ and, for a command that reads the ESC csvs (READS_ESC), from results/esc/ (runESC.refuseCost), and
+its rows carry tauPower and carrier (_tag, runESC.costColumns).
 """
 import os, sys, argparse, time, json
 import numpy as np, pandas as pd
@@ -61,6 +70,7 @@ from scipy import optimize
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, '..', '..'))
+CWD = os.getcwd()                 # where a relative --escdir/--outdir points: the chdir below moves to HERE
 sys.stdout.reconfigure(encoding = 'utf-8', line_buffering = True)
 sys.path.insert(0, HERE)
 os.chdir(HERE)
@@ -76,9 +86,10 @@ import runShocksUS
 import runESC
 import runESCcrra
 
-OUTDIR = os.path.join(REPO, 'results', 'numerical')
+OUTDIR = NUMMAIN = os.path.join(REPO, 'results', 'numerical')      # OUTDIR: main's --outdir, NUMMAIN the default
 SHK = os.path.join(REPO, 'results', 'shocks')
-ESC = os.path.join(REPO, 'results', 'esc')
+ESC = ESCMAIN = os.path.join(REPO, 'results', 'esc')                # ESC: main's --escdir, ESCMAIN the default
+READS_ESC = ('selfcheck', 'loss', 'lambda', 'index', 'design', 'designCRRA')    # the commands that read ESC's csvs
 RHOS = (0.5, 1.0, 2.0)
 GS = {'n': 101, 'ns': 150, 'smoothKnots': 4, 'interpKind': 'linear'}   # runShocksUS / runESCcrra defaults
 NCAND2D = 41                                                          # config.US['esc']['nCand2D']
@@ -112,8 +123,24 @@ def _read(path):
     return df
 
 
+def _atESC(df):
+    """ The rows of an ESC csv (results/esc/) at the run's theta (_at) and spending target (runESC.atSpending). """
+    return runESC.atSpending(_at(df))
+
+
+def _readESC(path):
+    """ _read of an ESC csv, at the run's spending target too; ValueError when it has no such row. """
+    df = runESC.atSpending(_read(path))
+    if df.empty:
+        raise ValueError('{}: no row at spendingTarget {!r}'.format(os.path.relpath(path, REPO),
+                                                                    runESC.SPENDING['target']))
+    return df
+
+
 def _tag(df):
-    """ df with the run's thetaSource and θ0 columns (unchanged without a variant). """
+    """ df with the run's thetaSource and θ0 columns (unchanged without a variant), spendingTarget (runESC's, none at
+    'gross') and tauPower, carrier (runESC.costColumns, none at PAPERCOST). """
+    df = df.assign(**runESC.spendingColumns(), **runESC.costColumns())
     return df if THETA['variant'] is None else df.assign(thetaSource = THETA['variant'], θ0 = THETA['θ0'])
 
 
@@ -141,6 +168,22 @@ def out(name):
     return os.path.join(OUTDIR, name)
 
 
+def _otherTargets(path):
+    """ The rows of csv `path` at the run's theta (_at) and another spending target than the run's (runESC.SPENDING):
+    the rows a write keeps, so that a csv holds both targets' rows ({} frame when there is none). """
+    if not os.path.exists(path):
+        return pd.DataFrame()
+    old = _at(pd.read_csv(path, float_precision = 'round_trip'))
+    return old.drop(runESC.atSpending(old).index)
+
+
+def _write(df, path):
+    """ Write frame `df` (this run's rows, _tag-ged) to `path` beside the rows on disk at another spending target
+    (_otherTargets); rows at the run's target, or at another theta, are replaced. """
+    df = pd.concat([_otherTargets(path), df], ignore_index = True)
+    df.to_csv(path, index = False)
+
+
 def prefs(ρ):
     return 'LOG' if ρ == 1 else 'CRRA'
 
@@ -164,23 +207,39 @@ def usModel(ρ, cls = ModelESC):
 def escRows():
     """ The paper's cost calibration at each rho: (lambda, beta, omega) of 'size' and lambda of 'sizePiR', common
     X, at theta* = θStar() (LOG: escCalibration{,Costs}.csv; CRRA: the exact rows of escCalibrationCRRA{,Costs}.csv),
-    every row converged and at the run's theta (_at). A missing 'sizePiR' row gives NaN for λΠR and ΠR. """
+    every row converged and at the run's theta (_at). The LOG 'size' row is required (ValueError); a missing 'sizePiR'
+    csv or row gives NaN for λΠR and ΠR, a missing CRRA csv or exact 'size' row NaN for every entry of that rho
+    (printed): `loss` and `lambda` leave its numbers NaN, escModel refuses a NaN λ. """
     def piR(cc):
         return (float(cc.p.iloc[-1]), float(cc['ΠR'].iloc[-1])) if len(cc) else (np.nan, np.nan)
 
+    def optional(name):
+        """ The csv `name` in ESC at the run's theta and target (_atESC), an empty frame when the file is missing. """
+        path = os.path.join(ESC, name)
+        return _atESC(pd.read_csv(path)) if os.path.exists(path) else pd.DataFrame(columns = ['ρ', 'spec', 'method',
+                                                                                              'commonX', 'converged'])
+
     rows = {}
-    c = _read(os.path.join(ESC, 'escCalibration.csv'))
-    cc = _at(pd.read_csv(os.path.join(ESC, 'escCalibrationCosts.csv')))
+    c = _readESC(os.path.join(ESC,'escCalibration.csv'))
+    cc = optional('escCalibrationCosts.csv')
     s = c[(c.spec == 'size') & c.commonX.astype(bool) & c.converged.astype(bool)
           & np.isclose(c['θStar'], θStar(), atol = 1e-6)].iloc[-1]
     λΠR, ΠR = piR(cc[(cc.spec == 'sizePiR') & cc.commonX.astype(bool) & cc.converged.astype(bool)])
     rows[1.0] = {'λ': float(s.p), 'β': float(s['β']), 'ω': float(s['ω']), 'τ0': float(s['τ0']),
                  'Vtilde': float(s.Vtilde), 'θStar': float(s['θStar']), 'λΠR': λΠR, 'ΠR': ΠR}
-    c = _read(os.path.join(ESC, 'escCalibrationCRRA.csv'))
-    cc = _at(pd.read_csv(os.path.join(ESC, 'escCalibrationCRRACosts.csv')))
+    c = optional('escCalibrationCRRA.csv')
+    cc = optional('escCalibrationCRRACosts.csv')
     for ρ in (0.5, 2.0):
         s = c[(c['ρ'] == ρ) & (c.spec == 'size') & (c.method == 'exact') & c.commonX.astype(bool)
-              & c.converged.astype(bool) & np.isclose(c['θStar'], θStar(), atol = 1e-6)].iloc[-1]
+              & c.converged.astype(bool)]
+        s = s[np.isclose(s['θStar'].astype(float), θStar(), atol = 1e-6)] if len(s) else s
+        if s.empty:
+            fC = _src('escCalibrationCRRA.csv')
+            print(f"rho={ρ}: no converged exact 'size' calibration in {fC} at θ {THETA} and target "
+                  f"{runESC.SPENDING['target']!r}: its entries NaN")
+            rows[ρ] = dict.fromkeys(('λ', 'β', 'ω', 'τ0', 'Vtilde', 'θStar', 'λΠR', 'ΠR'), np.nan)
+            continue
+        s = s.iloc[-1]
         λΠR, ΠR = piR(cc[(cc['ρ'] == ρ) & (cc.spec == 'sizePiR') & (cc.method == 'exact') & cc.converged.astype(bool)])
         rows[ρ] = {'λ': float(s.p), 'β': float(s['β']), 'ω': float(s['ω']), 'τ0': float(s['τ0']),
                    'Vtilde': float(s.Vtilde), 'θStar': float(s['θStar']), 'λΠR': λΠR, 'ΠR': ΠR}
@@ -190,7 +249,9 @@ def escRows():
 def escModel(ρ, wedge):
     """ The U.S. under a cost at rho, (beta, omega, X) recalibrated with the cost installed: runESC.buildUS
     (log) or runESCcrra.buildUS (CRRA, the exact recursion's settings), then calibrate(), as the drivers'
-    path and shocks stages do. """
+    path and shocks stages do. ValueError for a NaN cost (no calibration at rho, escRows). """
+    if wedge is not None and not np.isfinite(float(wedge['p'])):
+        raise ValueError(f'rho={ρ}: no calibrated cost of {wedge["spec"]!r} in {_src('')} (escRows)')
     if ρ == 1:
         m = runESC.buildUS(wedge, ρ = 1.0, commonX = True)
     else:
@@ -297,7 +358,7 @@ def a1(a):
               f"pairwise bound {r0['pairBoundθ0']:.4f}; seqFOC<0 everywhere: {bool(np.all(foc < 0))}  "
               f"[{time.time()-tic:.0f}s]")
     df = _tag(pd.DataFrame(rows))
-    df.to_csv(out('C5_criticalTurnout.csv'), index = False)
+    _write(df, out('C5_criticalTurnout.csv'))
     print('->', os.path.relpath(out('C5_criticalTurnout.csv'), REPO))
     return 0
 
@@ -349,7 +410,7 @@ def a9(a):
                              'rank': order.index(key) + 1 if key in order else np.nan,
                              'baselineτ': b, 'source': g['source'].iloc[0]})
     df = _tag(pd.DataFrame(rows))
-    df.to_csv(out('C5_ranking.csv'), index = False)
+    _write(df, out('C5_ranking.csv'))
     acute = df[df.ageingScenario == 'acute']
     tab = acute.pivot_table(index = ['host', 'ρ'], columns = 'effect', values = 'dτ_pp')
     with pd.option_context('display.width', 250, 'display.max_columns', 20):
@@ -398,7 +459,7 @@ def loss(a):
                                         'loss': 1 - _f(λπ, τθ, V, θ), 'lossθ0': 1 - _f(λπ, T2020[0.], V, 0.),
                                         'dLoss_dθ_atθStar': np.nan})
     df = _tag(pd.DataFrame(rows))
-    df.to_csv(out('C5_marginalLoss.csv'), index = False)
+    _write(df, out('C5_marginalLoss.csv'))
     with pd.option_context('display.width', 250, 'display.max_columns', 20):
         print(df[['ρ', 'spec', 'λ', 'Δθ', 'taxHeld', 'τ', 'loss', 'dLoss_dθ_atθStar']].round(5).to_string())
     print('->', os.path.relpath(out('C5_marginalLoss.csv'), REPO))
@@ -493,7 +554,7 @@ def lam(a):
             raise SystemExit(f'lambda: no elasticity mapping at k = {TAU_POWER} (appendix C.2 has k = 1 and 2)')
         rows.append(row)
     df = _tag(pd.DataFrame(rows))
-    df.to_csv(out('C5_lambdaElasticity.csv'), index = False)
+    _write(df, out('C5_lambdaElasticity.csv'))
     print('->', os.path.relpath(out('C5_lambdaElasticity.csv'), REPO))
     return 0
 
@@ -501,6 +562,17 @@ def lam(a):
 # ------------------------------------------------------------------------------------------------ #13
 def I(θ):
     return 1/(2 - np.asarray(θ, dtype = float))
+
+
+def _src(name):
+    """ The 'source' label of ESC's csv `name`: its path from the repo, '/'-separated (results/esc/<name> by default;
+    the absolute path on another drive). """
+    path = os.path.join(ESC, name)
+    try:
+        path = os.path.relpath(path, REPO)
+    except ValueError:
+        pass
+    return path.replace(os.sep, '/')
 
 
 def index(a):
@@ -511,43 +583,43 @@ def index(a):
                      'I0': float(I(θ0)), 'I1': float(I(θ1)), 'ΔI': float(I(θ1) - I(θ0)),
                      'ΔI_firstOrder': float(I(θ0)**2*(θ1 - θ0)), 'source': source})
 
-    add('observed U.S. design (level)', np.nan, θStar(), θStar(), 'results/esc/escCalibration.csv')
+    add('observed U.S. design (level)', np.nan, θStar(), θStar(), _src('escCalibration.csv'))
     add('Beveridgean corner vs U.S.', np.nan, θStar(), 0., 'definition')
     add('Bismarckian corner vs U.S.', np.nan, θStar(), 1., 'definition')
     add('theta 1 -> 0 (section 6)', np.nan, 1., 0., 'definition')
     # the design path, theta chosen (escPath LOG, escPathCRRA exact)
-    p = _read(os.path.join(ESC, 'escPath.csv'))
+    p = _readESC(os.path.join(ESC,'escPath.csv'))
     p = p[(p.spec == 'size') & p.commonX.astype(bool)].set_index('date')['θ']
-    pc = _read(os.path.join(ESC, 'escPathCRRA.csv'))
+    pc = _readESC(os.path.join(ESC,'escPathCRRA.csv'))
     for ρ in RHOS:
         s = p if ρ == 1 else pc[(pc['ρ'] == ρ) & (pc.spec == 'size') & (pc.method == 'exact')].set_index('date')['θ']
-        src = 'results/esc/escPath.csv' if ρ == 1 else 'results/esc/escPathCRRA.csv'
+        src = _src('escPath.csv') if ρ == 1 else _src('escPathCRRA.csv')
         for d in (2050, 2080, 2110):
             add(f'design path 2020 -> {d}', ρ, float(s[2020]), float(s[d]), src)
     # figure 7.1 and the A8 costs: theta_2020 chosen, against the chosen baseline of the same rho
-    x = _read(os.path.join(ESC, 'escExperiments.csv'))
+    x = _readESC(os.path.join(ESC,'escExperiments.csv'))
     x = x[(x.spec == 'size') & x.commonX.astype(bool) & ((x.preferences == 'LOG') | (x.method == 'exact'))
           & ~x['θpinned'].astype(bool)]
     for ρ in RHOS:
         g = x[x['ρ'] == ρ].set_index('scenario')['θ_t0']
         for scen in ('acute', 'mild', 'frIncome', 'frVoting', 'frLeisure', 'frBoth', 'frAll'):
             if scen in g:
-                add(f'{scen} (figure 7.1)', ρ, float(g['baseline']), float(g[scen]), 'results/esc/escExperiments.csv',
+                add(f'{scen} (figure 7.1)', ρ, float(g['baseline']), float(g[scen]), _src('escExperiments.csv'),
                     'chosen')
-    c = _read(os.path.join(ESC, 'escAgeingCosts.csv'))
+    c = _readESC(os.path.join(ESC,'escAgeingCosts.csv'))
     c = c[~c['θpinned'].astype(bool)]
     for _, r in c.iterrows():
         if r['scenario'] in ('mild', 'acute'):
             add(f"{r['scenario']} ageing, cost {r['spec']}", float(r['ρ']), float(r['θ_t0'] - r['dθ_t0']),
-                float(r['θ_t0']), 'results/esc/escAgeingCosts.csv', 'chosen')
+                float(r['θ_t0']), _src('escAgeingCosts.csv'), 'chosen')
     # the UK and France under the U.S. lambda (appendix G.1), against their observed designs and the U.S.
-    k = _read(os.path.join(ESC, 'escCountry.csv'))
+    k = _readESC(os.path.join(ESC,'escCountry.csv'))
     k = k[(k.spec == 'size') & k.commonX.astype(bool) & (k.wedgeFrom == 'US')]
     for _, r in k.iterrows():
         add(f"{r['country']} under the U.S. lambda vs observed", 1.0, float(r['θStar']), float(r['choice']),
-            'results/esc/escCountry.csv', 'chosen')
+            _src('escCountry.csv'), 'chosen')
         add(f"{r['country']} under the U.S. lambda vs U.S. design", 1.0, θStar(), float(r['choice']),
-            'results/esc/escCountry.csv', 'chosen')
+            _src('escCountry.csv'), 'chosen')
     # data: the U.S., the UK and France observed, and the cross-section's range (figure 1.1's index, theta = 2 - 1/I,
     # without a variant; the variant's rows of data/oecd26_theta.csv, its inSample countries, with one)
     if THETA['variant'] is None:
@@ -566,9 +638,10 @@ def index(a):
     lo, hi = ((float(θdata.min()), float(θdata.max())) if THETA['variant'] is None
               else (float(inS.min()), float(inS.max())))
     add(rng, np.nan, lo, hi, src, 'data')
-    df = pd.DataFrame(rows)        # θ0/θ1 here are the item's designs: only thetaSource tags the run's theta
+    # θ0/θ1 are the items': only thetaSource tags θ
+    df = pd.DataFrame(rows).assign(**runESC.spendingColumns(), **runESC.costColumns())
     df = df if THETA['variant'] is None else df.assign(thetaSource = THETA['variant'])
-    df.to_csv(out('C5_indexUnits.csv'), index = False)
+    _write(df, out('C5_indexUnits.csv'))
     with pd.option_context('display.width', 250, 'display.max_columns', 20, 'display.max_rows', 200):
         print(df[['item', 'ρ', 'θ0', 'θ1', 'Δθ', 'I0', 'I1', 'ΔI']].round(4).to_string())
     print('->', os.path.relpath(out('C5_indexUnits.csv'), REPO))
@@ -726,7 +799,7 @@ def design(a):
     t0 = m.t0Year
     led = {k: mm.solveLeaded(pinAtT0 = False) for k, mm in (('US', m), ('FR', mFR))}
     V = {k: float(mm.B.Vtilde(t0)) for k, mm in (('US', m), ('FR', mFR))}
-    csv = _read(os.path.join(ESC, 'escExperiments.csv'))
+    csv = _readESC(os.path.join(ESC,'escExperiments.csv'))
     csv = csv[(csv.spec == 'size') & (csv.preferences == 'LOG') & ~csv['θpinned'].astype(bool)].set_index('scenario')
     for k, sc in (('US', 'baseline'), ('FR', 'frIncome')):
         print(f"{k}: theta_2020 {float(led[k]['θ'].xs(t0)):.6f} (csv {float(csv.loc[sc, 'θ_t0']):.6f}), tau_2020 "
@@ -786,7 +859,7 @@ def design(a):
         rows.append({'kind': 'choice', 'ρ': 1.0, 'case': label, 'experiment': key, 'θ2020': θ0, 'τ2020': τ0,
                      'π2020': float(π[m.db['t0']]), 'gap': gap, 'passes': k, 'θ2050': float(rec['θ'].iloc[m.db['t0']+1])})
         print(f'  {label:<48} theta_2020 {θ0:.6f}  tau_2020 {τ0:.6f}  pi_2020 {π[m.db["t0"]]:.5f}  ({k} passes)')
-    _tag(pd.DataFrame(rows)).to_csv(out('C5_designDecomp.csv'), index = False)
+    _write(_tag(pd.DataFrame(rows)), out('C5_designDecomp.csv'))
     print('->', os.path.relpath(out('C5_designDecomp.csv'), REPO))
     return 0
 
@@ -808,10 +881,10 @@ def designCRRA(a):
         V = {'US': float(m.B.Vtilde(t0)), 'FR': float(mFR.B.Vtilde(t0))}
         # the U.S. free path's tax (escPathCRRA, exact) and a first guess for France's: its pinned path scaled
         # to the free 2020 value on file (escExperiments)
-        pc = _read(os.path.join(ESC, 'escPathCRRA.csv'))
+        pc = _readESC(os.path.join(ESC,'escPathCRRA.csv'))
         pc = pc[(pc['ρ'] == ρ) & (pc.spec == 'size') & (pc.method == 'exact')].sort_values('pos')
         τUS = np.append(pc['τ'].values.astype(float), pc['τ'].values[-1])          # terminal: last ratio
-        x = _read(os.path.join(ESC, 'escExperiments.csv'))
+        x = _readESC(os.path.join(ESC,'escExperiments.csv'))
         x = x[(x['ρ'] == ρ) & (x.spec == 'size') & (x.method == 'exact')].set_index(['scenario', 'θpinned'])
         pinUS = m.solvePEE_CRRA()['τ'].values.astype(float)
         pinFR = mFR.solvePEE_CRRA()['τ'].values.astype(float)
@@ -839,16 +912,17 @@ def designCRRA(a):
 
 
 def _mergeExperiments(rows, path):
-    """ One file per rho (two rho run as two processes): this run's experiments replace their rows on disk, and a
-    row on disk at another theta than the run's (_at) is dropped. """
+    """ One file per rho (two rho run as two processes): this run's experiments replace their rows on disk at the
+    run's spending target, the rows at another target are kept (_write), and a row on disk at another theta than the
+    run's (_at) is dropped. """
     df = _tag(pd.DataFrame(rows))
     if os.path.exists(path):
         old = pd.read_csv(path)
-        keep = _at(old)
-        if len(keep) < len(old):
-            print(f'  {os.path.relpath(path, REPO)}: {len(old) - len(keep)} rows at another θ dropped')
+        keep = _atESC(old)
+        if len(_at(old)) < len(old):
+            print(f'  {os.path.relpath(path, REPO)}: {len(old) - len(_at(old))} rows at another θ dropped')
         df = pd.concat([keep[~keep['experiment'].isin(df['experiment'])], df], ignore_index = True)
-    df.to_csv(path, index = False)
+    _write(df, path)
     print('->', os.path.relpath(path, REPO))
 
 
@@ -876,7 +950,7 @@ def a13(a):
         el = (np.log(r[1.05]) - np.log(r[0.95]))/(np.log(1.05) - np.log(0.95))
         print(f'rho={ρ}: tau_2020 {τ0:.6f} at s_2019 {s0:.6f}; at 0.5/1.5 s*: {r[0.5]:.6f}/{r[1.5]:.6f}; '
               f'elasticity d ln tau/d ln s {el:+.4f}')
-    _tag(pd.DataFrame(rows)).to_csv(out('C5_taxPolicyState.csv'), index = False)
+    _write(_tag(pd.DataFrame(rows)), out('C5_taxPolicyState.csv'))
     print('->', os.path.relpath(out('C5_taxPolicyState.csv'), REPO))
     return 0
 
@@ -917,13 +991,22 @@ def strategic(a, δ = 0.005):
         print(f"rho={ρ}: s_{t0} {sAt:.6f} (path {sEq:.6f}); ds/dtau {dsdτ:+.5f} (el {r['elasticity s,τ']:+.3f}); "
               f"dtau_{t1}/ds {dτ1ds:+.5f} (el {r['elasticity τ1,s']:+.3f}); strategic dtau_{t1}/dtau_{t0} "
               f"{r['strategic']:+.5f}")
-    _tag(pd.DataFrame(rows)).to_csv(out('C5_strategicTerm.csv'), index = False)
+    _write(_tag(pd.DataFrame(rows)), out('C5_strategicTerm.csv'))
     print('->', os.path.relpath(out('C5_strategicTerm.csv'), REPO))
     return 0
 
 
 COMMANDS = {'selfcheck': selfcheck, 'a1': a1, 'a9': a9, 'loss': loss, 'lambda': lam, 'index': index,
             'design': design, 'designCRRA': designCRRA, 'a13': a13, 'strategic': strategic}
+
+
+def refuseCost(path, default, flag):
+    """ runESC.refuseCost of directory `path` against `default` (results/esc/ or results/numerical/): SystemExit when
+    they are the same and the run's cost is not runESC.PAPERCOST, naming the flag that points elsewhere. """
+    try:
+        runESC.refuseCost(path, default)
+    except SystemExit as e:
+        raise SystemExit(f'{e}; c5Numbers.py takes it as {flag} DIR') from None
 
 
 def main():
@@ -937,7 +1020,23 @@ def main():
     p.add_argument('--theta', default = None,
                    help = "the pipeline's main θ variant, config.US['theta'] (with --main); 'index' the workbook's θ")
     p.add_argument('--main', action = 'store_true', help = "with --theta config.US['theta']")
+    p.add_argument('--spendingTarget', default = 'gross', choices = runESC.SPENDING_TARGETS,
+                   help = "runESC.py's: every model with a cost (escModel) calibrated to 'net' benefits paid, the ESC "
+                          "csvs read at that target, the rows written with it (none at 'gross')")
+    p.add_argument('--escdir', default = None,
+                   help = 'the ESC csvs read from this directory instead of results/esc/ (e.g. results/esc_tau1)')
+    p.add_argument('--outdir', default = None, help = 'the C5 csvs written into this directory instead of results/numerical/')
     a = p.parse_args()
+    global ESC, OUTDIR
+    if a.escdir is not None:
+        ESC = os.path.abspath(os.path.join(CWD, a.escdir))
+    if a.outdir is not None:
+        OUTDIR = os.path.abspath(os.path.join(CWD, a.outdir))
+    if a.command in READS_ESC:
+        refuseCost(ESC, ESCMAIN, '--escdir')
+    if a.command != 'selfcheck':
+        refuseCost(OUTDIR, NUMMAIN, '--outdir')
+    runESC.setSpendingTarget(a.spendingTarget)
     if a.theta in (None, oecd26.INDEX) and not a.main:
         a.theta = oecd26.indexTheta(a.theta, [] if a.command == 'selfcheck' else [OUTDIR], 'c5Numbers.py')
     setTheta(a.theta, a.main)

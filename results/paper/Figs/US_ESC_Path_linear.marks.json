@@ -1,0 +1,245 @@
+{
+ "figure": "US_ESC_Path_linear",
+ "marks": [
+  {
+   "id": "US_ESC_Path_linear--nu--data--2020",
+   "label": "2020",
+   "series": "",
+   "panel": "Workers per retiree ν_t",
+   "value": 1.339667762739423,
+   "text": "1.34",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_Path_linear--nu--data--2050",
+   "label": "2050",
+   "series": "",
+   "panel": "Workers per retiree ν_t",
+   "value": 1.1219986438186136,
+   "text": "1.12",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_Path_linear--nu--data--2080",
+   "label": "2080",
+   "series": "",
+   "panel": "Workers per retiree ν_t",
+   "value": 1.0688804499803877,
+   "text": "1.07",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_Path_linear--nu--data--2110",
+   "label": "2110",
+   "series": "",
+   "panel": "Workers per retiree ν_t",
+   "value": 1.0688804499803877,
+   "text": "1.07",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_Path_linear--nu--data--2140",
+   "label": "2140",
+   "series": "",
+   "panel": "Workers per retiree ν_t",
+   "value": 1.0688804499803877,
+   "text": "1.07",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_Path_linear--nu--data--2170",
+   "label": "2170",
+   "series": "",
+   "panel": "Workers per retiree ν_t",
+   "value": 1.0688804499803877,
+   "text": "1.07",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_Path_linear--theta--chosen--2020",
+   "label": "2020",
+   "series": "chosen",
+   "panel": "Pension design θ_t",
+   "value": 0.544496000000324,
+   "text": "0.544",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_Path_linear--theta--chosen--2050",
+   "label": "2050",
+   "series": "chosen",
+   "panel": "Pension design θ_t",
+   "value": 0.6591860369897461,
+   "text": "0.659",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_Path_linear--theta--chosen--2080",
+   "label": "2080",
+   "series": "chosen",
+   "panel": "Pension design θ_t",
+   "value": 0.6871146220062466,
+   "text": "0.687",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_Path_linear--theta--chosen--2110",
+   "label": "2110",
+   "series": "chosen",
+   "panel": "Pension design θ_t",
+   "value": 0.6892332123608867,
+   "text": "0.689",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_Path_linear--theta--chosen--2140",
+   "label": "2140",
+   "series": "chosen",
+   "panel": "Pension design θ_t",
+   "value": 0.6892332123605012,
+   "text": "0.689",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_Path_linear--theta--chosen--2170",
+   "label": "2170",
+   "series": "chosen",
+   "panel": "Pension design θ_t",
+   "value": 0.6892332123609574,
+   "text": "0.689",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_Path_linear--tau--pinned--2020",
+   "label": "2020",
+   "series": "pinned",
+   "panel": "Tax rate τ_t",
+   "value": 10.83991636616188,
+   "text": "10.84%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_Path_linear--tau--pinned--2050",
+   "label": "2050",
+   "series": "pinned",
+   "panel": "Tax rate τ_t",
+   "value": 15.316778137829209,
+   "text": "15.32%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_Path_linear--tau--pinned--2080",
+   "label": "2080",
+   "series": "pinned",
+   "panel": "Tax rate τ_t",
+   "value": 16.55032554102233,
+   "text": "16.55%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_Path_linear--tau--pinned--2110",
+   "label": "2110",
+   "series": "pinned",
+   "panel": "Tax rate τ_t",
+   "value": 16.55032554102233,
+   "text": "16.55%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_Path_linear--tau--pinned--2140",
+   "label": "2140",
+   "series": "pinned",
+   "panel": "Tax rate τ_t",
+   "value": 16.55032554102233,
+   "text": "16.55%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_Path_linear--tau--pinned--2170",
+   "label": "2170",
+   "series": "pinned",
+   "panel": "Tax rate τ_t",
+   "value": 16.55032554102233,
+   "text": "16.55%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_Path_linear--tau--chosen--2020",
+   "label": "2020",
+   "series": "chosen",
+   "panel": "Tax rate τ_t",
+   "value": 10.839916366163479,
+   "text": "10.84%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_Path_linear--tau--chosen--2050",
+   "label": "2050",
+   "series": "chosen",
+   "panel": "Tax rate τ_t",
+   "value": 15.59728607825544,
+   "text": "15.60%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_Path_linear--tau--chosen--2080",
+   "label": "2080",
+   "series": "chosen",
+   "panel": "Tax rate τ_t",
+   "value": 16.95688456632574,
+   "text": "16.96%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_Path_linear--tau--chosen--2110",
+   "label": "2110",
+   "series": "chosen",
+   "panel": "Tax rate τ_t",
+   "value": 16.9588663536559,
+   "text": "16.96%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_Path_linear--tau--chosen--2140",
+   "label": "2140",
+   "series": "chosen",
+   "panel": "Tax rate τ_t",
+   "value": 16.958866353655548,
+   "text": "16.96%",
+   "table": null,
+   "row": null
+  },
+  {
+   "id": "US_ESC_Path_linear--tau--chosen--2170",
+   "label": "2170",
+   "series": "chosen",
+   "panel": "Tax rate τ_t",
+   "value": 16.95886635365595,
+   "text": "16.96%",
+   "table": null,
+   "row": null
+  }
+ ]
+}

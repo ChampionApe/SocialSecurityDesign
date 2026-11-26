@@ -56,6 +56,15 @@ Spec 'sizePiR' (ModelESC: the 'size' cost with lambda*Pi_t/R_t, pi solved to the
 path, shocks and country stages; its rows carry 'ΠR', pi at the row's date (t0 for calib, shocks and country).
 Run it with a --tag: it is an experiment beside the paper's cost, not a row of the paper's csvs.
 
+--spendingTarget gross|net (SPENDING, ModelESC.spendingTarget): what every calibration with a cost matches to the
+spending datum db['τ0'] -- the tax tau_t0 ('gross'), or the benefits paid tau_t0 f(theta_t0, tau_t0) ('net',
+ModelESC.netTax). A key column of every csv here, written only under 'net' (blank = 'gross', atSpending); pickCalib
+and pickOwn read only the run's. Every row with a tax also carries the benefits paid over labour income: τNet0 (calib,
+country rows: tau0 fStar), τNet (path rows, the leaded path's), τNet_t0, τNet_t1 (shocks rows).
+
+The cost of results/esc/ is PAPERCOST (k = 2, carrier 'convex'): a run under another SSD_TAUPOWER or SSD_CARRIER
+needs --outdir DIR (the csvs' directory; the U.S. sweep stays --theta's), and its rows carry tauPower and carrier.
+
 Everything is LOG (rho = 1). The CRRA case needs a two-dimensional (s, theta) state and is not this file.
 
 A failure a stage survives (a scenario, France's row, a country's cost) is printed, the run goes on, and main exits 1
@@ -76,11 +85,43 @@ os.chdir(HERE)
 import test as testmod
 import testEU
 import shocks as sh
-from modelESC import ModelESC
+from modelESC import ModelESC, SPENDING_TARGETS, TAU_POWER, WEDGE_CARRIER
 from modelFR import ModelFR
 from policy import multiplicityColumns
 
 OUTDIR = os.path.join(REPO, 'results', 'esc')
+# The cost results/esc/ holds, (k of tau^k, the carrier of 'sizePiR'): a run under another SSD_TAUPOWER or SSD_CARRIER
+# writes into another --outdir (main refuses results/esc/), and its rows carry both (costColumns).
+PAPERCOST = (2., 'convex')
+# The run's spending target under a cost (ModelESC.spendingTarget; main's --spendingTarget), read by every builder
+# here and by runESCcrra/runESCxi/c5Numbers through them. Rows at 'gross' carry no spendingTarget column; a row or csv
+# without one is a 'gross' row (atSpending).
+SPENDING = {'target': 'gross'}
+
+
+def setSpendingTarget(target):
+    """ Install the run's spending target in SPENDING (SPENDING_TARGETS; ValueError otherwise). """
+    if target not in SPENDING_TARGETS:
+        raise ValueError(f'spendingTarget {target!r}: one of {SPENDING_TARGETS}')
+    SPENDING['target'] = target
+
+
+def spendingColumns():
+    """ {'spendingTarget': target} under a target other than 'gross', {} otherwise. """
+    return {} if SPENDING['target'] == 'gross' else {'spendingTarget': SPENDING['target']}
+
+
+def costColumns():
+    """ {'tauPower', 'carrier'} of the run when they are not PAPERCOST, {} otherwise. """
+    return {} if (TAU_POWER, WEDGE_CARRIER) == PAPERCOST else {'tauPower': TAU_POWER, 'carrier': WEDGE_CARRIER}
+
+
+def atSpending(df, target = None):
+    """ The rows of frame `df` at spending target `target` (SPENDING's by default); a missing column or a blank cell
+    reads as 'gross'. """
+    target = SPENDING['target'] if target is None else target
+    st = df['spendingTarget'].fillna('gross') if 'spendingTarget' in df.columns else pd.Series('gross', index = df.index)
+    return df[st == target]
 GS = {'n': 101, 'smoothKnots': 4, 'interpKind': 'linear'}
 # The tax grid's nodes and LeadedLOG's design state grid and candidates of buildUS/buildEU/frenchData.
 GRIDS = {'fine': {'n': 101, 'nθ': 41, 'nθCand': 121}, 'coarse': {'n': 51, 'nθ': 21, 'nθCand': 41}}
@@ -133,12 +174,17 @@ def mergeWrite(path, rows, key):
 
     Keys are compared as CANONICAL strings (_keyOf): a key column that mixes bools with NaN -- legacy rows
     kept beside new ones -- comes back from the csv as 1.0/NaN, not True/NaN, and a naive str() would then
-    never match the run's own rows again and duplicate them on every write. """
+    never match the run's own rows again and duplicate them on every write.
+
+    A key column the new rows do not carry is blank in them (spendingTarget at 'gross', spendingColumns): it
+    matches the blank cells on disk, and a column neither side carries is no part of the comparison, so such a
+    run writes the file it wrote before the column existed. """
     df = pd.DataFrame(rows)
     if os.path.exists(path) and len(df):
         # round_trip: the default parser keeps 17 digits counting the zeros after the decimal point, so a rewrite
         # would truncate the rows it merely carries (a 1e-4 diagnostic lost its last three digits).
         old = pd.read_csv(path, float_precision = 'round_trip')
+        key = [k for k in key if k in df.columns or k in old.columns]
         # A csv written before one of the key columns existed has no way to match a new row, and must
         # not be dropped on the strength of the columns it does share -- so the missing column is added
         # as NaN, which the '__na__' fill turns into a key no current row can equal. The old rows are
@@ -146,6 +192,8 @@ def mergeWrite(path, rows, key):
         for k in key:
             if k not in old.columns:
                 old[k] = np.nan
+            if k not in df.columns:
+                df[k] = np.nan
         df = pd.concat([old[~_keyOf(old, key).isin(_keyOf(df, key))], df], ignore_index = True)
     writeCsv(df, path)
 
@@ -174,21 +222,25 @@ def _keyOf(d, key):
 # The row-identity keys of the merged csvs, one per stage. spec and commonX are in every one -- see
 # mergeWrite -- so the 'size' rows coexist with the 'scale' rows (the comparison arm) in one file and a
 # rerun replaces only its own rows. No csv here carries rho: this driver is LOG at rho = 1; runESCcrra's
-# keys add it.
-KEYCAL = ['spec', 'phi', 'commonX']
-KEYSHK = ['spec', 'phi', 'commonX', 'scenario', 'θpinned']
-KEYPATH = ['spec', 'phi', 'commonX', 'pos']
-KEYPATHHOST = ['spec', 'phi', 'commonX', 'country', 'wedgeFrom', 'pos']
-KEYCTY = ['spec', 'phi', 'commonX', 'country', 'wedgeFrom']
-KEYCORNER = ['spec', 'phi', 'commonX', 'country', 'λ', 'vote']
+# keys add it. spendingTarget is in every one, blank at 'gross' (spendingColumns, mergeWrite), so the rows calibrated
+# to benefits paid coexist with the gross ones (#13).
+KEYCAL = ['spec', 'phi', 'commonX', 'spendingTarget']
+KEYSHK = ['spec', 'phi', 'commonX', 'spendingTarget', 'scenario', 'θpinned']
+KEYPATH = ['spec', 'phi', 'commonX', 'spendingTarget', 'pos']
+KEYPATHHOST = ['spec', 'phi', 'commonX', 'spendingTarget', 'country', 'wedgeFrom', 'pos']
+KEYCTY = ['spec', 'phi', 'commonX', 'spendingTarget', 'country', 'wedgeFrom']
+KEYCORNER = ['spec', 'phi', 'commonX', 'spendingTarget', 'country', 'λ', 'vote']
 
 
 def pickCalib(calib, spec, phi, commonX):
     """ The converged wedge calibration for one (spec, phi, variant), or an empty frame.
 
     Filtering on commonX is not optional: escCalibration.csv carries both variants, and reading a
-    vector-X p into a common-X run would report a wedge that was never calibrated for that economy. """
-    hit = calib[(calib['spec'] == spec) & (calib['phi'] == phi) & calib['converged']]
+    vector-X p into a common-X run would report a wedge that was never calibrated for that economy. Nor on
+    the run's spending target (atSpending): a cost calibrated to the gross tax is not one calibrated to
+    benefits paid. """
+    hit = atSpending(calib)
+    hit = hit[(hit['spec'] == spec) & (hit['phi'] == phi) & hit['converged']]
     if 'commonX' in calib.columns:
         hit = hit[hit['commonX'].astype(bool) == bool(commonX)]
     return hit
@@ -219,6 +271,11 @@ def thetaColumns():
                                                  'grid': THETA['grid']}
 
 
+def tagColumns():
+    """ The run's tags every row carries: thetaColumns, spendingColumns and costColumns ({} at the defaults). """
+    return thetaColumns() | spendingColumns() | costColumns()
+
+
 def buildUS(wedge = None, ρ = 1.0, nθ = None, nθCand = None, commonX = False, θ0 = None):
     """ The US model under the wedge, with (beta, omega) SEEDED from the no-wedge sweep at this rho (usSweep).
     θ0: the design imposed as db['θ0'] (ModelUS.getθ), THETA's by default; None derives it from the workbook's
@@ -237,7 +294,7 @@ def buildUS(wedge = None, ρ = 1.0, nθ = None, nθCand = None, commonX = False,
     m = ModelESC(pars = testmod.pars | {'ρ': float(ρ), 'β': float(row['β']), 'ω': float(row['ω'])}
                  | ({} if θ0 is None else {'θ0': float(θ0)}),
                  wedge = wedge, nθ = g['nθ'] if nθ is None else nθ, nθCand = g['nθCand'] if nθCand is None else nθCand,
-                 commonX = commonX, **testmod.kwargs)
+                 commonX = commonX, spendingTarget = SPENDING['target'], **testmod.kwargs)
     m.db['dates'] = testmod.dates
     m.db['workweek'] = testmod.workweek
     m.LOG.initGS(GS | {'n': g['n']})
@@ -259,7 +316,8 @@ def buildEU(country, wedge = None, nθ = None, nθCand = None, ρ = 1.0, commonX
     # usReference must be read off the SAME variant's sweep: it carries hbar_US, and hbar differs
     # between vector X and common X by construction (python/US/README.md).
     m = ModelESCFR(pars = pars, wedge = wedge, usRef = _usRef(commonX), nθ = g['nθ'] if nθ is None else nθ,
-                   nθCand = g['nθCand'] if nθCand is None else nθCand, commonX = commonX, **escKw, **kwargs)
+                   nθCand = g['nθCand'] if nθCand is None else nθCand, commonX = commonX,
+                   spendingTarget = SPENDING['target'], **escKw, **kwargs)
     m.db['dates'], m.db['workweek'], m.db['country'] = dates, workweek, country
     m.LOG.initGS(GS | {'n': g['n']})
     return m
@@ -285,12 +343,14 @@ def wedgeReadout(m, τ0):
     calibration's own target db['tau0'] reproduces to tauDrift. Under 'scale'/'flat' f ignores tau (and
     under no wedge f = 1); tau0 is written regardless so the column means one thing in every row. f is
     that of the t0 retirees (lag '[t-1]': their Vtilde, equal to the young's in every calibration here, and
-    under 'sizePiR' pi_t0, written as a fifth column 'ΠR', and carrierColumn's). """
+    under 'sizePiR' pi_t0, written as a fifth column 'ΠR', and carrierColumn's). τNet0: benefits paid over labour
+    income at t0, ModelESC.netTax(tau0, theta*) = tau0 fStar (tau0 without a cost). """
     t0 = m.t0Year
     θStar = float(m.db['θ'].xs(t0))
     with m.B.cacheParams():
         out = {'Vtilde': float(m.B.Vtilde(t0)), 'fStar': float(m.B.fWedge(θStar, τ0, t0, '[t-1]')),
-               'f0': float(m.B.fWedge(0., τ0, t0, '[t-1]')), 'τ0': float(τ0)}
+               'f0': float(m.B.fWedge(0., τ0, t0, '[t-1]')), 'τ0': float(τ0),
+               'τNet0': float(m.netTax(float(τ0), θStar, t0))}
         if m.db.get('wedgeSpec') == 'sizePiR':
             out['ΠR'] = float(m.B.wedgeΠR(t0, '[t-1]'))
     return out | carrierColumn(m)
@@ -323,7 +383,7 @@ def baselineRefs(m):
 def stageCalib(specs, phis, out, ρ = 1.0, commonX = False, bracket = None):
     """ bracket: the scan bracket for the wedge parameter, None = ModelESC.WEDGE_BRACKET[spec]. """
     rows = []
-    tagθ = thetaColumns()
+    tagθ = tagColumns()
     m = buildUS(None, ρ = ρ, commonX = commonX)
     m.calibrate()
     t0 = m.t0Year
@@ -393,8 +453,9 @@ def stagePath(specs, phis, calib, out, ρ = 1.0, commonX = False):
                              'ν': float(m.db['ν'].xs(t)),
                              'θ': float(led['θ'].xs(t)), 'τ': r['τ'], 'sr': r['sr'],
                              'workweek': r['workweek'], 'R': r['R'],
+                             'τNet': float(m.netTax(float(led['τ'].xs(t)), float(led['θ'].xs(t)), t)),
                              'τExo': rb['τ'], 'srExo': rb['sr'], 'workweekExo': rb['workweek']}
-                            | piColumn(m, t) | multiplicityColumns(led['multiplicity']) | thetaColumns())
+                            | piColumn(m, t) | multiplicityColumns(led['multiplicity']) | tagColumns())
             mergeWrite(out, rows, KEYPATH)
             print('[{}, φ={}] θ path: {}'.format(spec, phi,
                   '  '.join('{:.3f}'.format(x) for x in led['θ'].values[:8])))
@@ -436,8 +497,9 @@ def stagePathHost(specs, phis, calib, country, out, ρ = 1.0, commonX = False):
                                      'ω': float(m.db['ω'].xs(m.t0Year)),
                                      'θ': float(led['θ'].xs(t)), 'τ': r['τ'], 'sr': r['sr'],
                                      'workweek': r['workweek'], 'R': r['R'],
+                                     'τNet': float(m.netTax(float(led['τ'].xs(t)), float(led['θ'].xs(t)), t)),
                                      'τExo': rb['τ'], 'srExo': rb['sr'], 'workweekExo': rb['workweek']}
-                                    | multiplicityColumns(led['multiplicity']) | thetaColumns())
+                                    | multiplicityColumns(led['multiplicity']) | tagColumns())
                     mergeWrite(out, rows, KEYPATHHOST)
                     print('[{}, φ={}] {} under the {} cost p={:.4f}: θ path {}'.format(
                         spec, phi, label, wedgeFrom, p, '  '.join('{:.3f}'.format(x) for x in led['θ'].values[:8])))
@@ -458,7 +520,8 @@ def leadedNewPath(m, hbarRef, apply = None, data = None, pin = False):
     through 2020 and the two readings agreed there by construction, so the tables had to be read at 2050.
 
     Returns readouts at t0 and t0+1 (t0 is what the tables print; t0+1 is kept because the design path's
-    drift is the ageing prediction) plus the design at t0-1, t0, t0+1 and the solve's multiplicity. """
+    drift is the ageing prediction) plus the design at t0-1, t0, t0+1, the solve's multiplicity and 'τNet0',
+    'τNet1', benefits paid over labour income at t0 and t0+1 (ModelESC.netTax on the solve's own path). """
     pos = m.db['t0']
     mt = deepcopy(m)
     # as shocks.shockedCopy: the warm starts hold the BASELINE's solution, so clearing them is what keeps
@@ -474,9 +537,10 @@ def leadedNewPath(m, hbarRef, apply = None, data = None, pin = False):
     else:
         led = mt.solveLeaded(pinAtT0 = False)
         τ, report, θPath, mult = led['τ'], led['report'], led['θ'], led['multiplicity']
+    net = [float(mt.netTax(float(τ.iloc[k]), float(θPath.iloc[k]), mt.db['t'][k])) for k in (pos, pos+1)]
     return {'t0': readout(mt, τ, report, hbarRef, pos), 't1': readout(mt, τ, report, hbarRef, pos+1),
             'θ_': float(θPath.iloc[pos-1]), 'θ0': float(θPath.iloc[pos]),
-            'θ1': float(θPath.iloc[pos+1]), 'm': mt, 'multiplicity': mult}
+            'θ1': float(θPath.iloc[pos+1]), 'm': mt, 'multiplicity': mult, 'τNet0': net[0], 'τNet1': net[1]}
 
 
 def stageShocks(specs, phis, calib, out, ρ = 1.0, commonX = False, scenarios = None):
@@ -511,9 +575,10 @@ def stageShocks(specs, phis, calib, out, ρ = 1.0, commonX = False, scenarios = 
                                  'scenario': name,
                                  'θpinned': pin, 'θ_tm1': r['θ_'], 'θ_t0': r['θ0'], 'θ_t1': r['θ1'],
                                  'τ_t0': r['t0']['τ'], 'sr_t0': r['t0']['sr'], 'ww_t0': r['t0']['workweek'],
-                                 'τ_t1': r['t1']['τ'], 'sr_t1': r['t1']['sr'], 'ww_t1': r['t1']['workweek']}
+                                 'τ_t1': r['t1']['τ'], 'sr_t1': r['t1']['sr'], 'ww_t1': r['t1']['workweek'],
+                                 'τNet_t0': r['τNet0'], 'τNet_t1': r['τNet1']}
                                 | piColumn(r['m'], r['m'].t0Year) | multiplicityColumns(r['multiplicity'])
-                                | thetaColumns())
+                                | tagColumns())
                     print('  {:<10} pin={:<5} θ_t0={:.4f}  τ_t0={:.4f} sr_t0={:.4f} ww_t0={:.2f}'
                           '  (θ_t1={:.4f}, {:.0f}s)'
                           .format(name, str(pin), r['θ0'], r['t0']['τ'], r['t0']['sr'],
@@ -527,7 +592,7 @@ def stageShocks(specs, phis, calib, out, ρ = 1.0, commonX = False, scenarios = 
                 continue
             try:
                 f = franceRow(m, spec, phi, p, hbarRef, ρ = ρ, commonX = commonX)
-                rows.append(f | {'host': host} | thetaColumns())
+                rows.append(f | {'host': host} | tagColumns())
                 print('  {:<10} pin={:<5} θ_t0={:.4f}  τ_t0={:.4f} sr_t0={:.4f} ww_t0={:.2f}'
                       .format('France', 'True', f['θ_t0'], f['τ_t0'], f['sr_t0'], f['ww_t0']))
                 mergeWrite(out, rows, KEYSHK)
@@ -552,11 +617,13 @@ def franceRow(m, spec, phi, p, hbarRef, ρ = 1.0, commonX = False):
     r0 = readout(mFR, out['τ'], out['report'], hbarRef, pos, workweekData = ww)
     r1 = readout(mFR, out['τ'], out['report'], hbarRef, pos+1, workweekData = ww)
     θ = mFR.db['θ'].values.astype(float)
+    net = [float(mFR.netTax(float(out['τ'].iloc[k]), float(θ[k]), mFR.db['t'][k])) for k in (pos, pos+1)]
     return {'spec': spec, 'phi': phi, 'commonX': commonX, 'p': p, 'scenario': 'France',
             'θpinned': True,
             'θ_tm1': float(θ[pos-1]), 'θ_t0': float(θ[pos]), 'θ_t1': float(θ[pos+1]),
             'τ_t0': r0['τ'], 'sr_t0': r0['sr'], 'ww_t0': r0['workweek'],
-            'τ_t1': r1['τ'], 'sr_t1': r1['sr'], 'ww_t1': r1['workweek']} | multiplicityColumns(out.get('multiplicity'))
+            'τ_t1': r1['τ'], 'sr_t1': r1['sr'], 'ww_t1': r1['workweek'],
+            'τNet_t0': net[0], 'τNet_t1': net[1]} | multiplicityColumns(out.get('multiplicity'))
 
 
 def shockIncomeAndVoting(mt0, d):
@@ -586,7 +653,9 @@ SHOCKS_ESC = dict(sh.SHOCKS) | {
 ESC_SCENARIOS = ('baseline', 'mild', 'acute', 'frIncome', 'frLeisure', 'frVoting', 'frBoth', 'frAll')
 
 def pickOwn(country, host, spec, phi, commonX):
-    """ `host`'s OWN converged cost calibration from escCountry.csv's frame (`country`), or an empty frame. """
+    """ `host`'s OWN converged cost calibration from escCountry.csv's frame (`country`) at the run's spending
+    target (atSpending), or an empty frame. """
+    country = atSpending(country)
     hit = country[(country['country'] == host) & (country['wedgeFrom'] == 'own') & (country['spec'] == spec)
                   & (country['phi'] == phi) & (country['converged'].astype(str) == 'True')]
     return hit[hit['commonX'].astype(bool) == bool(commonX)]
@@ -648,7 +717,7 @@ def stageCountry(specs, phis, calib, out, commonX = False):
                 try:
                     m = buildEU(country, {'spec': spec, 'phi': phi, 'p': pUS}, commonX = commonX)
                     m.calibrate()
-                    rows.append(usWedgeRow(m, spec, phi, commonX, label, pUS) | thetaColumns())
+                    rows.append(usWedgeRow(m, spec, phi, commonX, label, pUS) | tagColumns())
                     θStar, ch = rows[-1]['θStar'], rows[-1]['choice']
                     print('[{}, φ={}] {:<5} US wedge p={:.4f}: θ*={:.4f} -> choice {:.4f}  (Vtilde={:.4f})'
                           .format(spec, phi, label, pUS, θStar, ch, rows[-1]['Vtilde']))
@@ -667,7 +736,7 @@ def stageCountry(specs, phis, calib, out, commonX = False):
                                  'ω': float(m.db['ω'].xs(m.t0Year))} | own
                                 # calibrateWedge's last recursion is the one at the calibrated p
                                 | multiplicityColumns(m.ESC.lastMultiplicity if rec['converged'] else None)
-                                | thetaColumns())
+                                | tagColumns())
                     print('[{}, φ={}] {:<5} own wedge: p={} θ*={:.4f} ({})'
                           .format(spec, phi, label, rec['p'], rec['θ'], rec['message']))
                 except Exception as e:
@@ -724,7 +793,7 @@ def stageCorner(specs, phis, calib, out, commonX = False):
                         r = cornerSlope(m, vote)
                         rows.append({'spec': spec, 'phi': phi, 'commonX': commonX, 'country': country,
                                      'λ': λv, 'λFrom': 'US' if λ is None else 'fixed', 'vote': vote,
-                                     'θStar': float(m.db['θ'].xs(m.t0Year))} | r | thetaColumns())
+                                     'θStar': float(m.db['θ'].xs(m.t0Year))} | r | tagColumns())
                         print('[{}] {} λ={:8.3f} vote {}: slope at θ=1 {:+.6f}, T(1) {:.6f}'
                               .format(spec, country, λv, r['date'], r['slope'], r['τ1Corner']))
                     mergeWrite(out, rows, KEYCORNER)
@@ -764,11 +833,21 @@ def main():
     p.add_argument('--coarse', action = 'store_true', help = "GRIDS['coarse'], under --theta only")
     p.add_argument('--main', action = 'store_true',
                    help = "with --theta config.US['theta']: read results/calibration/, write results/esc/")
+    p.add_argument('--spendingTarget', default = 'gross', choices = SPENDING_TARGETS,
+                   help = "what every calibration with a cost matches to the spending datum: 'gross' the tax "
+                          "tau_t0, 'net' the benefits paid tau_t0 f (ModelESC.netTax); written to the rows and "
+                          "their keys ('gross' as a blank)")
+    p.add_argument('--outdir', default = None,
+                   help = "the csvs' directory instead of --theta's (results/esc/ under --main); the U.S. sweep "
+                          "is still --theta's. A relative path is the working directory's.")
     a = p.parse_args()
     a.root = None if a.root is None else os.path.abspath(os.path.join(CWD, a.root))
+    setSpendingTarget(a.spendingTarget)
     import oecd26
     theta = a.theta if a.root is not None else oecd26.indexTheta(a.theta, [OUTDIR], 'runESC.py')
     outdir = setTheta(theta, a.root, a.stage, a.coarse, a.commonX, a.rho, a.main)
+    outdir = outdir if a.outdir is None else os.path.abspath(os.path.join(CWD, a.outdir))
+    refuseCost(outdir)
     os.makedirs(outdir, exist_ok = True)
     f = lambda n: os.path.join(outdir, f'{n}{a.tag}.csv')
 
@@ -798,6 +877,16 @@ def main():
 
 
 THETASTAGES = ('calib', 'path', 'pathHost', 'shocks', 'country', 'corner')     # the stages a θ variant runs
+
+
+def refuseCost(outdir, main = OUTDIR):
+    """ SystemExit when `outdir` is `main` (results/esc/) and the run's cost is not PAPERCOST (SSD_TAUPOWER,
+    SSD_CARRIER): the csvs there are keyed without k and the carrier, so such a run would overwrite the paper's
+    rows; it goes into another --outdir, its rows carrying both (costColumns). """
+    if costColumns() and os.path.normcase(os.path.abspath(outdir)) == os.path.normcase(os.path.abspath(main)):
+        raise SystemExit('{} holds the cost k = {:g}, carrier {!r}; this run has SSD_TAUPOWER={:g}, SSD_CARRIER={!r}: '
+                         'write it into another --outdir (e.g. results/esc_tau1)'.format(
+                             os.path.relpath(main, REPO), PAPERCOST[0], PAPERCOST[1], TAU_POWER, WEDGE_CARRIER))
 
 
 def setTheta(theta = None, root = None, stages = ('calib',), coarse = False, commonX = True, ρ = 1.0, main = False):
@@ -855,6 +944,7 @@ def checkCalib(calib, path, specs = None, phis = None, commonX = None):
                            np.asarray(list(phis), dtype = float)[None, :]).any(axis = 1)
     if commonX is not None and 'commonX' in calib.columns:
         read &= calib['commonX'].astype(bool) == bool(commonX)
+    read &= calib.index.isin(atSpending(calib).index)
     rows = calib[read]
     ok = all(c in calib.columns for c in want) and bool(
         ((rows['thetaSource'] == want['thetaSource']) & (rows['grid'] == want['grid'])

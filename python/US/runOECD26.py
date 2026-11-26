@@ -13,6 +13,8 @@ Run:  .venv\Scripts\python.exe python\US\runOECD26.py                       ever
       ... --omegaRule anchor|mean                                           layer 1's ω (default config's)
       ... --retAge none|exit|nra                                            ν's retirement-age correction (default config's)
       ... --usSweep FILE                                                    the U.S. sweep β is read from (not with --main)
+      ... --spendingTarget gross|net                                        what ω matches under a cost (default gross)
+      ... --usInput demography|income|turnout --stage layer1                layer 1 with one input at the U.S. value
       ... --force                                                           recompute rows already on disk
       ... --outdir DIR                                                      default results/oecd26
       ... --coarse                                                          small grids, for a quick check
@@ -60,6 +62,23 @@ included; main refuses both into results/oecd26/. Every row carries `sample26` f
 inputsKey only when not 'none', which python/paper's readers select on (datasets._oecd26Rows), so any reading may be
 written into results/oecd26/. The U.S. gap is 0, so the anchor is retAge's 'none' anchor.
 
+`spendingTarget` (ModelESC.spendingTarget): under a cost the anchor's and layer 2's ω match 'gross' τ_2020 = τData or
+'net' τ_2020 f(θ_c, τ_2020) = τData (ModelESC.netTax, f at the π the pinned solve iterated to); layer 1's ω̄ follows. A
+key column of the three csvs (LEGACY 'gross'), in inputsKey only when not 'gross'; under 'none' both give the same
+rows, keyed apart.
+
+`usInput` (layer 1 only, `withUSInput`): every country's ν path after the retirement-age correction ('demography'),
+income groups γ_i, y_i and so Ṽ ('income') or propensities to vote μ_i ('turnout') replaced by the U.S.'s at the same
+turnout reading, θ source and retAge; its spending datum, design, β, ω (the anchor's or the main layer 2's ω̄, which
+meanOmega reads at usInput 'none') and cost parameter are the main specification's. A key column of layer1.csv (LEGACY
+'none'), in inputsKey only when not 'none'; the anchor and layer 2 refuse it. The rows go into --outdir's layer1.csv
+beside the main ones, so a reader of results/oecd26/ selects on it.
+
+The cost results/oecd26/ holds is runESC.PAPERCOST (k = 2, carrier 'convex'); a run under another SSD_TAUPOWER or
+SSD_CARRIER is refused there and goes into another --outdir (e.g. results/oecd26_tau1/ with --theta C --usSweep
+results/calibration/US_rhoGridCommonX.csv), its rows carrying tauPower and carrier (runESC.costColumns), its settings
+tauPower.
+
 `omegaRule`, layer 1's ω: 'anchor' the anchor's; 'mean' ω̄, the arithmetic mean of the ok layer-2 ω's of
 --outdir's layer2.csv at the same turnout, spec, betaRule and thetaSource over the run's countries (`meanOmega`;
 each row against the current anchor and inputs, a missing one refused), with β and the cost parameter still the
@@ -71,6 +90,10 @@ US['oecd26']['omegaRule'], read by datasets.oecd26Layer's `omegaRule`). 'pooled'
 Readouts per row (`readouts`), all at 2020 (t0):
   τ2020, spending2020   the 2020 tax at θ_c and 100·τ2020·(1-α), % of GDP (the inverse of τ0's construction):
                         τPolicy_2020(θ_c) under 'size', the θ-pinned path's (solvePEE_LOG) under 'sizePiR', 'none'
+  spendingNet2020       benefits paid, 100·τ2020·f(θ_c, τ2020)·(1-α) (ModelESC.netTax at the pinned path's π);
+                        spending2020 under 'none'
+  fInForce, spendingNetInForce   f(θInForce, τInForce) on the free path (its own π) and 100·τInForce·fInForce·(1-α),
+                        the net counterpart of spendingReading 'chosen'; NaN under 'none'
   θChosen, indexChosen  θPolicy_2020(θ_c): the design chosen in 2020, in force in 2050; I = 1/(2-θ)
   θInForce, indexInForce, τInForce   the design in force in 2020 on the freely simulated path (chosen in 1990;
                         appendix G.1's reading and λ's target), and the 2020 tax under it
@@ -82,16 +105,17 @@ Readouts per row (`readouts`), all at 2020 (t0):
                         'convex', whose rows also carry `carrier`), the larger of the two fixed points' last max|Δπ|
                         (below modelESC.ΠR_TOL). NaN under 'size' and 'none', as on the rows written before these columns
   closedFormGap, closedFormCorners   oecd26.closedFormCheck: the tax at θ ≡ 1 against eq (1.4) at each date's ν
-  nEqMax, nCandMax, nFallback   the tax rule's counts over the design recursion and the pinned solve
-                        (policy.multiplicityColumns); under log the tax is unique, so nEqMax > 1 is a defect
+  nEqMax, nCandMax, nFallback, nRootsSMax   the tax rule's counts over the design recursion and the pinned solve
+                        (policy.multiplicityColumns); under log the tax is unique, so nEqMax > 1 is a defect, and no
+                        state fixed point is solved (nRootsSMax -1)
 Under 'sizePiR' the free-path readouts (θChosen, θInForce, τInForce) are solveLeaded(pinAtT0 = False)'s at its own
 fixed point in π and the pinned ones (τ2020, R2020, fStar, f0, ΠR2020) solvePEE_LOG()'s at its own; each iterates
 to its own path's π, so neither solve's π serves the other. A 'commonR' layer row's `β` is the country's calibrated
 β, `βAnchor` and `RTarget` the anchor's β and R2020.
 
-Resumable: rows are keyed on (turnout, spec, phi, commonX, betaRule, thetaSource[, omegaRule, retAge, iso3]); a csv
-written before the betaRule, thetaSource, omegaRule or retAge column is read as betaRule 'common', thetaSource
-'index', omegaRule 'anchor', retAge 'none', and rewritten so before the next merge (`migrate`, LEGACY). A row on disk is reused when its `inputsKey`
+Resumable: rows are keyed on (turnout, spec, phi, commonX, betaRule, thetaSource, spendingTarget[, omegaRule, retAge,
+usInput, iso3]); a csv written before one of betaRule, thetaSource, spendingTarget, omegaRule, retAge, usInput is read as
+'common', 'index', 'gross', 'anchor', 'none', 'none', and rewritten so before the next merge (`migrate`, LEGACY). A row on disk is reused when its `inputsKey`
 (oecd26.inputsKey over the stage, the country's inputs, β, layer 1's ω (the anchor's or ω̄) and the anchor's cost
 parameter, under 'commonR' the anchor's R2020, and the settings: grids, spec, bracket, betaRule unless 'common',
 thetaSource unless 'index', omegaRule unless 'anchor'; the anchor's under a θ variant also the U.S. sweep's source)
@@ -109,8 +133,8 @@ sys.stdout.reconfigure(encoding = 'utf-8', line_buffering = True)
 sys.path.insert(0, HERE)
 
 import oecd26
-from runESC import mergeWrite, _keyOf, _keyCell
-from modelESC import WEDGE_BRACKET, WEDGE_CARRIER
+from runESC import mergeWrite, _keyOf, _keyCell, PAPERCOST, costColumns
+from modelESC import WEDGE_BRACKET, WEDGE_CARRIER, TAU_POWER, SPENDING_TARGETS
 from base import carrierFactor
 from policy import multiplicityColumns, mergeMultiplicity
 
@@ -120,11 +144,14 @@ SPECS = ('size', 'sizePiR', 'none')
 BETARULES = oecd26.BETARULES
 # phi: the dummy key of the proportional costs (python/paper/config.py US['esc']['phi']); common X, the paper's.
 PHI, COMMONX = 0.5, True
-KEYANCHOR = ['turnout', 'spec', 'phi', 'commonX', 'betaRule', 'thetaSource']
-KEYLAYER = KEYANCHOR + ['omegaRule', 'retAge', 'iso3']
+KEYANCHOR = ['turnout', 'spec', 'phi', 'commonX', 'betaRule', 'thetaSource', 'spendingTarget']
+KEYLAYER = KEYANCHOR + ['omegaRule', 'retAge', 'usInput', 'iso3']
 # The value of a key column in a csv written before the column existed (migrate, _onDisk).
-LEGACY = {'betaRule': 'common', 'thetaSource': oecd26.INDEX, 'omegaRule': 'anchor', 'retAge': 'none'}
+LEGACY = {'betaRule': 'common', 'thetaSource': oecd26.INDEX, 'omegaRule': 'anchor', 'retAge': 'none',
+          'spendingTarget': 'gross', 'usInput': 'none'}
 OMEGARULES = ('anchor', 'mean')
+# Layer 1 with one input of every country at its U.S. value (withUSInput): the inputs each replaces.
+USINPUTS = {'none': (), 'demography': ('ν',), 'income': ('γ', 'y', 'Vtilde'), 'turnout': ('μ',)}
 # A reading whose inputs are another's but for the label: it stands on that one's anchor and copies its layer rows
 # where the inputs are equal (_twin).
 ANCHORTURNOUT = {'csesFlat': 'cses'}
@@ -143,25 +170,55 @@ def paperVariant():
     return mod.US['oecd26']
 
 
-def settings(coarse = False, spec = 'size', betaRule = 'common', thetaSource = oecd26.INDEX, retAge = 'none'):
+def settings(coarse = False, spec = 'size', betaRule = 'common', thetaSource = oecd26.INDEX, retAge = 'none',
+             spendingTarget = 'gross', usInput = 'none'):
     """ The settings of a run: the LOG tax grid (n nodes, oecd26.GS otherwise), the design state grid and candidates
     of LeadedLOG, the cost scan and its bracket (ModelESC.WEDGE_BRACKET; None under 'none'), spec and phi, the
     carrier of 'sizePiR' when it is not 'pi' (modelESC.WEDGE_CARRIER), betaRule when it is not
-    'common', thetaSource when it is not 'index' and retAge when it is not 'none' (the rows of the defaults keep the
-    keys they had before any of them). Part of every row's key. """
+    'common', thetaSource when it is not 'index', retAge when it is not 'none', spendingTarget when it is not
+    'gross', usInput when it is not 'none' and the cost's tau power when it is not 2 (modelESC.TAU_POWER; the rows
+    of the defaults keep the keys they had before any of them). Part of every row's key. """
     s = dict(SETTINGS['coarse' if coarse else 'fine'])
     s |= {'grid': 'coarse' if coarse else 'fine', 'bracket': None if spec == 'none' else list(WEDGE_BRACKET[spec]),
           'spec': spec, 'phi': PHI}
     s = s | {'carrier': WEDGE_CARRIER} if spec == 'sizePiR' and WEDGE_CARRIER != 'pi' else s
+    s = s if TAU_POWER == PAPERCOST[0] else s | {'tauPower': TAU_POWER}
     s = s if betaRule == 'common' else s | {'betaRule': betaRule}
     s = s if retAge == 'none' else s | {'retAge': retAge}
+    s = s if spendingTarget == 'gross' else s | {'spendingTarget': spendingTarget}
+    s = s if usInput == 'none' else s | {'usInput': usInput}
     return s if thetaSource == oecd26.INDEX else s | {'thetaSource': thetaSource}
 
 
 def anchorSettings(cfg):
-    """ The settings of a run's anchor: cfg without betaRule (the anchor is always 'common') and retAge (the U.S.
-    gap is 0). """
-    return {k: v for k, v in cfg.items() if k not in ('betaRule', 'retAge')}
+    """ The settings of a run's anchor: cfg without betaRule (the anchor is always 'common'), retAge (the U.S.
+    gap is 0) and usInput (the anchor is the U.S.). """
+    return {k: v for k, v in cfg.items() if k not in ('betaRule', 'retAge', 'usInput')}
+
+
+def spendingOf(cfg):
+    """ cfg's spendingTarget: 'gross' unless settings installed 'net'. """
+    return cfg.get('spendingTarget', 'gross')
+
+
+def usInputOf(cfg):
+    """ cfg's usInput: 'none' unless settings installed one of USINPUTS. """
+    return cfg.get('usInput', 'none')
+
+
+def withUSInput(inp, us, usInput):
+    """ `inp` (oecd26.countryInputs) with the inputs USINPUTS[usInput] replaced by the U.S.'s, `us` (countryInputs of
+    the U.S. at the same turnout, θ source and retAge): 'demography' ν (after the retirement-age correction, which
+    leaves the U.S. ν as it is), 'income' the income groups γ_i, y_i and with them Ṽ, 'turnout' μ_i. Everything else,
+    the country's spending datum τ0 and design θ among it, is the country's own. `inp` itself under 'none'. """
+    if usInput not in USINPUTS:
+        raise ValueError('usInput must be one of {}, got {!r}'.format(tuple(USINPUTS), usInput))
+    if usInput == 'none':
+        return inp
+    out = dict(inp)
+    for k in USINPUTS[usInput]:
+        out[k] = np.array(us[k], dtype = float) if np.ndim(us[k]) else float(us[k])
+    return out
 
 
 def thetaOf(cfg):
@@ -208,7 +265,8 @@ def _build(inp, β, ω, λ, cfg, R0 = None, calibrateω = True):
     λ = λ if λ is None else λ*_costWeight(inp['iso3'])
     return oecd26.build(inp, β, ω, None if spec == 'none' else λ, spec = spec, phi = cfg['phi'],
                         gs = oecd26.GS | {'n': cfg['n']}, nθ = cfg['nθ'], nθCand = cfg['nθCand'],
-                        betaRule = cfg.get('betaRule', 'common'), R0 = R0, calibrateω = calibrateω)
+                        betaRule = cfg.get('betaRule', 'common'), R0 = R0, calibrateω = calibrateω,
+                        spendingTarget = spendingOf(cfg))
 
 
 def readouts(m):
@@ -218,7 +276,7 @@ def readouts(m):
     spec = m.db.get('wedgeSpec')
     θD = float(m.db['θ'].xs(t0))
     mult, gaps = [], []
-    design, τLed = dict.fromkeys(DESIGN, np.nan), np.nan
+    design, τLed = dict.fromkeys(DESIGN + ('fInForce',), np.nan), np.nan
     if spec is not None:
         if spec == 'sizePiR':
             led = m.solveLeaded(pinAtT0 = False)            # the free path at its own fixed point in π
@@ -232,11 +290,13 @@ def readouts(m):
             τLed = m.ESC.τAt(t0, θD)
             θIn = m.leadedDesignAtT0(sols)
             τIn = m.ESC.τAt(t0, θIn)
+        fIn = float(m.B.fWedge(θIn, τIn, t0, '[t-1]'))       # the free path's f(θ_2020, τ_2020) at its own π
         θChosen = m.ESC.choiceAt(sols, t0, θD)
         k = int(np.argmin(np.abs(sols[t0]['θGrid'] - θD)))
         design = {'θChosen': θChosen, 'indexChosen': float(oecd26.indexFromTheta(θChosen)),
                   'atBoundChosen': bool(sols[t0]['atBoundθ'][k]), 'θStateSpread': float(sols[t0]['stateSpread']),
-                  'θInForce': θIn, 'indexInForce': float(oecd26.indexFromTheta(θIn)), 'τInForce': τIn}
+                  'θInForce': θIn, 'indexInForce': float(oecd26.indexFromTheta(θIn)), 'τInForce': τIn,
+                  'fInForce': fIn}
     pin = m.solvePEE_LOG()                                  # θ ≡ θ_c over the horizon; under 'sizePiR' at its own π
     mult.append(pin.get('multiplicity'))
     τPin = float(pin['τ'].xs(t0))
@@ -254,11 +314,14 @@ def readouts(m):
         V = float(m.B.Vtilde(t0))
         fStar, f0 = ((np.nan, np.nan) if spec is None else
                      (float(m.B.fWedge(θD, τ, t0, lag)), float(m.B.fWedge(0., τ, t0, lag))))
+    net = {'spendingNet2020': 100*float(m.netTax(τ, θD, t0))*(1 - α),         # at the pinned path's π
+           'spendingNetInForce': 100*design['τInForce']*design['fInForce']*(1 - α)}
     gap, corners = oecd26.closedFormCheck(m)
     return ({'ν2020': float(m.db['ν'].xs(t0)), 'Vtilde': V, 'θData': θD, 'τ2020': τ, 'spending2020': 100*τ*(1 - α)}
             | design | {'τPinGap': abs(τPin - τLed), 'R2020': float(pin['report']['R'].xs(t0)), 'fStar': fStar,
-                         'f0': f0} | pir
-            | {'closedFormGap': gap, 'closedFormCorners': corners} | multiplicityColumns(mergeMultiplicity(mult)))
+                         'f0': f0} | pir | net
+            | {'closedFormGap': gap, 'closedFormCorners': corners} | multiplicityColumns(mergeMultiplicity(mult))
+            | costColumns())
 
 
 def _dataColumns(inp):
@@ -338,7 +401,7 @@ def stageAnchor(turnout, outdir, cfg, ref, force = False):
     inp = _usInputs(turnout, cfg)
     β, ωSeed, βSource = ref
     key = anchorKey(inp, β, cfg, βSource)
-    keyVals = [turnout, spec, PHI, COMMONX, 'common', ts]
+    keyVals = [turnout, spec, PHI, COMMONX, 'common', ts, spendingOf(cfg)]
     old = _onDisk(path, KEYANCHOR, keyVals)
     if not force and old is not None and old.get('inputsKey') == key and old.get('status') == 'ok':
         print('[anchor {} {}{}] on disk: ω={:.6f} p={:.6f}'.format(spec, turnout, tag, old['ω'], old['p']))
@@ -380,7 +443,7 @@ def anchorRow(turnout, outdir, cfg, ref):
     current U.S. inputs, the β of `ref` (oecd26.usBeta()'s; under a θ variant also its source) and the settings. """
     cfg, turnout = anchorSettings(cfg), ANCHORTURNOUT.get(turnout, turnout)
     path = os.path.join(outdir, 'anchor.csv')
-    row = _onDisk(path, KEYANCHOR, [turnout, cfg['spec'], PHI, COMMONX, 'common', thetaOf(cfg)])
+    row = _onDisk(path, KEYANCHOR, [turnout, cfg['spec'], PHI, COMMONX, 'common', thetaOf(cfg), spendingOf(cfg)])
     if row is None or row.get('status') != 'ok':
         raise SystemExit('no calibrated {} anchor for turnout {!r}, thetaSource {!r} in {}: run --stage anchor'.format(
             cfg['spec'], turnout, thetaOf(cfg), path))
@@ -400,6 +463,7 @@ def meanOmega(turnout, isos, outdir, anchor, cfg):
     outdir/layer2.csv at `turnout` and cfg's spec, betaRule and thetaSource, over those of `isos` that have inputs
     (no 'noTurnout'/'noTheta'). Each row must be status 'ok', computed against `anchor` and keyed on the current
     inputs (#13); SystemExit otherwise (run --stage layer2 first). """
+    cfg = {k: v for k, v in cfg.items() if k != 'usInput'}        # layer 2 has every country's own inputs
     spec, rule, ts, ra = cfg['spec'], cfg.get('betaRule', 'common'), thetaOf(cfg), retAgeOf(cfg)
     path = os.path.join(outdir, 'layer2.csv')
     data = oecd26.readData()
@@ -411,7 +475,8 @@ def meanOmega(turnout, isos, outdir, anchor, cfg):
             inp = oecd26.countryInputs(iso, turnout, data, ts, ra)
         except (oecd26.NoTurnout, oecd26.NoTheta):
             continue
-        row = _onDisk(path, KEYLAYER, [turnout, spec, PHI, COMMONX, rule, ts, 'anchor', ra, iso])
+        row = _onDisk(path, KEYLAYER, [turnout, spec, PHI, COMMONX, rule, ts, spendingOf(cfg), 'anchor', ra, 'none',
+                                       iso])
         if (row is None or row.get('status') != 'ok' or row.get('anchorKey') != anchor['inputsKey']
                 or row.get('inputsKey') != _layerKey('layer2', inp, β, ωA, λA, cfg, RA)):
             bad.append(iso)
@@ -434,6 +499,7 @@ def _twin(layer, path, keyVals, inp, data, β, ω, λ, cfgK, RA, anchorKey_):
         tin = oecd26.countryInputs(inp['iso3'], t, data, thetaOf(cfgK), retAgeOf(cfgK))
     except (oecd26.NoTurnout, oecd26.NoTheta):
         return None
+    tin = withUSInput(tin, _usInputs(t, cfgK, data), usInputOf(cfgK))
     mi, mt = oecd26.modelInputs(inp), oecd26.modelInputs(tin)
     if not all(np.array_equal(mi[k], mt[k]) for k in mi if k != 'turnout'):
         return None
@@ -446,17 +512,23 @@ def _twin(layer, path, keyVals, inp, data, β, ω, λ, cfgK, RA, anchorKey_):
 
 def stageLayer(layer, turnout, isos, outdir, anchor, cfg, force = False, omegaRule = 'anchor'):
     """ layer 'layer1' (the anchor's ω, or ω̄ under omegaRule 'mean': meanOmega) or 'layer2' (ω calibrated per
-    country; omegaRule 'anchor' only), for the countries `isos`, at cfg's spec, betaRule and thetaSource; `anchor` is
+    country; omegaRule 'anchor' only), for the countries `isos`, at cfg's spec, betaRule, thetaSource, spendingTarget
+    and, layer 1 only, usInput (withUSInput; ω, β and the cost parameter the main specification's); `anchor` is
     the anchor row of cfg's spec, thetaSource and `turnout`. A country without CSES turnout or without θ under the
     variant gets a 'noTurnout' or 'noTheta' row. """
     if omegaRule not in OMEGARULES or (layer == 'layer2' and omegaRule != 'anchor'):
         raise ValueError("omegaRule: {} for layer 1, 'anchor' for layer 2; got {!r} for {}".format(
             OMEGARULES, omegaRule, layer))
     spec, rule, ts, ra = cfg['spec'], cfg.get('betaRule', 'common'), thetaOf(cfg), retAgeOf(cfg)
+    st, ui = spendingOf(cfg), usInputOf(cfg)
+    if layer == 'layer2' and ui != 'none':
+        raise ValueError('usInput {!r}: layer 1 only (layer 2 calibrates each country at its own inputs)'.format(ui))
     tag = (('' if ts == oecd26.INDEX else ' ' + ts) + ('' if omegaRule == 'anchor' else ' ω̄')
-           + ('' if ra == 'none' else ' retAge ' + ra))
+           + ('' if ra == 'none' else ' retAge ' + ra) + ('' if st == 'gross' else ' ' + st)
+           + ('' if ui == 'none' else ' U.S. ' + ui))
     path = os.path.join(outdir, layer + '.csv')
     data = oecd26.readData()
+    usInp = None if ui == 'none' else _usInputs(turnout, cfg, data)
     β, ωA, λA = float(anchor['β']), float(anchor['ω']), float(anchor['p'])
     RA = float(anchor['R2020']) if rule == 'commonR' else None
     ωL, cfgK, extra = ωA, cfg, {}
@@ -467,13 +539,13 @@ def stageLayer(layer, turnout, isos, outdir, anchor, cfg, force = False, omegaRu
                                                                                  ωL, len(of), ωA))
     rows = []
     for iso in isos:
-        keyVals = [turnout, spec, PHI, COMMONX, rule, ts, omegaRule, ra, iso]
+        keyVals = [turnout, spec, PHI, COMMONX, rule, ts, st, omegaRule, ra, ui, iso]
         base = dict(zip(KEYLAYER, keyVals)) | {'layer': layer, 'β': β, 'ωAnchor': ωA, 'p': λA,
                                                'anchorKey': anchor['inputsKey'], 'grid': cfg['grid']} | extra
         if rule == 'commonR':
             base |= {'βAnchor': β, 'RTarget': RA}
         try:
-            inp = oecd26.countryInputs(iso, turnout, data, ts, ra)
+            inp = withUSInput(oecd26.countryInputs(iso, turnout, data, ts, ra), usInp, ui)
         except (oecd26.NoTurnout, oecd26.NoTheta) as e:
             status = 'noTurnout' if isinstance(e, oecd26.NoTurnout) else 'noTheta'
             rows.append(base | {'country': data[0].at[iso, 'country'], 'sample26': bool(data[2].at[iso, 'sample26']),
@@ -556,7 +628,17 @@ def main():
     p.add_argument('--usSweep', default = None,
                    help = "the U.S. sweep β and the anchor's ω seed are read from (default: results/calibration/'s "
                           "under 'index', <outdir>/calibration/'s under --theta); not with --main")
+    p.add_argument('--spendingTarget', default = 'gross', choices = SPENDING_TARGETS,
+                   help = "what the anchor's and layer 2's ω match under a cost: 'gross' the tax τ_2020 = τData, 'net' "
+                          "the benefits paid τ_2020 f(θ_c, τ_2020) = τData (ModelESC.netTax); a key column")
+    p.add_argument('--usInput', default = 'none', choices = tuple(USINPUTS),
+                   help = "layer 1 only (--stage layer1): every country's ν path ('demography'), income groups "
+                          "('income') or propensities to vote ('turnout') at the U.S. value, the anchor and ω of the "
+                          "main specification kept; a key column of layer1.csv")
     a = p.parse_args()
+    if a.usInput != 'none' and set(a.stage) != {'layer1'}:
+        raise SystemExit('--usInput {}: layer 1 at the main specification\'s anchor and ω; pass --stage layer1 (the '
+                         'anchor and layer 2 are run without it)'.format(a.usInput))
     variant = a.theta != oecd26.INDEX
     if variant and a.theta not in oecd26.thetaVariants():
         raise SystemExit('--theta {!r}: not a variant of {} ({})'.format(a.theta, oecd26.FILES['theta'],
@@ -582,6 +664,11 @@ def main():
                          '--outdir)'.format(', '.join(explore)))
     if a.coarse and standard:
         raise SystemExit('--coarse: the small grids are for a quick check; not into results/oecd26/ (use --outdir)')
+    if costColumns() and standard:
+        raise SystemExit('results/oecd26/ holds the cost k = {:g}, carrier {!r}; this run has SSD_TAUPOWER={:g}, '
+                         'SSD_CARRIER={!r}: use another --outdir (e.g. results/oecd26_tau1, with --theta {} --usSweep '
+                         'results/calibration/US_rhoGridCommonX.csv)'.format(PAPERCOST[0], PAPERCOST[1], TAU_POWER,
+                                                                             WEDGE_CARRIER, a.theta))
     isos = a.countries or oecd26.countries()
     unknown = set(isos) - set(oecd26.countries())
     if unknown:
@@ -600,11 +687,11 @@ def main():
         print('θ: variant {!r} of {}; {} countries'.format(a.theta, oecd26.FILES['theta'], len(isos)))
     layers = ('layer2', 'layer1') if a.omegaRule == 'mean' else ('layer1', 'layer2')     # ω̄ reads layer 2
     for spec in a.spec:
-        cfgA = settings(a.coarse, spec, thetaSource = a.theta)
+        cfgA = settings(a.coarse, spec, thetaSource = a.theta, spendingTarget = a.spendingTarget)
         for turnout in a.turnout:
             anchor = stageAnchor(turnout, a.outdir, cfgA, ref, a.force) if 'anchor' in a.stage else None
             for rule in a.betaRule:
-                cfg = settings(a.coarse, spec, rule, a.theta, a.retAge)
+                cfg = settings(a.coarse, spec, rule, a.theta, a.retAge, a.spendingTarget, a.usInput)
                 for layer in layers:
                     if layer in a.stage:
                         anchor = anchor if anchor is not None and anchor.get('status') == 'ok' else \

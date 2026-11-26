@@ -18,14 +18,24 @@ stat   for each distinct nu_t, the same recursion on a deep copy with nu frozen 
        stationary functions from the exact initial state (theta*, and s_0 under CRRA).
 Also: the stationary function evaluated at the exact path's own states (the error in the function alone).
 
-Writes results/numerical/US_ESC_stationaryApprox.csv, one row per (rho, t), each with the exact solve's counts
-(policy.multiplicityColumns): the tax rule's (nEqMax, nCandMax, nFallback) and the root design layer's of the
-2-D recursion (nEqθMax, nBrθMax, nFallbackθ; -1 under LOG, whose design is a grid argmax).
+Writes results/numerical/US_ESC_stationaryApprox.csv, one row per (rho, t, spendingTarget), each with the exact solve's
+counts (policy.multiplicityColumns): the tax rule's (nEqMax, nCandMax, nFallback) and the root design layer's of the
+2-D recursion (nEqθMax, nBrθMax, nFallbackθ; -1 under LOG, whose design is a grid argmax), merged after every rho into
+the rows on disk (runESC.mergeWrite on (ρ, t, spendingTarget)).
+
+--spendingTarget gross|net (runESC.SPENDING): the cost calibrated to the gross tax or to the benefits paid, read at
+that target from the calibration csvs (runESC.pickCalib, runESCcrra.readCalibratedP) and the models recalibrated under
+it; a key column, blank at 'gross' (runESC.tagColumns).
 
 Under CRRA the cost is the converged exact calibration of escCalibrationCRRA.csv at the run's θ; with only a
 path-iteration row at that (rho, spec, phi) the run stops, unless --allowPathP lets the path p stand in (a smoke run).
 A relative --out is the caller's working directory's. --theta C --main is the pipeline's; --theta index (or an --out
 outside results/) the workbook's θ, which without --theta is refused into results/ (oecd26.indexTheta).
+
+--escdir DIR reads the calibration csvs (ESCDIR) in DIR instead of results/esc/ (a relative path is the working
+directory's). results/esc/ and the default --out hold the cost runESC.PAPERCOST (k = 2, carrier 'convex'): a run under
+another SSD_TAUPOWER or SSD_CARRIER is refused from the one and into the other (runESC.refuseCost), and its rows carry
+tauPower and carrier (runESC.tagColumns).
 """
 import os, sys, argparse, time
 from copy import deepcopy
@@ -43,8 +53,9 @@ from runESC import pickCalib
 from runESCcrra import readCalibratedP, GSC
 from policy import multiplicityColumns
 
-ESCDIR = os.path.join(REPO, 'results', 'esc')
+ESCDIR = ESCMAIN = os.path.join(REPO, 'results', 'esc')           # ESCDIR: main's --escdir, ESCMAIN the default
 OUT = os.path.join(REPO, 'results', 'numerical', 'US_ESC_stationaryApprox.csv')
+KEY = ['ρ', 't', 'spendingTarget']          # the run's rows replace those on disk at the same key (runESC.mergeWrite)
 
 
 def frozen(m, ν):
@@ -184,8 +195,21 @@ def main():
     p.add_argument('--theta', default = None,
                    help = "the pipeline's main θ variant (with --main): runESC.setTheta's θ0, rows carry it")
     p.add_argument('--main', action = 'store_true', help = "with --theta config.US['theta']")
+    p.add_argument('--spendingTarget', default = 'gross', choices = runESC.SPENDING_TARGETS,
+                   help = "runESC.py's: the cost calibrated to 'gross' tau_t0 or 'net' benefits paid; a key column")
+    p.add_argument('--escdir', default = None,
+                   help = 'the calibration csvs read from this directory instead of results/esc/ (e.g. results/esc_tau1)')
     a = p.parse_args()
+    runESC.setSpendingTarget(a.spendingTarget)
     a.out = os.path.abspath(os.path.join(CWD, a.out))
+    global ESCDIR
+    if a.escdir is not None:
+        ESCDIR = os.path.abspath(os.path.join(CWD, a.escdir))
+    for path, dft, flag in ((ESCDIR, ESCMAIN, '--escdir'), (a.out, OUT, '--out')):
+        try:
+            runESC.refuseCost(path, dft)
+        except SystemExit as e:
+            raise SystemExit(f'{e}; stationaryApproxESC.py takes it as {flag}') from None
     import oecd26
     if a.theta in (None, oecd26.INDEX) and not a.main:
         a.theta = oecd26.indexTheta(a.theta, [a.out], 'stationaryApproxESC.py')
@@ -200,11 +224,11 @@ def main():
             raise SystemExit('--theta {}: {}'.format(a.theta, e))
     allRows = []
     for ρ in a.rho:
-        allRows += [r | runESC.thetaColumns() for r in (runLOG(a.spec, a.phi, a.commonX) if np.isclose(ρ, 1)
+        allRows += [r | runESC.tagColumns() for r in (runLOG(a.spec, a.phi, a.commonX) if np.isclose(ρ, 1)
                     else runCRRA(ρ, a.spec, a.phi, a.commonX, a.ns, a.nCand2D, a.allowPathP))]
         df = pd.DataFrame(allRows)
         os.makedirs(os.path.dirname(a.out), exist_ok = True)
-        df.to_csv(a.out, index = False)                     # after every rho: a long run is readable as it goes
+        runESC.mergeWrite(a.out, allRows, KEY)              # after every rho: a long run is readable as it goes
     pd.set_option('display.width', 220)
     print('\n' + df[['ρ', 'method', 'date', 'ν', 'θ_exact', 'θ_stat', 'θ_statAtExactState', 'gapθ', 'gapθAtExactState',
                      'τ_exact', 'τ_stat', 'gapτ_pp', 'gapτAtExactState_pp', 'statConvθ', 'statConvτ']].round(5).to_string(index = False))
