@@ -1,0 +1,9 @@
+label,series,panel,value,text
+"pre-reform ε = 0.21","θ = 0.84","Tax rate τ","10.92307692200472","10.9%"
+"post-reform εᵁ = 0.55","θ = 0.84","Tax rate τ","14.20834704115643","14.2%"
+"pre-reform ε = 0.21","θ = 0.84","Savings rate","14.39952646979539","14.4% of GDP"
+"post-reform εᵁ = 0.55","θ = 0.84","Savings rate","13.805946490081169","13.8% of GDP"
+"pre-reform ε = 0.21","θ = 0.84","Average workweek","42.5375","42.5 hours"
+"post-reform εᵁ = 0.55","θ = 0.84","Average workweek","41.772928517135306","41.8 hours"
+"pre-reform ε = 0.21","θ = 0.84","Informal savings ratio ι = s^0/s","0.3270991867623001","0.327"
+"post-reform εᵁ = 0.55","θ = 0.84","Informal savings ratio ι = s^0/s","0.2772759832296043","0.277"
